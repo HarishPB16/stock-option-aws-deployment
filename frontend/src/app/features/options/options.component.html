@@ -78,28 +78,29 @@
         <span class="value">{{ insight.averagePe5Yr }}</span>
       </div>
 
-      <div class="metric" [ngClass]="'sentiment-' + insight.forecast1Year.color">
-        <span class="label">1Yr Forecast</span>
-        <span class="value" [ngClass]="{
-          'text-bullish': insight.forecast1Year.color === 'green',
-          'text-bearish': insight.forecast1Year.color === 'red',
-          'text-neutral': insight.forecast1Year.color === 'yellow'
-        }">{{ insight.forecast1Year.text }}</span>
-      </div>
-
-      <div class="metric sentiment-yellow">
-        <span class="label">Tomorrow's Range</span>
-        <span class="value">{{ insight.tomorrowRange }}</span>
-      </div>
-
       <div class="metric sentiment-green">
         <span class="label">Support</span>
-        <span class="value">${{ insight.support }}</span>
+        <span class="value">{{ insight.support }}</span>
       </div>
 
       <div class="metric sentiment-red">
         <span class="label">Resistance</span>
-        <span class="value">${{ insight.resistance }}</span>
+        <span class="value">{{ insight.resistance }}</span>
+      </div>
+
+      <div class="metric forecast-block" [ngClass]="'sentiment-' + insight.forecast1Year.color">
+        <span class="label">1Yr Forecast</span>
+        <div class="forecast-content">
+          <span class="value" [ngClass]="{
+            'text-bullish': insight.forecast1Year.color === 'green',
+            'text-bearish': insight.forecast1Year.color === 'red',
+            'text-neutral': insight.forecast1Year.color === 'yellow'
+          }">
+            {{ insight.forecast1Year.text | slice:0:45 }}{{ insight.forecast1Year.text.length > 45 ? '...' : '' }}
+          </span>
+          <button class="read-more-btn" *ngIf="insight.forecast1Year.text.length > 45"
+            (click)="openForecastModal(insight.forecast1Year.text)">Read More</button>
+        </div>
       </div>
     </div>
 
@@ -143,12 +144,12 @@
   </div>
 </div>
 
-<!-- Modal Overlay for AI Direct Answer -->
-<div class="modal-overlay" *ngIf="showAdviceModal" (click)="closeAdviceModal()">
+<!-- Modal Overlay for AI Direct Answer and Long Content -->
+<div class="modal-overlay" *ngIf="showAdviceModal || showForecastModal" (click)="closeModals()">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    <button class="close-modal-btn" (click)="closeAdviceModal()">&times;</button>
+    <button class="close-modal-btn" (click)="closeModals()">&times;</button>
 
-    <div class="simple-advice-card">
+    <div class="simple-advice-card" *ngIf="showAdviceModal">
       <div class="advice-header">
         <div class="badge-container">
           <h3>AI Professional Strategy Breakdown</h3>
@@ -158,5 +159,17 @@
       </div>
       <div class="advice-html-content" [innerHTML]="simpleAdvice"></div>
     </div>
+
+    <div class="simple-advice-card" *ngIf="showForecastModal">
+      <div class="advice-header">
+        <div class="badge-container">
+          <h3>📈 1 Year Analyst Forecast</h3>
+        </div>
+      </div>
+      <div class="advice-html-content">
+        <p>{{ activeForecastText }}</p>
+      </div>
+    </div>
+
   </div>
 </div>

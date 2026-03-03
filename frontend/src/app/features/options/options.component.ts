@@ -18,6 +18,8 @@ export class OptionsComponent {
     simpleAdvice: string | null = null;
     isAdviceCached: boolean = false;
     showAdviceModal: boolean = false;
+    showForecastModal: boolean = false;
+    activeForecastText: string = '';
     errorMessage: string | null = null;
 
     constructor(
@@ -83,8 +85,15 @@ export class OptionsComponent {
         this.showAdviceModal = true;
     }
 
-    closeAdviceModal() {
+    openForecastModal(text: string) {
+        this.activeForecastText = text;
+        this.showForecastModal = true;
+    }
+
+    closeModals() {
         this.showAdviceModal = false;
+        this.showForecastModal = false;
+        this.activeForecastText = '';
     }
 
     onDelete() {
