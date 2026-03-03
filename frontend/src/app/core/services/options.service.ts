@@ -63,4 +63,8 @@ export class OptionsService {
     deleteOption(ticker: string): Observable<any> {
         return this.http.delete(`${environment.apiUrl}/options/${ticker}`);
     }
+
+    getHistoryByDate(date: string): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/options/history?date=${date}`);
+    }
 }

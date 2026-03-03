@@ -143,3 +143,40 @@ export const deleteOption = async (req: Request, res: Response, next: NextFuncti
         next(error);
     }
 };
+
+export const getHistoryByDate = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { date } = req.query;
+
+        if (!date || typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            return res.status(400).json({ success: false, error: { message: 'Valid date query parameter required (YYYY-MM-DD)' } });
+        }
+
+        logger.info(`Fetching historical records for date`, { date });
+
+        // Build exact UTC bounds for the queried date
+        const targetDate = new Date(date);
+        targetDate.setUTCHours(0, 0, 0, 0);
+        const targetEnd = new Date(date);
+        targetEnd.setUTCHours(23, 59, 59, 999);
+
+        // Fetch concurrently
+        const [options, adviceRecords] = await Promise.all([
+            Option.find({ createdAt: { $gte: targetDate, $lte: targetEnd } }).sort({ createdAt: -1 }),
+            Advice.find({ dateKey: date }).sort({ createdAt: -1 })
+        ]);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                date,
+                options,
+                advice: adviceRecords
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error fetching history`, { error });
+        next(error);
+    }
+};

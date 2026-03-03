@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     { path: '', redirectTo: 'options', pathMatch: 'full' },
     { path: 'options', loadChildren: () => import('./features/options/options.module').then(m => m.OptionsModule) },
+    { path: 'history', loadChildren: () => import('./features/history/history.module').then(m => m.HistoryModule) },
     { path: '**', redirectTo: 'options' }
 ];
 
