@@ -16,6 +16,7 @@ export class OptionsComponent {
     insight: OptionInsight | null = null;
     simpleAdvice: string | null = null;
     isAdviceCached: boolean = false;
+    showAdviceModal: boolean = false;
     errorMessage: string | null = null;
 
     constructor(
@@ -75,5 +76,13 @@ export class OptionsComponent {
                     this.errorMessage = err.message || 'An unexpected error occurred.';
                 }
             });
+    }
+
+    openAdviceModal() {
+        this.showAdviceModal = true;
+    }
+
+    closeAdviceModal() {
+        this.showAdviceModal = false;
     }
 }

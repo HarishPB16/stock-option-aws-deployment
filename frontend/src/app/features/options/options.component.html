@@ -27,24 +27,16 @@
     {{ errorMessage }}
   </div>
 
-  <!-- Simple Cached AI Advice -->
-  <div class="simple-advice-card" *ngIf="simpleAdvice && !isLoading">
-    <div class="advice-header">
-      <div class="badge-container">
-        <h3>AI Direct Answer</h3>
-        <span class="badge" *ngIf="isAdviceCached">Historical (Cached Today)</span>
-        <span class="badge badge-new" *ngIf="!isAdviceCached">Fresh Analysis</span>
-      </div>
-    </div>
-    <div class="advice-html-content" [innerHTML]="simpleAdvice"></div>
-  </div>
-
   <!-- Results Board -->
   <div class="insight-board" *ngIf="insight && !isLoading">
 
     <div class="action-card" [ngClass]="insight.action === 'CALL' ? 'bg-call' : 'bg-put'">
       <h2>{{ insight.action }}</h2>
       <p class="confidence">{{ insight.confidence }}% Confidence</p>
+
+      <button class="ai-popup-btn" *ngIf="simpleAdvice" (click)="openAdviceModal()">
+        <span class="pulse-icon">✨</span> View AI Direct Strategy Breakdown
+      </button>
     </div>
 
     <div class="metrics-grid">
@@ -139,6 +131,24 @@
         <h3>15-20 Day Fundamental Forecast</h3>
         <p>{{ insight.analysis.text }}</p>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Overlay for AI Direct Answer -->
+<div class="modal-overlay" *ngIf="showAdviceModal" (click)="closeAdviceModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-modal-btn" (click)="closeAdviceModal()">&times;</button>
+
+    <div class="simple-advice-card">
+      <div class="advice-header">
+        <div class="badge-container">
+          <h3>AI Professional Strategy Breakdown</h3>
+          <span class="badge" *ngIf="isAdviceCached">Historical (Cached Today)</span>
+          <span class="badge badge-new" *ngIf="!isAdviceCached">Fresh Analysis</span>
+        </div>
+      </div>
+      <div class="advice-html-content" [innerHTML]="simpleAdvice"></div>
     </div>
   </div>
 </div>
