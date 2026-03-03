@@ -1,13 +1,19 @@
 import { GoogleGenAI } from '@google/genai';
 import logger from '../utils/logger';
 
-// Initialize the generic AI SDK correctly
-let ai: GoogleGenAI;
-try {
-    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy_key_for_build' });
-} catch (err) {
-    logger.error('Failed to initialize Google Gen AI SDK', { error: err });
-}
+let ai: GoogleGenAI | null = null;
+
+const getAIClient = (): GoogleGenAI => {
+    if (!ai) {
+        try {
+            ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || 'dummy_key_for_build' });
+        } catch (err) {
+            logger.error('Failed to initialize Google Gen AI SDK', { error: err });
+            throw new Error('Google Gen AI SDK initialization failed');
+        }
+    }
+    return ai;
+};
 
 export interface IOptionInsight {
     action: 'CALL' | 'PUT';
@@ -34,9 +40,7 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
     const t0 = Date.now();
 
     // Guard clause against missing initialization
-    if (!ai) {
-        throw new Error('Google Gen AI is not configured.');
-    }
+    const aiClient = getAIClient();
 
     const prompt = `Analyze the stock ticker ${ticker} based on news from the past 5 days and provide an options trading suggestion for the next 15 to 20 days.
   CRITICAL INSTRUCTION: Your analysis must explicitly incorporate global macroeconomic events, geopolitical tensions (such as ongoing conflicts or wars), and government regulatory changes that impact this specific stock.
@@ -64,7 +68,7 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
   }`;
 
     try {
-        const response = await ai.models.generateContent({
+        const response = await aiClient.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
@@ -121,9 +125,7 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
 
 export const generateSimpleAdvice = async (ticker: string): Promise<string> => {
     const t0 = Date.now();
-    if (!ai) {
-        throw new Error('Google Gen AI is not configured.');
-    }
+    const aiClient = getAIClient();
 
     const prompt = `You are a professional Indian Stock Options Strategist AI.
 
@@ -179,7 +181,7 @@ STOCK NAME: ${ticker}
     `;
 
     try {
-        const response = await ai.models.generateContent({
+        const response = await aiClient.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: prompt
         });

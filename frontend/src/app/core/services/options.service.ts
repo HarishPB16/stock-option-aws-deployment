@@ -59,4 +59,8 @@ export class OptionsService {
     askOption(ticker: string): Observable<SimpleAdviceResponse> {
         return this.http.post<SimpleAdviceResponse>(`${environment.apiUrl}/options/ask`, { ticker });
     }
+
+    deleteOption(ticker: string): Observable<any> {
+        return this.http.delete(`${environment.apiUrl}/options/${ticker}`);
+    }
 }

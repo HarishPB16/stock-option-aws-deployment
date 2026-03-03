@@ -102,3 +102,44 @@ export const askOption = async (req: Request, res: Response, next: NextFunction)
         next(error);
     }
 };
+
+export const deleteOption = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const titleCaseTicker = req.params.ticker.trim().toUpperCase();
+
+        // Exact UTC boundaries for "Today"
+        const todayStart = new Date();
+        todayStart.setUTCHours(0, 0, 0, 0);
+        const todayEnd = new Date();
+        todayEnd.setUTCHours(23, 59, 59, 999);
+        const dateKey = todayStart.toISOString().split('T')[0];
+
+        logger.info(`Deleting ONLY Today's Database Records for`, { ticker: titleCaseTicker, dateKey });
+
+        // Delete ONLY documents matching today's bounds
+        const optionDeletes = Option.deleteMany({
+            stock: titleCaseTicker,
+            createdAt: { $gte: todayStart, $lte: todayEnd }
+        });
+
+        const adviceDeletes = Advice.deleteMany({
+            stock: titleCaseTicker,
+            dateKey: dateKey
+        });
+
+        const [optionRes, adviceRes] = await Promise.all([optionDeletes, adviceDeletes]);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                message: `Deleted ${optionRes.deletedCount} Option records and ${adviceRes.deletedCount} Advice records for ${titleCaseTicker}`,
+                deletedOptions: optionRes.deletedCount,
+                deletedAdvice: adviceRes.deletedCount
+            }
+        });
+
+    } catch (error) {
+        logger.error(`Error deleting records`, { error });
+        next(error);
+    }
+};

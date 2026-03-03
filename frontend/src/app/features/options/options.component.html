@@ -34,9 +34,17 @@
       <h2>{{ insight.action }}</h2>
       <p class="confidence">{{ insight.confidence }}% Confidence</p>
 
-      <button class="ai-popup-btn" *ngIf="simpleAdvice" (click)="openAdviceModal()">
-        <span class="pulse-icon">✨</span> View AI Direct Strategy Breakdown
-      </button>
+      <div class="action-buttons">
+        <button class="ai-popup-btn" *ngIf="simpleAdvice" (click)="openAdviceModal()">
+          <span class="pulse-icon">✨</span> View AI Direct Strategy Breakdown
+        </button>
+
+        <button class="delete-db-btn" (click)="onDelete()" [disabled]="isDeleting"
+          title="Permanently delete historical DB records for this stock">
+          <span *ngIf="!isDeleting">🗑️ Delete Data</span>
+          <span *ngIf="isDeleting" class="spinner">↻</span>
+        </button>
+      </div>
     </div>
 
     <div class="metrics-grid">

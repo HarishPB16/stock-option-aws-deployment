@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 export class OptionsComponent {
     optionForm: FormGroup;
     isLoading = false;
+    isDeleting = false;
     insight: OptionInsight | null = null;
     simpleAdvice: string | null = null;
     isAdviceCached: boolean = false;
@@ -84,5 +85,33 @@ export class OptionsComponent {
 
     closeAdviceModal() {
         this.showAdviceModal = false;
+    }
+
+    onDelete() {
+        if (!this.insight) return;
+
+        const ticker = this.optionForm.value.ticker.toUpperCase();
+        this.isDeleting = true;
+        this.cdr.markForCheck();
+
+        this.optionsService.deleteOption(ticker)
+            .pipe(
+                finalize(() => {
+                    this.isDeleting = false;
+                    this.cdr.markForCheck();
+                })
+            )
+            .subscribe({
+                next: () => {
+                    // Clear the current view as records are gone
+                    this.insight = null;
+                    this.simpleAdvice = null;
+                    this.isAdviceCached = false;
+                    this.optionForm.reset();
+                },
+                error: (err) => {
+                    this.errorMessage = err.message || 'Failed to delete records.';
+                }
+            });
     }
 }
