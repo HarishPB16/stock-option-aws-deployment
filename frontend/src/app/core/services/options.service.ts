@@ -10,7 +10,18 @@ export interface OptionInsight {
     support: number;
     resistance: number;
     pe: number;
+    industryPe: number;
+    averagePe5Yr: number;
     trend: string;
+    newsSummary: { text: string; color: string };
+    analysis: { text: string; color: string };
+    forecast1Year: { text: string; color: string };
+    tomorrowRange: string;
+    emaAnalysis: { text: string; color: string };
+    rsiAnalysis: { text: string; color: string };
+    vixThetaAnalysis: { text: string; color: string };
+    supportResistanceAnalysis: string;
+    verdict: { text: string; color: string };
 }
 
 export interface OptionResponse {
@@ -23,6 +34,16 @@ export interface OptionResponse {
     error?: any;
 }
 
+export interface SimpleAdviceResponse {
+    success: boolean;
+    cached: boolean;
+    data: {
+        ticker: string;
+        advice: string;
+        date: string;
+    };
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -32,6 +53,10 @@ export class OptionsService {
     constructor(private http: HttpClient) { }
 
     suggestOption(ticker: string): Observable<OptionResponse> {
-        return this.http.post<OptionResponse>(`${this.apiUrl}/suggest`, { ticker });
+        return this.http.post<OptionResponse>(`${environment.apiUrl}/options/suggest`, { ticker });
+    }
+
+    askOption(ticker: string): Observable<SimpleAdviceResponse> {
+        return this.http.post<SimpleAdviceResponse>(`${environment.apiUrl}/options/ask`, { ticker });
     }
 }

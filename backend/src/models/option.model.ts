@@ -9,7 +9,18 @@ export interface IOption extends Document {
     support: number;
     resistance: number;
     pe: number;
+    industryPe: number;
+    averagePe5Yr: number;
     trend: string;
+    newsSummary: { text: string; color: string };
+    analysis: { text: string; color: string };
+    forecast1Year: { text: string; color: string };
+    tomorrowRange: string;
+    emaAnalysis: { text: string; color: string };
+    rsiAnalysis: { text: string; color: string };
+    vixThetaAnalysis: { text: string; color: string };
+    supportResistanceAnalysis: string;
+    verdict: { text: string; color: string };
     createdAt: Date;
 }
 
@@ -23,7 +34,18 @@ const optionSchema = new Schema(
         support: { type: Number, required: true },
         resistance: { type: Number, required: true },
         pe: { type: Number, required: true },
+        industryPe: { type: Number, required: true },
+        averagePe5Yr: { type: Number, required: true },
         trend: { type: String, required: true },
+        newsSummary: { text: { type: String, required: true }, color: { type: String, required: true } },
+        analysis: { text: { type: String, required: true }, color: { type: String, required: true } },
+        forecast1Year: { text: { type: String, required: true }, color: { type: String, required: true } },
+        tomorrowRange: { type: String, required: true },
+        emaAnalysis: { text: { type: String, required: true }, color: { type: String, required: true } },
+        rsiAnalysis: { text: { type: String, required: true }, color: { type: String, required: true } },
+        vixThetaAnalysis: { text: { type: String, required: true }, color: { type: String, required: true } },
+        supportResistanceAnalysis: { type: String, required: true },
+        verdict: { text: { type: String, required: true }, color: { type: String, required: true } },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 );
