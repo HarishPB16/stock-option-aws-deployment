@@ -1,0 +1,67 @@
+<div class="options-container">
+  <div class="header">
+    <h1>AI Stock Options Engine</h1>
+    <p>Enterprise-grade Option Suggestions by Gemini</p>
+  </div>
+
+  <div class="search-card">
+    <form [formGroup]="optionForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <input type="text" formControlName="ticker" placeholder="ENTER TICKER (e.g. AAPL)" class="ticker-input"
+          [class.is-invalid]="optionForm.get('ticker')?.invalid && optionForm.get('ticker')?.touched"
+          autocomplete="off">
+        <button type="submit" [disabled]="isLoading" class="submit-btn" [class.loading]="isLoading">
+          <span *ngIf="!isLoading">Analyze</span>
+          <span *ngIf="isLoading" class="spinner">↻</span>
+        </button>
+      </div>
+      <div class="error-text"
+        *ngIf="optionForm.get('ticker')?.errors?.['required'] && optionForm.get('ticker')?.touched">
+        Ticker is required.
+      </div>
+    </form>
+  </div>
+
+  <!-- Error Alert -->
+  <div class="alert alert-error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Results Board -->
+  <div class="insight-board" *ngIf="insight && !isLoading">
+
+    <div class="action-card" [ngClass]="insight.action === 'CALL' ? 'bg-call' : 'bg-put'">
+      <h2>{{ insight.action }}</h2>
+      <p class="confidence">{{ insight.confidence }}% Confidence</p>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric">
+        <span class="label">Trend</span>
+        <span class="value"
+          [ngClass]="{'text-bullish': insight.trend === 'Bullish', 'text-bearish': insight.trend === 'Bearish'}">{{
+          insight.trend }}</span>
+      </div>
+
+      <div class="metric">
+        <span class="label">Risk</span>
+        <span class="value">{{ insight.risk }}</span>
+      </div>
+
+      <div class="metric">
+        <span class="label">P/E Ratio</span>
+        <span class="value">{{ insight.pe }}</span>
+      </div>
+
+      <div class="metric">
+        <span class="label">Support</span>
+        <span class="value">${{ insight.support }}</span>
+      </div>
+
+      <div class="metric">
+        <span class="label">Resistance</span>
+        <span class="value">${{ insight.resistance }}</span>
+      </div>
+    </div>
+  </div>
+</div>
