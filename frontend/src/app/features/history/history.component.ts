@@ -34,7 +34,19 @@ export class HistoryComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     if (res.success && res.data) {
-                        this.historyData = res.data;
+                        // Map the simple advice to each option object
+                        const optionsWithAdvice = res.data.options.map((opt: any) => {
+                            const matchingAdvice = res.data.advice?.find((a: any) => a.stock === opt.stock);
+                            return {
+                                ...opt,
+                                simpleAdvice: matchingAdvice ? matchingAdvice.advice : null
+                            };
+                        });
+
+                        this.historyData = {
+                            ...res.data,
+                            options: optionsWithAdvice
+                        };
                     } else {
                         this.errorMessage = 'Failed to parse history data.';
                     }
