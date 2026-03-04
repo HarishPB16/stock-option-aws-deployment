@@ -119,6 +119,11 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
             durationMs: duration,
             error: error.message
         });
+
+        if (error.message?.includes('429') || error.message?.includes('Quota exceeded') || error.message?.includes('RESOURCE_EXHAUSTED')) {
+            throw new Error('Gemini API Rate Limit Reached. Please wait ~1 minute before trying again.');
+        }
+
         throw new Error('Failed to generate option analysis');
     }
 };
@@ -198,6 +203,10 @@ STOCK NAME: ${ticker}
             durationMs: Date.now() - t0,
             error: error.message
         });
+        if (error.message?.includes('429') || error.message?.includes('Quota exceeded') || error.message?.includes('RESOURCE_EXHAUSTED')) {
+            throw new Error('Gemini API Rate Limit Reached. Please wait ~1 minute before trying again.');
+        }
+
         throw new Error('Failed to generate simple advice');
     }
 };

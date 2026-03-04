@@ -14,8 +14,14 @@ export const suggestOption = async (req: Request, res: Response, next: NextFunct
 
         const insight = await generateOptionSuggestion(ticker);
 
-        // Save strictly to DocumentDB, async off main thread but awaited for consistency here
-        const newOption = new Option({
+        // Exact UTC boundaries for "Today"
+        const todayStart = new Date();
+        todayStart.setUTCHours(0, 0, 0, 0);
+        const todayEnd = new Date();
+        todayEnd.setUTCHours(23, 59, 59, 999);
+
+        // Save to DocumentDB using upsert (one record per stock per day)
+        const optionData = {
             userId,
             stock: ticker,
             action: insight.action,
@@ -36,16 +42,23 @@ export const suggestOption = async (req: Request, res: Response, next: NextFunct
             trend: insight.trend,
             newsSummary: insight.newsSummary,
             analysis: insight.analysis
-        });
+        };
 
-        await newOption.save();
+        const savedOption = await Option.findOneAndUpdate(
+            {
+                stock: ticker,
+                createdAt: { $gte: todayStart, $lte: todayEnd }
+            },
+            { $set: optionData },
+            { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
 
         res.status(200).json({
             success: true,
             data: {
                 ticker,
                 insight,
-                recordId: newOption._id
+                recordId: savedOption?._id
             }
         });
 
@@ -105,7 +118,7 @@ export const askOption = async (req: Request, res: Response, next: NextFunction)
 
 export const deleteOption = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const titleCaseTicker = req.params.ticker.trim().toUpperCase();
+        const titleCaseTicker = (req.params.ticker as string).trim().toUpperCase();
 
         // Exact UTC boundaries for "Today"
         const todayStart = new Date();
