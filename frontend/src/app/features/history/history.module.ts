@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HistoryRoutingModule } from './history-routing.module';
 import { HistoryComponent } from './history.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [HistoryComponent],
   imports: [
     CommonModule,
     FormsModule,
-    HistoryRoutingModule
+    HistoryRoutingModule,
+    SharedModule
   ]
 })
 export class HistoryModule { }

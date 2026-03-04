@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { OptionsRoutingModule } from './options-routing.module';
 import { OptionsComponent } from './options.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -12,7 +13,8 @@ import { OptionsComponent } from './options.component';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        OptionsRoutingModule
+        OptionsRoutingModule,
+        SharedModule
     ]
 })
 export class OptionsModule { }

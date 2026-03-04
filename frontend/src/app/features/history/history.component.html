@@ -4,16 +4,6 @@
         <p>Review deeply cached options insights driven by Gemini.</p>
     </div>
 
-    <div class="search-card">
-        <div class="input-group">
-            <input type="date" [(ngModel)]="selectedDate" (ngModelChange)="fetchHistory()" class="ticker-input">
-            <button class="submit-btn" (click)="fetchHistory()" [disabled]="isLoading" [class.loading]="isLoading">
-                <span *ngIf="!isLoading">Search Logs</span>
-                <span *ngIf="isLoading" class="spinner">↻</span>
-            </button>
-        </div>
-    </div>
-
     <div class="alert alert-error" *ngIf="errorMessage">
         {{ errorMessage }}
     </div>
@@ -24,36 +14,24 @@
             <p>No option records or AI logs found for {{ selectedDate | date:'mediumDate' }}.</p>
         </div>
 
-        <div class="history-grid">
-            <!-- Detailed Logs generated that day -->
-            <div class="history-card" *ngFor="let opt of historyData.options">
-                <div class="card-header">
-                    <h3>{{ opt.stock }}</h3>
-                    <span class="badge badge-date">{{ opt.createdAt | date:'shortTime' }}</span>
-                </div>
-
-                <div class="action-strip" [ngClass]="opt.action === 'CALL' ? 'bg-call' : 'bg-put'">
-                    <span class="action-type">{{ opt.action }}</span>
-                    <span class="action-conf">{{ opt.confidence }}% Confidence</span>
-                </div>
-
-                <div class="mini-metrics">
-                    <div class="metric"><span class="label">Trend:</span> <strong>{{ opt.trend }}</strong></div>
-                    <div class="metric"><span class="label">Risk:</span> <strong>{{ opt.risk }}</strong></div>
-                    <div class="metric"><span class="label">P/E:</span> <strong>{{ opt.pe }}</strong></div>
-                </div>
-
-                <p class="history-verdict">{{ opt.verdict.text }}</p>
+        <div class="history-grid-container" *ngIf="historyData.options.length > 0">
+            <div class="header" style="text-align: left;">
+                <h2 class="section-title">In-Depth Analysis Records</h2>
             </div>
+            <div class="history-grid" style="display: flex; flex-direction: column; gap: 3rem;">
+                <div class="history-item-block" *ngFor="let opt of historyData.options">
+                    <div class="stock-header">
+                        <h2>{{ opt.stock }} <span class="badge badge-date"
+                                style="font-size: 0.9rem; margin-left: 10px; vertical-align: middle;">{{ opt.createdAt |
+                                date:'shortTime' }}</span></h2>
+                    </div>
 
-            <!-- Simple Advice Logs (If any existed stand-alone) -->
-            <div class="history-card advice-only-card" *ngFor="let adv of historyData.advice">
-                <div class="card-header">
-                    <h3>{{ adv.stock }}</h3>
-                    <span class="badge badge-ai">✨ Simple AI API</span>
+                    <app-option-stock-detail [insight]="opt" [simpleAdvice]="opt.simpleAdvice"
+                        [isDeleting]="isDeleting[opt.stock] || false"
+                        (deleteData)="deleteOption(opt.stock)"></app-option-stock-detail>
                 </div>
-                <div class="advice-content" [innerHTML]="adv.advice"></div>
             </div>
         </div>
+
     </div>
 </div>

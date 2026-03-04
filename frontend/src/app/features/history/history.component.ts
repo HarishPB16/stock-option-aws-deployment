@@ -44,4 +44,23 @@ export class HistoryComponent implements OnInit {
                 }
             });
     }
+
+    isDeleting: { [ticker: string]: boolean } = {};
+
+    deleteOption(ticker: string) {
+        if (!ticker) return;
+
+        this.isDeleting[ticker] = true;
+        this.optionsService.deleteOption(ticker)
+            .pipe(finalize(() => this.isDeleting[ticker] = false))
+            .subscribe({
+                next: () => {
+                    // Refetch the data for the selected date after successful deletion
+                    this.fetchHistory();
+                },
+                error: (err) => {
+                    this.errorMessage = err.message || 'Failed to delete records.';
+                }
+            });
+    }
 }
