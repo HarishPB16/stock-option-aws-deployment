@@ -210,3 +210,64 @@ STOCK NAME: ${ticker}
         throw new Error('Failed to generate simple advice');
     }
 };
+
+export const generateMarketBriefing = async (): Promise<string> => {
+    const t0 = Date.now();
+    const aiClient = getAIClient();
+
+    const prompt = `You are a professional global financial market analyst AI.
+
+Generate a structured daily market briefing for the Indian stock market.
+
+Provide the output strictly in HTML. Do NOT use markdown formatting outside the HTML tags.
+Use a clean, beautiful, and modern HTML structure using standard HTML tables.
+Ensure it is concise and formatted for financial dashboards.
+Apply inline styles or standard CSS classes for up (green color) and down (red color) values where applicable.
+
+Sections required in the output HTML:
+
+<h2>1. Ten Big News – Indian Market Impact</h2>
+Provide a standard <table> with columns: No | News | Impact
+
+<h2>2. Global Market Overview</h2>
+Provide a standard <table> with columns: Name | Country | Date | Open-Close Time | Market Start (IST) | Down/UP (Points) | Down/UP (%)
+Markets to include, in this strict order:
+GIFT NIFTY, Nikkei 225, Dow Jones, S&P 500, Nasdaq, FTSE 100, DAX, Shanghai Composite, CAC 40
+
+<h2>3. GIFT NIFTY All Stocks Trend</h2>
+Provide a standard <table> with columns: Name | Date | Down/UP (Points) | Down/UP (%)
+
+<h2>4. Option Expiry Table</h2>
+Provide a standard <table> with columns: Name | Monthly/Weekly | Day | Date
+Include: NIFTY, BANK NIFTY, SENSEX, FINNIFTY, MIDCPNIFTY
+
+<h2>5. Upcoming Indian Stock Market Holidays (NSE/BSE)</h2>
+Provide a standard <table> with columns: Holiday | Date | Day
+`;
+
+    try {
+        const response = await aiClient.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt
+        });
+
+        logger.info('Gemini AI Market Briefing Success', {
+            durationMs: Date.now() - t0
+        });
+
+        let textOutput = response.text || "<div>No briefing generated.</div>";
+        textOutput = textOutput.replace(/```html\n?/g, '').replace(/```\n?/g, '');
+        return textOutput;
+    } catch (error: any) {
+        logger.error('Gemini AI Market Briefing Failed', {
+            durationMs: Date.now() - t0,
+            error: error.message
+        });
+
+        if (error.message?.includes('429') || error.message?.includes('Quota exceeded') || error.message?.includes('RESOURCE_EXHAUSTED')) {
+            throw new Error('Gemini API Rate Limit Reached. Please wait ~1 minute before trying again.');
+        }
+
+        throw new Error('Failed to generate market briefing');
+    }
+};

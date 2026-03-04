@@ -1,0 +1,32 @@
+<div class="home-container">
+    <div class="header">
+        <div class="title-section">
+            <h1>Daily Market Briefing</h1>
+            <p class="subtitle">AI-generated financial market overview</p>
+        </div>
+
+        <button class="refresh-button" (click)="refreshBriefing()" [disabled]="isLoading || isRefreshing">
+            <span *ngIf="!isRefreshing">
+                <i class="fas fa-sync-alt"></i> Force Refresh AI
+            </span>
+            <span *ngIf="isRefreshing">
+                <i class="fas fa-spinner fa-spin"></i> Generating...
+            </span>
+        </button>
+    </div>
+
+    <div *ngIf="error" class="error-banner">
+        <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <div class="content-wrapper">
+        <div *ngIf="isLoading && !isRefreshing" class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading today's market briefing...</p>
+        </div>
+
+        <!-- The injected HTML from Gemini -->
+        <div class="briefing-content" *ngIf="briefingHtml && !isLoading" [innerHTML]="briefingHtml">
+        </div>
+    </div>
+</div>
