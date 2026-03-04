@@ -227,7 +227,7 @@ Apply inline styles or standard CSS classes for up (green color) and down (red c
 Sections required in the output HTML:
 
 <h2>1. Ten Big News – Indian Market Impact</h2>
-Provide a standard <table> with columns: No | News | Impact
+Provide a standard <table> with columns: No | News | Date | Sector | Impact
 
 <h2>2. Global Market Overview</h2>
 Provide a standard <table> with columns: Name | Country | Date | Open-Close Time | Market Start (IST) | Down/UP (Points) | Down/UP (%)
