@@ -94,16 +94,16 @@
 
 /* Global styles for the injected HTML content to make it beautiful */
 ::ng-deep .briefing-content {
-    color: var(--text-primary, #333);
+    color: #f1f5f9;
     line-height: 1.6;
 }
 
 ::ng-deep .briefing-content h2 {
     font-size: 20px;
-    color: #1e293b;
+    color: #f8fafc;
     margin: 32px 0 16px 0;
     padding-bottom: 8px;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 ::ng-deep .briefing-content h2:first-child {
