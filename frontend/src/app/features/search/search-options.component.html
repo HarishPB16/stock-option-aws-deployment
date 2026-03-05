@@ -15,7 +15,7 @@
           <!-- Custom Autocomplete Dropdown -->
           <ul class="autocomplete-dropdown" *ngIf="showDropdown && (filteredStocks$ | async) as stocks">
             <li *ngIf="stocks.length === 0 && optionForm.get('ticker')?.value" class="no-results">
-              No matching NSE stock found
+              Only top 400 records Nifty we can search for option trading
             </li>
             <li *ngFor="let stock of stocks" (mousedown)="selectStock(stock)" class="dropdown-item">
               <span class="stock-ticker">{{ stock.ticker }}</span>
