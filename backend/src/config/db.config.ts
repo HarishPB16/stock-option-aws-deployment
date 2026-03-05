@@ -8,6 +8,8 @@ export const connectDB = async () => {
 
         // If local test without mongo, use memory server
         if (process.env.NODE_ENV !== 'production' && mongoURI.includes('localhost')) {
+            // Increase the default timeout from 10s to 60s to prevent boot failures during fast hot-reloads
+            process.env.MONGOMS_TRANSITION_TIMEOUT = '60000';
             const mongod = await MongoMemoryServer.create();
             mongoURI = mongod.getUri();
             logger.info(`Using mongodb-memory-server on ${mongoURI}`);
