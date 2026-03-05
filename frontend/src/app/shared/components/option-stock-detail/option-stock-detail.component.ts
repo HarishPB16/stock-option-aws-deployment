@@ -15,6 +15,7 @@ export class OptionStockDetailComponent {
 
   showAdviceModal: boolean = false;
   showForecastModal: boolean = false;
+  showFullDetailsModal: boolean = false;
   activeForecastText: string = '';
 
   onDelete() {
@@ -25,6 +26,10 @@ export class OptionStockDetailComponent {
     this.showAdviceModal = true;
   }
 
+  openFullDetailsModal() {
+    this.showFullDetailsModal = true;
+  }
+
   openForecastModal(text: string) {
     this.activeForecastText = text;
     this.showForecastModal = true;
@@ -33,6 +38,7 @@ export class OptionStockDetailComponent {
   closeModals() {
     this.showAdviceModal = false;
     this.showForecastModal = false;
+    this.showFullDetailsModal = false;
     this.activeForecastText = '';
   }
 }
