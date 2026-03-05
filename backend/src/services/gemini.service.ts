@@ -132,46 +132,216 @@ export const generateSimpleAdvice = async (ticker: string): Promise<string> => {
     const t0 = Date.now();
     const aiClient = getAIClient();
 
-    const prompt = `You are a professional Indian Stock Options Strategist AI.
+    const prompt = `
+    CRITICAL RULE — DATA ACCURACY
 
-I will provide a stock name listed on NSE.
+Before doing any analysis you MUST:
 
-Analyze the stock for the next 15–25 trading days considering:
+• Fetch the latest live price and today's % change
 
-• Recent Price Action
-• Latest News related to the stock, its sector, and broader index
-• Key Events (Earnings, Board Meeting, Dividend)
-• Technical Support & Resistance
-• Trend & Moving Average Bias
-• Sector Momentum
-• Macro Drivers (Crude, Rupee, Interest Rates)
-• Geopolitical Factors (War, Sanctions, Politics)
-• Government Policies / Tariffs
-• Company-specific Risks (Fraud, Legal Issues, Management Changes)
-• Volatility and Open Interest Sentiment
+• Verify the price from at least two reliable sources:
+NSE India
+TradingView
+Moneycontrol
+Investing.com
 
-You must consider any recent breaking news impacting the stock, sector, or index before forming your view.
+• Ensure the price is from the current trading day.
 
-Now follow these instructions carefully:
+Use this verified price for all calculations.
 
-Do NOT provide a detailed multi-point breakdown.
+If reliable data cannot be verified, respond:
+"Unable to verify latest market data. Analysis aborted."
 
-Provide ONLY:
+--------------------------------------------------
 
-The Bullish Case (Call Option) – key supporting points
+GLOBAL MARKET SHOCK DETECTION (VERY IMPORTANT)
 
-The Bearish Case (Put Option) – key supporting points
+Before analyzing stock-specific news, check if any major global macro event occurred in the last 7 days.
 
-Final Directional Bias – Choose ONE clearly: Call or Put
+Examples:
 
-Suggested Strike Range for next monthly expiry:
-• Conservative
-• Moderate
-• Aggressive
+• War or geopolitical conflict
+• Strait of Hormuz disruption
+• OPEC production decisions
+• Crude oil spike (>3%)
+• Global market crash (>2%)
+• Federal Reserve or RBI rate decisions
+• USD/INR sharp movement
+• Commodity price spikes (Oil, Steel, Copper)
 
-Risk Level – Low / Medium / High (with short reason)
+If detected:
 
+• Treat this as HIGH PRIORITY news
+• Include it in the News Impact table even if the stock name is not mentioned.
+
+--------------------------------------------------
+
+SECTOR DRIVER ANALYSIS (MANDATORY)
+
+Identify the main economic driver of the stock's sector.
+
+Examples:
+
+Oil stocks → Crude oil prices  
+Metal stocks → Steel / Copper prices  
+Banking → Interest rates  
+IT → US tech demand  
+Auto → Consumer demand / interest rates  
+Pharma → USFDA / drug approvals  
+
+Analyze whether the sector driver is bullish or bearish.
+
+--------------------------------------------------
+
+INTERNAL TECHNICAL ANALYSIS (DO NOT SHOW)
+
+Analyze internally using:
+
+Technical Indicators:
+
+• 20 EMA  
+• 50 EMA  
+• 200 EMA  
+• RSI (14)  
+• Volume trend  
+
+Support & Resistance using:
+
+• Recent swing highs/lows  
+• Moving averages  
+• Option chain levels  
+
+Option Chain Analysis:
+
+• Highest Call OI  
+• Highest Put OI  
+• OI build-up  
+• Max Pain level  
+
+Sector momentum.
+
+--------------------------------------------------
+
+NEWS ANALYSIS (MANDATORY)
+
+Search the latest 7–10 news articles.
+
+You MUST read news from at least 5 reliable financial news websites:
+
+• Reuters  
+• Bloomberg  
+• CNBC  
+• Moneycontrol  
+• Economic Times (ET Markets)
+
+Steps:
+
+Collect 7–10 recent news articles  
+Remove duplicate or irrelevant news  
+Select only news that can impact the stock price  
+
+Classify each as:
+
+• Bullish  
+• Bearish  
+• Neutral  
+
+Priority order when selecting news:
+
+1️⃣ Global macro events affecting the sector  
+2️⃣ Sector news  
+3️⃣ Company-specific news  
+
+--------------------------------------------------
+
+FINAL OUTPUT FORMAT (SHOW ONLY THIS)
+
+Do NOT show internal analysis tables.
+
+Decision Summary
+
+Category | Suggestion
+Your Suggestion | Buy Call / Buy Put / None
+Overall | Buy Call / Buy Put / None
+News | Buy Call / Buy Put / None
+Technical | Buy Call / Buy Put / None
 Confidence Score – Out of 10
+
+--------------------------------------------------
+
+Option Strategy (15–20 Trading Days)
+
+Recommendation | Strike | Entry Range | Target | Stop Loss
+
+Recommendation must be one of:
+
+BUY CALL  
+BUY PUT  
+NO TRADE  
+
+Rules:
+
+• Use ATM or slightly ITM options only  
+• Avoid far OTM options  
+• Prefer highest liquidity strikes  
+
+--------------------------------------------------
+
+Key Levels (Today)
+
+Level | Price
+Support 1 |
+Support 2 |
+Resistance 1 |
+Resistance 2 |
+
+--------------------------------------------------
+
+Technical Analysis Summary
+
+Provide 3–4 bullet points only
+
+Example format:
+
+• Price trading above/below key EMAs  
+• RSI showing bullish/bearish momentum  
+• Volume confirming trend strength  
+• Option chain indicating support/resistance zone  
+
+--------------------------------------------------
+
+News Impact
+
+Show only the most relevant news affecting the stock or sector.
+
+Date | News | Impact
+
+Impact values:
+
+Bullish  
+Bearish  
+Neutral  
+
+If nothing relevant:
+
+"No major stock-specific news impacting the price."
+
+--------------------------------------------------
+
+Important Output Rules
+
+Do NOT show:
+
+• EMA tables  
+• RSI tables  
+• Option chain tables  
+• Data verification tables  
+
+These are for internal analysis only.
+
+Focus strictly on the next 15–20 trading days.
+
+--------------------------------------------------
 
 Formatting Rules:
 
@@ -182,7 +352,9 @@ Formatting Rules:
 • You MUST choose one final primary bias
 • Do NOT remain neutral
 
-STOCK NAME: ${ticker}   
+--------------------------------------------------
+
+Stock Name: ${ticker}
     `;
 
     try {
