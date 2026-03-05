@@ -7,9 +7,23 @@
   <div class="search-card">
     <form [formGroup]="optionForm" (ngSubmit)="onSubmit()">
       <div class="input-group">
-        <input type="text" formControlName="ticker" placeholder="ENTER TICKER (e.g. AAPL)" class="ticker-input"
-          [class.is-invalid]="optionForm.get('ticker')?.invalid && optionForm.get('ticker')?.touched"
-          autocomplete="off">
+        <div class="autocomplete-wrapper">
+          <input type="text" formControlName="ticker" placeholder="ENTER TICKER (e.g. RELIANCE)" class="ticker-input"
+            [class.is-invalid]="optionForm.get('ticker')?.invalid && optionForm.get('ticker')?.touched"
+            autocomplete="off" (focus)="onFocus()" (blur)="onBlur()">
+
+          <!-- Custom Autocomplete Dropdown -->
+          <ul class="autocomplete-dropdown" *ngIf="showDropdown && (filteredStocks$ | async) as stocks">
+            <li *ngIf="stocks.length === 0 && optionForm.get('ticker')?.value" class="no-results">
+              No matching NSE stock found
+            </li>
+            <li *ngFor="let stock of stocks" (mousedown)="selectStock(stock)" class="dropdown-item">
+              <span class="stock-ticker">{{ stock.ticker }}</span>
+              <span class="stock-name">{{ stock.name }}</span>
+            </li>
+          </ul>
+        </div>
+
         <button type="submit" [disabled]="isLoading" class="submit-btn" [class.loading]="isLoading">
           <span *ngIf="!isLoading">Analyze</span>
           <span *ngIf="isLoading" class="spinner">↻</span>
