@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import optionsRoutes from './options.routes';
 import marketRoutes from './market.routes';
+import chatgptRoutes from './chatgpt.routes';
 
 const router = Router();
 
 // Mount modules
 router.use('/options', optionsRoutes);
 router.use('/market', marketRoutes);
+router.use('/chatgpt', chatgptRoutes);
 
 // Healthcheck
 router.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));

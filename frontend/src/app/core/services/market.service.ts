@@ -26,4 +26,9 @@ export class MarketService {
     refreshDailyBriefing(): Observable<MarketBriefingResponse> {
         return this.http.post<MarketBriefingResponse>(`${this.apiUrl}/briefing/refresh`, {});
     }
+
+    getDailyBriefingChatGPT(): Observable<MarketBriefingResponse> {
+        // As defined in chatgpt.routes.ts
+        return this.http.get<MarketBriefingResponse>(`${environment.apiUrl}/chatgpt/market/briefing`);
+    }
 }

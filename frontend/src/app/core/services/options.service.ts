@@ -67,4 +67,26 @@ export class OptionsService {
     getHistoryByDate(date: string): Observable<any> {
         return this.http.get(`${environment.apiUrl}/options/history?date=${date}`);
     }
+
+    // --- ChatGPT Endpoints ---
+
+    suggestOptionChatGPT(ticker: string): Observable<OptionResponse> {
+        return this.http.post<OptionResponse>(`${environment.apiUrl}/chatgpt/options/suggest`, { ticker });
+    }
+
+    askOptionChatGPT(ticker: string): Observable<SimpleAdviceResponse> {
+        return this.http.post<SimpleAdviceResponse>(`${environment.apiUrl}/chatgpt/options/ask`, { ticker });
+    }
+
+    deleteOptionChatGPT(ticker: string): Observable<any> {
+        return this.http.delete(`${environment.apiUrl}/chatgpt/options/${ticker}`);
+    }
+
+    getHistoryByDateChatGPT(date: string): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/chatgpt/options/history?date=${date}`);
+    }
+
+    getMarketBriefingChatGPT(): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/chatgpt/market/briefing`);
+    }
 }

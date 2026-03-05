@@ -6,9 +6,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./option-stock-detail.component.css']
 })
 export class OptionStockDetailComponent {
-  @Input() insight: any;
-  @Input() simpleAdvice: string | null = null;
-  @Input() isAdviceCached: boolean = false;
+  // Gemini Data
+  @Input() insightGemini: any;
+  @Input() simpleAdviceGemini: string | null = null;
+  @Input() isAdviceCachedGemini: boolean = false;
+  @Input() isGeminiLoading: boolean = false;
+
+  // ChatGPT Data
+  @Input() insightChatGPT: any;
+  @Input() simpleAdviceChatGPT: string | null = null;
+  @Input() isAdviceCachedChatGPT: boolean = false;
+  @Input() isChatGPTLoading: boolean = false;
+
   @Input() isDeleting: boolean = false;
 
   @Output() deleteData = new EventEmitter<void>();
@@ -16,17 +25,28 @@ export class OptionStockDetailComponent {
   showAdviceModal: boolean = false;
   showForecastModal: boolean = false;
   showFullDetailsModal: boolean = false;
+
   activeForecastText: string = '';
+  activeAdviceHtml: string = '';
+  activeAdviceIsCached: boolean = false;
+  activeAdviceTitle: string = '';
+  activeInsight: any = null;
+  activeInsightTitle: string = '';
 
   onDelete() {
     this.deleteData.emit();
   }
 
-  openAdviceModal() {
+  openAdviceModal(aiProvider: 'gemini' | 'chatgpt') {
+    this.activeAdviceHtml = aiProvider === 'gemini' ? this.simpleAdviceGemini! : this.simpleAdviceChatGPT!;
+    this.activeAdviceIsCached = aiProvider === 'gemini' ? this.isAdviceCachedGemini : this.isAdviceCachedChatGPT;
+    this.activeAdviceTitle = aiProvider === 'gemini' ? "Gemini Strategy Breakdown" : "ChatGPT Strategy Breakdown";
     this.showAdviceModal = true;
   }
 
-  openFullDetailsModal() {
+  openFullDetailsModal(aiProvider: 'gemini' | 'chatgpt') {
+    this.activeInsight = aiProvider === 'gemini' ? this.insightGemini : this.insightChatGPT;
+    this.activeInsightTitle = aiProvider === 'gemini' ? "Gemini Comprehensive Diagnostics" : "ChatGPT Comprehensive Diagnostics";
     this.showFullDetailsModal = true;
   }
 
@@ -40,5 +60,9 @@ export class OptionStockDetailComponent {
     this.showForecastModal = false;
     this.showFullDetailsModal = false;
     this.activeForecastText = '';
+    this.activeAdviceHtml = '';
+    this.activeInsight = null;
   }
 }
+
+

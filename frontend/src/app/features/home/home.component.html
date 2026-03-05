@@ -2,7 +2,17 @@
     <div class="header">
         <div class="title-section">
             <h1>Daily Market Briefing</h1>
-            <p class="subtitle">AI-generated financial market overview</p>
+            <div class="subtitle-row">
+                <p class="subtitle">AI-generated financial market overview</p>
+                <div class="ai-selector">
+                    <label for="aiProvider">Powered by:</label>
+                    <select id="aiProvider" [value]="selectedAiProvider" (change)="onProviderChange($event)"
+                        [disabled]="isLoading || isRefreshing">
+                        <option value="gemini">Gemini 1.5 Pro</option>
+                        <option value="chatgpt">ChatGPT 4-o</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <button class="refresh-button" (click)="refreshBriefing()" [disabled]="isLoading || isRefreshing">

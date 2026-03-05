@@ -15,12 +15,27 @@ export class SearchOptionsComponent implements OnInit {
     optionForm: FormGroup;
     isLoading = false;
     isDeleting = false;
-    insight: OptionInsight | null = null;
-    simpleAdvice: string | null = null;
-    isAdviceCached: boolean = false;
+
+    // Gemini State
+    isGeminiLoading = false;
+    insightGemini: OptionInsight | null = null;
+    simpleAdviceGemini: string | null = null;
+    isAdviceCachedGemini: boolean = false;
+
+    // ChatGPT State
+    isChatGPTLoading = false;
+    insightChatGPT: OptionInsight | null = null;
+    simpleAdviceChatGPT: string | null = null;
+    isAdviceCachedChatGPT: boolean = false;
+
+    // Modals
     showAdviceModal: boolean = false;
     showForecastModal: boolean = false;
     activeForecastText: string = '';
+    activeAdviceHtml: string = '';
+    activeAdviceIsCached: boolean = false;
+    activeAdviceTitle: string = '';
+
     errorMessage: string | null = null;
 
     filteredStocks$: Observable<NSESecurity[]>;
@@ -85,48 +100,89 @@ export class SearchOptionsComponent implements OnInit {
 
         this.isLoading = true;
         this.errorMessage = null;
-        this.insight = null;
-        this.simpleAdvice = null;
-        this.isAdviceCached = false;
 
-        // Explicitly pushing to view since OnPush is enabled
+        // Reset all specific AI states
+        this.insightGemini = null;
+        this.simpleAdviceGemini = null;
+        this.isAdviceCachedGemini = false;
+        this.isGeminiLoading = true;
+
+        this.insightChatGPT = null;
+        this.simpleAdviceChatGPT = null;
+        this.isAdviceCachedChatGPT = false;
+        this.isChatGPTLoading = true;
+
         this.cdr.markForCheck();
 
-        const queryTicker = this.optionForm.value.ticker; // Keep exactly as User requested: name (ticker)
+        const queryTicker = this.optionForm.value.ticker; // "Name (TICKER)" format
 
+        // 1. Fire Gemini Requests
         forkJoin({
             suggest: this.optionsService.suggestOption(queryTicker),
             ask: this.optionsService.askOption(queryTicker)
-        })
-            .pipe(
-                finalize(() => {
-                    this.isLoading = false;
-                    this.cdr.markForCheck();
-                })
-            )
-            .subscribe({
-                next: (result) => {
-                    const suggestRes = result.suggest;
-                    const askRes = result.ask;
-
-                    if (suggestRes.success && suggestRes.data) {
-                        this.insight = suggestRes.data.insight;
-                    } else {
-                        this.errorMessage = 'Failed to retrieve valid data from server.';
-                    }
-
-                    if (askRes.success && askRes.data) {
-                        this.simpleAdvice = askRes.data.advice;
-                        this.isAdviceCached = askRes.cached;
-                    }
-                },
-                error: (err) => {
-                    this.errorMessage = err.message || 'An unexpected error occurred.';
+        }).pipe(
+            finalize(() => {
+                this.isGeminiLoading = false;
+                this.checkOverallLoadingState();
+                this.cdr.markForCheck();
+            })
+        ).subscribe({
+            next: (result) => {
+                if (result.suggest.success && result.suggest.data) {
+                    this.insightGemini = result.suggest.data.insight;
                 }
-            });
+                if (result.ask.success && result.ask.data) {
+                    this.simpleAdviceGemini = result.ask.data.advice;
+                    this.isAdviceCachedGemini = result.ask.cached;
+                }
+            },
+            error: (err) => {
+                this.errorMessage = this.errorMessage
+                    ? this.errorMessage + ' | Gemini: ' + err.message
+                    : 'Gemini Error: ' + err.message;
+            }
+        });
+
+        // 2. Fire ChatGPT Requests concurrently but independently
+        forkJoin({
+            suggest: this.optionsService.suggestOptionChatGPT(queryTicker),
+            ask: this.optionsService.askOptionChatGPT(queryTicker)
+        }).pipe(
+            finalize(() => {
+                this.isChatGPTLoading = false;
+                this.checkOverallLoadingState();
+                this.cdr.markForCheck();
+            })
+        ).subscribe({
+            next: (result) => {
+                if (result.suggest.success && result.suggest.data) {
+                    this.insightChatGPT = result.suggest.data.insight;
+                }
+                if (result.ask.success && result.ask.data) {
+                    this.simpleAdviceChatGPT = result.ask.data.advice;
+                    this.isAdviceCachedChatGPT = result.ask.cached;
+                }
+            },
+            error: (err) => {
+                this.errorMessage = this.errorMessage
+                    ? this.errorMessage + ' | ChatGPT: ' + err.message
+                    : 'ChatGPT Error: ' + err.message;
+            }
+        });
     }
 
-    openAdviceModal() {
+    private checkOverallLoadingState() {
+        // Only remove main skeleton if AT LEAST ONE AI has returned its main Insight, 
+        // OR both have fully finished loading (even if they failed).
+        if ((!this.isGeminiLoading || !this.isChatGPTLoading) || (this.insightGemini || this.insightChatGPT)) {
+            this.isLoading = false;
+        }
+    }
+
+    openAdviceModal(aiProvider: 'gemini' | 'chatgpt') {
+        this.activeAdviceHtml = aiProvider === 'gemini' ? this.simpleAdviceGemini! : this.simpleAdviceChatGPT!;
+        this.activeAdviceIsCached = aiProvider === 'gemini' ? this.isAdviceCachedGemini : this.isAdviceCachedChatGPT;
+        this.activeAdviceTitle = aiProvider === 'gemini' ? "Gemini Strategy Breakdown" : "ChatGPT Strategy Breakdown";
         this.showAdviceModal = true;
     }
 
@@ -139,20 +195,25 @@ export class SearchOptionsComponent implements OnInit {
         this.showAdviceModal = false;
         this.showForecastModal = false;
         this.activeForecastText = '';
+        this.activeAdviceHtml = '';
     }
 
     onDelete() {
-        if (!this.insight) return;
+        // Ensure at least one insight exists before deleting
+        if (!this.insightGemini && !this.insightChatGPT) return;
 
         const rawTicker = this.optionForm.value.ticker.toUpperCase();
-        // If it's in the format "Name (TICKER)", extract TICKER
-        const match = rawTicker.match(/\(([^)]+)\)/);
+        const match = rawTicker.match(/\\(([^)]+)\\)/);
         const ticker = match ? match[1] : rawTicker;
 
         this.isDeleting = true;
         this.cdr.markForCheck();
 
-        this.optionsService.deleteOption(ticker)
+        // Delete from both backend services
+        forkJoin([
+            this.optionsService.deleteOption(ticker),
+            this.optionsService.deleteOptionChatGPT(ticker)
+        ])
             .pipe(
                 finalize(() => {
                     this.isDeleting = false;
@@ -161,10 +222,14 @@ export class SearchOptionsComponent implements OnInit {
             )
             .subscribe({
                 next: () => {
-                    // Clear the current view as records are gone
-                    this.insight = null;
-                    this.simpleAdvice = null;
-                    this.isAdviceCached = false;
+                    this.insightGemini = null;
+                    this.simpleAdviceGemini = null;
+                    this.isAdviceCachedGemini = false;
+
+                    this.insightChatGPT = null;
+                    this.simpleAdviceChatGPT = null;
+                    this.isAdviceCachedChatGPT = false;
+
                     this.optionForm.reset();
                 },
                 error: (err) => {

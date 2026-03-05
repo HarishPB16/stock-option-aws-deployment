@@ -41,6 +41,10 @@
     {{ errorMessage }}
   </div>
 
-  <app-option-stock-detail *ngIf="insight && !isLoading" [insight]="insight" [simpleAdvice]="simpleAdvice"
-    [isAdviceCached]="isAdviceCached" [isDeleting]="isDeleting" (deleteData)="onDelete()">
+  <app-option-stock-detail *ngIf="(insightGemini || insightChatGPT) && !isLoading" [insightGemini]="insightGemini"
+    [simpleAdviceGemini]="simpleAdviceGemini" [isAdviceCachedGemini]="isAdviceCachedGemini"
+    [isGeminiLoading]="isGeminiLoading" [insightChatGPT]="insightChatGPT" [simpleAdviceChatGPT]="simpleAdviceChatGPT"
+    [isAdviceCachedChatGPT]="isAdviceCachedChatGPT" [isChatGPTLoading]="isChatGPTLoading" [isDeleting]="isDeleting"
+    (deleteData)="onDelete()">
   </app-option-stock-detail>
+</div>

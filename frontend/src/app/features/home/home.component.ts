@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   isLoading: boolean = true;
   isRefreshing: boolean = false;
   error: string | null = null;
+  selectedAiProvider: 'gemini' | 'chatgpt' = 'gemini';
 
   constructor(
     private marketService: MarketService,
@@ -19,21 +20,44 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Restore preference if exists
+    const storedProvider = localStorage.getItem('preferredAiProvider');
+    if (storedProvider === 'chatgpt') {
+      this.selectedAiProvider = 'chatgpt';
+    }
+
+    this.fetchBriefing();
+  }
+
+  onProviderChange(event: Event): void {
+    const selectEl = event.target as HTMLSelectElement;
+    this.selectedAiProvider = selectEl.value as 'gemini' | 'chatgpt';
+    localStorage.setItem('preferredAiProvider', this.selectedAiProvider);
     this.fetchBriefing();
   }
 
   fetchBriefing(): void {
     this.isLoading = true;
     this.error = null;
-    this.marketService.getDailyBriefing().subscribe({
+    this.briefingHtml = null;
+
+    const req$ = this.selectedAiProvider === 'gemini'
+      ? this.marketService.getDailyBriefing()
+      : this.marketService.getDailyBriefingChatGPT();
+
+    req$.subscribe({
       next: (res) => {
         if (res.success && res.data) {
-          this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(res.data.htmlContent);
+          // Both APIs return the HTML in either res.data.htmlContent or res.data.briefing (as per ChatGPT controller we wrote)
+          const htmlContent = (res.data as any).htmlContent || (res.data as any).briefing;
+          if (htmlContent) {
+            this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+          }
         }
         this.isLoading = false;
       },
       error: (err) => {
-        this.error = err.error?.error?.message || 'Failed to load market briefing.';
+        this.error = err.error?.error?.message || `Failed to load ${this.selectedAiProvider} market briefing.`;
         this.isLoading = false;
       }
     });
@@ -42,15 +66,27 @@ export class HomeComponent implements OnInit {
   refreshBriefing(): void {
     this.isRefreshing = true;
     this.error = null;
-    this.marketService.refreshDailyBriefing().subscribe({
+
+    // We only implemented a dedicated force refresh route for Gemini.
+    // However, the ChatGPT GET route has no TTL cache, it always generates if not in DB.
+    // If we want to strictly 'refresh', we'd need a backend route to delete today's ChatGpt briefing first.
+    // For now, we utilize the specific refresh for Gemini, or re-fetch for ChatGPT.
+    const req$ = this.selectedAiProvider === 'gemini'
+      ? this.marketService.refreshDailyBriefing()
+      : this.marketService.getDailyBriefingChatGPT();
+
+    req$.subscribe({
       next: (res) => {
         if (res.success && res.data) {
-          this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(res.data.htmlContent);
+          const htmlContent = (res.data as any).htmlContent || (res.data as any).briefing;
+          if (htmlContent) {
+            this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+          }
         }
         this.isRefreshing = false;
       },
       error: (err) => {
-        this.error = err.error?.error?.message || 'Failed to refresh market briefing.';
+        this.error = err.error?.error?.message || `Failed to refresh ${this.selectedAiProvider} market briefing.`;
         this.isRefreshing = false;
       }
     });

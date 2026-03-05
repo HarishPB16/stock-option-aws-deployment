@@ -1,11 +1,12 @@
 <!-- Results Board -->
-<div class="insight-board" *ngIf="insight">
+<div class="insight-board" *ngIf="insightGemini || insightChatGPT || isGeminiLoading || isChatGPTLoading">
 
     <!-- Modern AI Insights Table -->
     <div class="ai-table-container">
         <div class="table-header">
             <h3>AI Analyst Insights</h3>
-            <button class="delete-db-btn" (click)="onDelete()" [disabled]="isDeleting"
+            <button class="delete-db-btn" (click)="onDelete()"
+                [disabled]="isDeleting || (!insightGemini && !insightChatGPT)"
                 title="Permanently delete historical DB records for this stock">
                 <span *ngIf="!isDeleting">🗑️ Delete Data</span>
                 <span *ngIf="isDeleting" class="spinner">↻</span>
@@ -17,55 +18,123 @@
                 <thead>
                     <tr>
                         <th>AI Name</th>
-                        <th>Check Details</th>
+                        <th>Direct Strategy</th>
+                        <th>Comprehensive Report</th>
                         <th>Recommendation</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Row 1: Direct Strategy (Simple Advice) -->
+
+                    <!-- GEMINI ROW -->
                     <tr>
                         <td>
                             <div class="ai-name">
                                 <span class="ai-avatar gemini">G</span>
                                 <span class="ai-title">Gemini</span>
-                                <span class="ai-badge">Primary</span>
+                                <span class="ai-badge pro">1.5 Pro</span>
                             </div>
                         </td>
+
+                        <!-- Simple Advice Col -->
                         <td>
-                            <button class="ai-popup-btn" *ngIf="simpleAdvice; else checkingBtn"
-                                (click)="openAdviceModal()">
-                                <span class="pulse-icon">✨</span> View AI Direct Strategy Breakdown
-                            </button>
-                            <ng-template #checkingBtn>
-                                <span class="analyzing-text">Analyzing...</span>
+                            <div *ngIf="isGeminiLoading; else geminiAdviceBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #geminiAdviceBtn>
+                                <button class="ai-popup-btn" (click)="openAdviceModal('gemini')"
+                                    *ngIf="simpleAdviceGemini">
+                                    <span class="pulse-icon">✨</span> View Strategy
+                                </button>
+                                <span *ngIf="!simpleAdviceGemini" class="failed-text">Failed</span>
                             </ng-template>
                         </td>
+
+                        <!-- Full Report Col -->
                         <td>
-                            <span class="action-pill" [ngClass]="insight.action === 'CALL' ? 'pill-call' : 'pill-put'">
-                                {{ insight.action }}
-                                <span class="conf-sm">{{ insight.confidence }}%</span>
-                            </span>
+                            <div *ngIf="isGeminiLoading; else geminiInsightBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #geminiInsightBtn>
+                                <button class="ai-popup-btn" (click)="openFullDetailsModal('gemini')"
+                                    *ngIf="insightGemini">
+                                    📊 View Analysis
+                                </button>
+                                <span *ngIf="!insightGemini" class="failed-text">Failed</span>
+                            </ng-template>
+                        </td>
+
+                        <!-- Action Col -->
+                        <td>
+                            <div *ngIf="isGeminiLoading; else geminiAction">
+                                <span class="analyzing-text">...</span>
+                            </div>
+                            <ng-template #geminiAction>
+                                <span class="action-pill"
+                                    [ngClass]="insightGemini?.action === 'CALL' ? 'pill-call' : 'pill-put'"
+                                    *ngIf="insightGemini">
+                                    {{ insightGemini?.action }}
+                                    <span class="conf-sm">{{ insightGemini?.confidence }}%</span>
+                                </span>
+                                <span *ngIf="!insightGemini" class="failed-text">-</span>
+                            </ng-template>
                         </td>
                     </tr>
 
-                    <!-- Row 2: Comprehensive Diagnostic -->
+                    <!-- CHATGPT ROW -->
                     <tr>
                         <td>
                             <div class="ai-name">
-                                <span class="ai-avatar gemini-pro">G</span>
-                                <span class="ai-title">Gemini</span>
-                                <span class="ai-badge pro">Pro</span>
+                                <span class="ai-avatar chatgpt">GPT</span>
+                                <span class="ai-title">ChatGPT</span>
+                                <span class="ai-badge pro">4-o</span>
                             </div>
                         </td>
+
+                        <!-- Simple Advice Col -->
                         <td>
-                            <button class="ai-popup-btn" (click)="openFullDetailsModal()">
-                                📊 View Detailed Analysis
-                            </button>
+                            <div *ngIf="isChatGPTLoading; else chatgptAdviceBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #chatgptAdviceBtn>
+                                <button class="ai-popup-btn" (click)="openAdviceModal('chatgpt')"
+                                    *ngIf="simpleAdviceChatGPT">
+                                    <span class="pulse-icon">✨</span> View Strategy
+                                </button>
+                                <span *ngIf="!simpleAdviceChatGPT" class="failed-text">Failed</span>
+                            </ng-template>
                         </td>
+
+                        <!-- Full Report Col -->
                         <td>
-                            <span class="action-pill pill-neutral">Full Report</span>
+                            <div *ngIf="isChatGPTLoading; else chatgptInsightBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #chatgptInsightBtn>
+                                <button class="ai-popup-btn" (click)="openFullDetailsModal('chatgpt')"
+                                    *ngIf="insightChatGPT">
+                                    📊 View Analysis
+                                </button>
+                                <span *ngIf="!insightChatGPT" class="failed-text">Failed</span>
+                            </ng-template>
+                        </td>
+
+                        <!-- Action Col -->
+                        <td>
+                            <div *ngIf="isChatGPTLoading; else chatgptAction">
+                                <span class="analyzing-text">...</span>
+                            </div>
+                            <ng-template #chatgptAction>
+                                <span class="action-pill"
+                                    [ngClass]="insightChatGPT?.action === 'CALL' ? 'pill-call' : 'pill-put'"
+                                    *ngIf="insightChatGPT">
+                                    {{ insightChatGPT?.action }}
+                                    <span class="conf-sm">{{ insightChatGPT?.confidence }}%</span>
+                                </span>
+                                <span *ngIf="!insightChatGPT" class="failed-text">-</span>
+                            </ng-template>
                         </td>
                     </tr>
+
                 </tbody>
             </table>
         </div>
@@ -78,68 +147,69 @@
         <button class="close-modal-btn" (click)="closeModals()">&times;</button>
 
         <!-- FULL DETAILS MODAL -->
-        <div class="full-details-container" *ngIf="showFullDetailsModal">
+        <div class="full-details-container" *ngIf="showFullDetailsModal && activeInsight">
             <div class="advice-header">
                 <div class="badge-container">
-                    <h3>Comprehensive AI Diagnostics</h3>
+                    <h3>{{ activeInsightTitle }}</h3>
                 </div>
             </div>
 
-            <div class="action-card" [ngClass]="insight.action === 'CALL' ? 'bg-call' : 'bg-put'">
-                <h2>{{ insight.action }}</h2>
-                <p class="confidence">{{ insight.confidence }}% Confidence</p>
+            <div class="action-card" [ngClass]="activeInsight.action === 'CALL' ? 'bg-call' : 'bg-put'">
+                <h2>{{ activeInsight.action }}</h2>
+                <p class="confidence">{{ activeInsight.confidence }}% Confidence</p>
             </div>
 
             <div class="metrics-grid">
                 <div class="metric"
-                    [ngClass]="insight.trend === 'Bullish' ? 'sentiment-green' : (insight.trend === 'Bearish' ? 'sentiment-red' : 'sentiment-yellow')">
+                    [ngClass]="activeInsight.trend === 'Bullish' ? 'sentiment-green' : (activeInsight.trend === 'Bearish' ? 'sentiment-red' : 'sentiment-yellow')">
                     <span class="label">Trend</span>
                     <span class="value"
-                        [ngClass]="{'text-bullish': insight.trend === 'Bullish', 'text-bearish': insight.trend === 'Bearish'}">{{
-                        insight.trend }}</span>
+                        [ngClass]="{'text-bullish': activeInsight.trend === 'Bullish', 'text-bearish': activeInsight.trend === 'Bearish'}">{{
+                        activeInsight.trend }}</span>
                 </div>
 
                 <div class="metric"
-                    [ngClass]="insight.risk === 'Low' ? 'sentiment-green' : (insight.risk === 'High' ? 'sentiment-red' : 'sentiment-yellow')">
+                    [ngClass]="activeInsight.risk === 'Low' ? 'sentiment-green' : (activeInsight.risk === 'High' ? 'sentiment-red' : 'sentiment-yellow')">
                     <span class="label">Risk</span>
-                    <span class="value">{{ insight.risk }}</span>
+                    <span class="value">{{ activeInsight.risk }}</span>
                 </div>
 
                 <div class="metric"
-                    [ngClass]="insight.pe < insight.industryPe ? 'sentiment-green' : (insight.pe > insight.industryPe * 1.2 ? 'sentiment-red' : 'sentiment-yellow')">
+                    [ngClass]="activeInsight.pe < activeInsight.industryPe ? 'sentiment-green' : (activeInsight.pe > activeInsight.industryPe * 1.2 ? 'sentiment-red' : 'sentiment-yellow')">
                     <span class="label">P/E Ratio</span>
-                    <span class="value">{{ insight.pe }}</span>
+                    <span class="value">{{ activeInsight.pe }}</span>
                 </div>
 
                 <div class="metric sentiment-yellow">
                     <span class="label">Industry P/E</span>
-                    <span class="value">{{ insight.industryPe }}</span>
+                    <span class="value">{{ activeInsight.industryPe }}</span>
                 </div>
 
                 <div class="metric sentiment-yellow">
                     <span class="label">5Yr Avg P/E</span>
-                    <span class="value">{{ insight.averagePe5Yr }}</span>
+                    <span class="value">{{ activeInsight.averagePe5Yr }}</span>
                 </div>
 
                 <div class="metric sentiment-green">
                     <span class="label">Support</span>
-                    <span class="value">{{ insight.support }}</span>
+                    <span class="value">{{ activeInsight.support }}</span>
                 </div>
 
                 <div class="metric sentiment-red">
                     <span class="label">Resistance</span>
-                    <span class="value">{{ insight.resistance }}</span>
+                    <span class="value">{{ activeInsight.resistance }}</span>
                 </div>
 
-                <div class="metric forecast-block" [ngClass]="'sentiment-' + insight.forecast1Year.color">
+                <div class="metric forecast-block" [ngClass]="'sentiment-' + activeInsight.forecast1Year.color">
                     <span class="label">1Yr Forecast</span>
                     <div class="forecast-content">
                         <span class="value" [ngClass]="{
-                    'text-bullish': insight.forecast1Year.color === 'green',
-                    'text-bearish': insight.forecast1Year.color === 'red',
-                    'text-neutral': insight.forecast1Year.color === 'yellow'
+                    'text-bullish': activeInsight.forecast1Year.color === 'green',
+                    'text-bearish': activeInsight.forecast1Year.color === 'red',
+                    'text-neutral': activeInsight.forecast1Year.color === 'yellow'
                   }">
-                            {{ insight.forecast1Year.text | slice:0:45 }}{{ insight.forecast1Year.text.length > 45 ?
+                            {{ activeInsight.forecast1Year.text | slice:0:45 }}{{
+                            activeInsight.forecast1Year.text.length > 45 ?
                             '...' : ''
                             }}
                         </span>
@@ -148,39 +218,39 @@
             </div>
 
             <div class="insight-text-blocks">
-                <div class="text-block verdict-block" [ngClass]="'sentiment-' + insight.verdict.color">
+                <div class="text-block verdict-block" [ngClass]="'sentiment-' + activeInsight.verdict.color">
                     <h3>Final Verdict</h3>
-                    <p>{{ insight.verdict.text }}</p>
+                    <p>{{ activeInsight.verdict.text }}</p>
                 </div>
 
                 <div class="text-block">
                     <h3>Technical Support & Resistance</h3>
-                    <p>{{ insight.supportResistanceAnalysis }}</p>
+                    <p>{{ activeInsight.supportResistanceAnalysis }}</p>
                 </div>
 
-                <div class="text-block" [ngClass]="'sentiment-' + insight.emaAnalysis.color">
+                <div class="text-block" [ngClass]="'sentiment-' + activeInsight.emaAnalysis.color">
                     <h3>EMA Trend Analysis</h3>
-                    <p>{{ insight.emaAnalysis.text }}</p>
+                    <p>{{ activeInsight.emaAnalysis.text }}</p>
                 </div>
 
-                <div class="text-block" [ngClass]="'sentiment-' + insight.rsiAnalysis.color">
+                <div class="text-block" [ngClass]="'sentiment-' + activeInsight.rsiAnalysis.color">
                     <h3>RSI Momentum</h3>
-                    <p>{{ insight.rsiAnalysis.text }}</p>
+                    <p>{{ activeInsight.rsiAnalysis.text }}</p>
                 </div>
 
-                <div class="text-block" [ngClass]="'sentiment-' + insight.vixThetaAnalysis.color">
+                <div class="text-block" [ngClass]="'sentiment-' + activeInsight.vixThetaAnalysis.color">
                     <h3>Volatility & Greeks Analysis</h3>
-                    <p>{{ insight.vixThetaAnalysis.text }}</p>
+                    <p>{{ activeInsight.vixThetaAnalysis.text }}</p>
                 </div>
 
-                <div class="text-block" [ngClass]="'sentiment-' + insight.newsSummary.color">
+                <div class="text-block" [ngClass]="'sentiment-' + activeInsight.newsSummary.color">
                     <h3>5-Day News & Geo-Political Context</h3>
-                    <p>{{ insight.newsSummary.text }}</p>
+                    <p>{{ activeInsight.newsSummary.text }}</p>
                 </div>
 
-                <div class="text-block" [ngClass]="'sentiment-' + insight.analysis.color">
+                <div class="text-block" [ngClass]="'sentiment-' + activeInsight.analysis.color">
                     <h3>15-20 Day Fundamental Forecast</h3>
-                    <p>{{ insight.analysis.text }}</p>
+                    <p>{{ activeInsight.analysis.text }}</p>
                 </div>
             </div>
         </div>
@@ -188,12 +258,12 @@
         <div class="simple-advice-card" *ngIf="showAdviceModal">
             <div class="advice-header">
                 <div class="badge-container">
-                    <h3>AI Professional Strategy Breakdown</h3>
-                    <span class="badge" *ngIf="isAdviceCached">Historical (Cached Today)</span>
-                    <span class="badge badge-new" *ngIf="!isAdviceCached">Fresh Analysis</span>
+                    <h3>{{ activeAdviceTitle }}</h3>
+                    <span class="badge" *ngIf="activeAdviceIsCached">Historical (Cached Today)</span>
+                    <span class="badge badge-new" *ngIf="!activeAdviceIsCached">Fresh Analysis</span>
                 </div>
             </div>
-            <div class="advice-html-content" [innerHTML]="simpleAdvice"></div>
+            <div class="advice-html-content" [innerHTML]="activeAdviceHtml"></div>
         </div>
 
         <div class="simple-advice-card" *ngIf="showForecastModal">

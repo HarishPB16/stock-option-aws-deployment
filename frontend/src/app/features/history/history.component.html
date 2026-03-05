@@ -26,9 +26,12 @@
                                 date:'shortTime' }}</span></h2>
                     </div>
 
-                    <app-option-stock-detail [insight]="opt" [simpleAdvice]="opt.simpleAdvice"
-                        [isDeleting]="isDeleting[opt.stock] || false"
-                        (deleteData)="deleteOption(opt.stock)"></app-option-stock-detail>
+                    <app-option-stock-detail [insightGemini]="opt.insightGemini"
+                        [simpleAdviceGemini]="opt.simpleAdviceGemini" [isAdviceCachedGemini]="true"
+                        [insightChatGPT]="opt.insightChatGPT" [simpleAdviceChatGPT]="opt.simpleAdviceChatGPT"
+                        [isAdviceCachedChatGPT]="true" [isDeleting]="isDeleting[opt.stock] || false"
+                        (deleteData)="deleteOption(opt.stock)">
+                    </app-option-stock-detail>
                 </div>
             </div>
         </div>
