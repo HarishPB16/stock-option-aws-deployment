@@ -43,6 +43,15 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
     const aiClient = getAIClient();
 
     const prompt = `Analyze the stock ticker ${ticker} based on news from the past 5 days and provide an options trading suggestion for the next 15 to 20 days.
+    Check always today's date and give me always recent data.
+    Verify the data from at least three reliable sources:
+    NSE India
+    TradingView
+    Moneycontrol
+    Investing.com   
+
+    Today Date is ${getFormattedDate()}   
+
   CRITICAL INSTRUCTION: Your analysis must explicitly incorporate global macroeconomic events, geopolitical tensions (such as ongoing conflicts or wars), and government regulatory changes that impact this specific stock.
   For all "text" and "color" object fields, assign 'green' for positive/bullish, 'yellow' for neutral/mixed, and 'red' for negative/bearish/critical risk.
   You MUST return ONLY a valid JSON object matching the exact structure below, without any markdown formatting or extra text:
@@ -144,6 +153,8 @@ NSE India
 TradingView
 Moneycontrol
 Investing.com
+
+Today Date is ${getFormattedDate()}   
 
 • Ensure the price is from the current trading day.
 
@@ -383,11 +394,28 @@ Stock Name: ${ticker}
     }
 };
 
+function getFormattedDate() {
+    return new Date()
+        .toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
+        .replace(',', '')
+        .replace(/\s/g, '-');
+}
+
 export const generateMarketBriefing = async (): Promise<string> => {
     const t0 = Date.now();
     const aiClient = getAIClient();
 
-    const prompt = `You are a professional global financial market analyst AI.
+    const prompt = `
+    You are a professional global financial market analyst AI.
+
+    Check always today's date and give me always recent data.
+    Verify the data from at least three reliable sources:
+    NSE India
+    TradingView
+    Moneycontrol
+    Investing.com 
+    
+    Today Date is ${getFormattedDate()}    
 
 Generate a structured daily market briefing for the Indian stock market.
 
