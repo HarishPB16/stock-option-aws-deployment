@@ -5,12 +5,12 @@ import { finalize } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 
 @Component({
-    selector: 'app-options',
-    templateUrl: './options.component.html',
-    styleUrls: ['./options.component.css'],
+    selector: 'app-search-options',
+    templateUrl: './search-options.component.html',
+    styleUrls: ['./search-options.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OptionsComponent {
+export class SearchOptionsComponent {
     optionForm: FormGroup;
     isLoading = false;
     isDeleting = false;

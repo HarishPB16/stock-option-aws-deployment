@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { OptionsRoutingModule } from './options-routing.module';
-import { OptionsComponent } from './options.component';
+import { SearchRoutingModule } from './search-routing.module';
+import { SearchOptionsComponent } from './search-options.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
     declarations: [
-        OptionsComponent
+        SearchOptionsComponent
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        OptionsRoutingModule,
+        SearchRoutingModule,
         SharedModule
     ]
 })
-export class OptionsModule { }
+export class SearchModule { }
