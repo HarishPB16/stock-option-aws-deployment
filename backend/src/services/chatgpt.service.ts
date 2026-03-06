@@ -31,7 +31,7 @@ export const generateOptionSuggestionChatGPT = async (ticker: string): Promise<I
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4o",
+            model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }],
             response_format: { type: "json_object" }
         });
@@ -79,11 +79,32 @@ export const generateOptionSuggestionChatGPT = async (ticker: string): Promise<I
             error: error.message
         });
 
-        if (error.message?.includes('429')) {
-            throw new Error('ChatGPT API Rate Limit Reached.');
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('insufficient_quota')) {
+            logger.warn('ChatGPT quota exceeded, returning fallback data');
+            return {
+                action: 'CALL',
+                confidence: 0,
+                risk: 'API Quota Exceeded. Please check your OpenAI billing balance.',
+                support: 0,
+                resistance: 0,
+                pe: 0,
+                industryPe: 0,
+                averagePe5Yr: 0,
+                forecast1Year: { text: 'API Rate Limit Reached', color: 'red' },
+                tomorrowRange: 'Data Unavailable',
+                emaAnalysis: { text: 'API Rate Limit Reached', color: 'red' },
+                rsiAnalysis: { text: 'API Rate Limit Reached', color: 'red' },
+                vixThetaAnalysis: { text: 'API Rate Limit Reached', color: 'red' },
+                supportResistanceAnalysis: 'Data Unavailable',
+                verdict: { text: 'API Rate Limit Reached', color: 'red' },
+                trend: 'Unknown',
+                newsSummary: { text: 'OpenAI Quota Exceeded. Please add credits to your account.', color: 'red' },
+                analysis: { text: 'API Rate Limit Reached', color: 'red' }
+            };
         }
 
-        throw new Error('Failed to generate option analysis via ChatGPT');
+        throw new Error(`Failed to generate option analysis via ChatGPT: ${error.message}`);
     }
 };
 
@@ -94,7 +115,7 @@ export const generateSimpleAdviceChatGPT = async (ticker: string): Promise<strin
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4o",
+            model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }]
         });
 
@@ -111,11 +132,13 @@ export const generateSimpleAdviceChatGPT = async (ticker: string): Promise<strin
             error: error.message
         });
 
-        if (error.message?.includes('429')) {
-            throw new Error('ChatGPT API Rate Limit Reached.');
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('insufficient_quota')) {
+            logger.warn('ChatGPT quota exceeded, returning fallback advice');
+            return "### AI Analysis Unavailable\n\nOpenAI ChatGPT has reached its API rate limit or has insufficient account balance. Please check your billing dashboard at platform.openai.com.";
         }
 
-        throw new Error('Failed to generate simple advice via ChatGPT');
+        throw new Error(`Failed to generate simple advice via ChatGPT: ${error.message}`);
     }
 };
 
@@ -126,7 +149,7 @@ export const generateMarketBriefingChatGPT = async (): Promise<string> => {
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4o",
+            model: "gpt-4o-mini",
             messages: [{ role: "user", content: prompt }]
         });
 
@@ -143,10 +166,15 @@ export const generateMarketBriefingChatGPT = async (): Promise<string> => {
             error: error.message
         });
 
-        if (error.message?.includes('429')) {
-            throw new Error('ChatGPT API Rate Limit Reached.');
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('insufficient_quota')) {
+            logger.warn('ChatGPT quota exceeded, returning fallback briefing');
+            return `<div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg my-4 text-center">
+                <h3 class="text-red-400 font-bold mb-2">Service Unavailable</h3>
+                <p class="text-gray-300">The ChatGPT AI model is currently out of quota. Please check your OpenAI billing balance to generate daily briefings.</p>
+            </div>`;
         }
 
-        throw new Error('Failed to generate market briefing via ChatGPT');
+        throw new Error(`Failed to generate market briefing via ChatGPT: ${error.message}`);
     }
 };

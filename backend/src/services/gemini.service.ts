@@ -102,11 +102,32 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
             error: error.message
         });
 
-        if (error.message?.includes('429') || error.message?.includes('Quota exceeded') || error.message?.includes('RESOURCE_EXHAUSTED')) {
-            throw new Error('Gemini API Rate Limit Reached. Please wait ~1 minute before trying again.');
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('Quota exceeded') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+            logger.warn('Gemini quota exceeded, returning fallback data');
+            return {
+                action: 'CALL',
+                confidence: 0,
+                risk: 'API Quota Exceeded. Please check your billing or wait for the free tier to reset.',
+                support: 0,
+                resistance: 0,
+                pe: 0,
+                industryPe: 0,
+                averagePe5Yr: 0,
+                forecast1Year: { text: 'API Rate Limit Reached', color: 'red' },
+                tomorrowRange: 'Data Unavailable',
+                emaAnalysis: { text: 'API Rate Limit Reached', color: 'red' },
+                rsiAnalysis: { text: 'API Rate Limit Reached', color: 'red' },
+                vixThetaAnalysis: { text: 'API Rate Limit Reached', color: 'red' },
+                supportResistanceAnalysis: 'Data Unavailable',
+                verdict: { text: 'API Rate Limit Reached', color: 'red' },
+                trend: 'Unknown',
+                newsSummary: { text: 'Gemini Quota Exceeded. Wait ~1 minute or upgrade billing.', color: 'red' },
+                analysis: { text: 'API Rate Limit Reached', color: 'red' }
+            };
         }
 
-        throw new Error('Failed to generate option analysis');
+        throw new Error('Failed to generate option analysis: ' + error.message);
     }
 };
 
@@ -133,11 +154,13 @@ export const generateSimpleAdvice = async (ticker: string): Promise<string> => {
             durationMs: Date.now() - t0,
             error: error.message
         });
-        if (error.message?.includes('429') || error.message?.includes('Quota exceeded') || error.message?.includes('RESOURCE_EXHAUSTED')) {
-            throw new Error('Gemini API Rate Limit Reached. Please wait ~1 minute before trying again.');
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('Quota exceeded') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+            logger.warn('Gemini quota exceeded, returning fallback advice');
+            return "### AI Analysis Unavailable\n\nGoogle Gemini has reached its API rate limit or quota max. Please wait a few moments or upgrade your linked Google Cloud billing account to process more requests.";
         }
 
-        throw new Error('Failed to generate simple advice');
+        throw new Error('Failed to generate simple advice: ' + error.message);
     }
 };
 
@@ -165,10 +188,15 @@ export const generateMarketBriefing = async (): Promise<string> => {
             error: error.message
         });
 
-        if (error.message?.includes('429') || error.message?.includes('Quota exceeded') || error.message?.includes('RESOURCE_EXHAUSTED')) {
-            throw new Error('Gemini API Rate Limit Reached. Please wait ~1 minute before trying again.');
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('Quota exceeded') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+            logger.warn('Gemini quota exceeded, returning fallback briefing');
+            return `<div class="bg-red-900/20 border border-red-500/30 p-4 rounded-lg my-4 text-center">
+                <h3 class="text-red-400 font-bold mb-2">Service Unavailable</h3>
+                <p class="text-gray-300">The Gemini AI model is currently out of quota. The daily market briefing could not be generated.</p>
+            </div>`;
         }
 
-        throw new Error('Failed to generate market briefing');
+        throw new Error('Failed to generate market briefing: ' + error.message);
     }
 };

@@ -10,7 +10,11 @@ export const connectDB = async () => {
         if (process.env.NODE_ENV !== 'production' && mongoURI.includes('localhost')) {
             // Increase the default timeout from 10s to 60s to prevent boot failures during fast hot-reloads
             process.env.MONGOMS_TRANSITION_TIMEOUT = '60000';
-            const mongod = await MongoMemoryServer.create();
+            const mongod = await MongoMemoryServer.create({
+                instance: {
+                    launchTimeout: 60000
+                }
+            });
             mongoURI = mongod.getUri();
             logger.info(`Using mongodb-memory-server on ${mongoURI}`);
         }
