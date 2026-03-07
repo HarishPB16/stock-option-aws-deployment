@@ -1,5 +1,5 @@
 export const getOptionSuggestionPrompt = (ticker: string, formattedDate: string): string => {
-    return `Analyze the stock ticker ${ticker} based on news from the past 5 days and provide an options trading suggestion for the next 15 to 20 days.
+  return `Analyze the stock ticker ${ticker} based on news from the past 5 days and provide an options trading suggestion for the next 15 to 20 days.
     Check always today's date and give me always recent data.
     Verify the data from at least three reliable sources:
     NSE India
@@ -35,7 +35,7 @@ export const getOptionSuggestionPrompt = (ticker: string, formattedDate: string)
 };
 
 export const getSimpleAdvicePrompt = (ticker: string, formattedDate: string): string => {
-    return `
+  return `
     CRITICAL RULE — DATA ACCURACY
 
 Before doing any analysis you MUST:
@@ -166,7 +166,7 @@ Do NOT show internal analysis tables.
 Decision Summary
 
 Category | Suggestion
-Your Suggestion | Buy Call / Buy Put / None
+My Suggestion | Buy Call / Buy Put / None
 Overall | Buy Call / Buy Put / None
 News | Buy Call / Buy Put / None
 Technical | Buy Call / Buy Put / None
@@ -252,7 +252,7 @@ Formatting Rules:
 
 • Output must be strictly clean HTML markup
 • Do NOT use markdown blocks
-• Use only these tags: <h3>, <p>, <strong>, <ul>, <li>
+• Use only these tags: <h3>, <p>, <strong>, <ul>, <li>, <table>, <tr>, <td>
 • Keep it visually structured and suitable for a web dashboard
 • You MUST choose one final primary bias
 • Do NOT remain neutral
@@ -263,8 +263,9 @@ Stock Name: ${ticker}
     `;
 };
 
+
 export const getMarketBriefingPrompt = (formattedDate: string): string => {
-    return `
+  return `
     You are a professional global financial market analyst AI.
 
     Check always today's date and give me always recent data.
@@ -278,10 +279,14 @@ export const getMarketBriefingPrompt = (formattedDate: string): string => {
 
 Generate a structured daily market briefing for the Indian stock market.
 
-Provide the output strictly in HTML. Do NOT use markdown formatting outside the HTML tags.
-Use a clean, beautiful, and modern HTML structure using standard HTML tables.
-Ensure it is concise and formatted for financial dashboards.
-Apply inline styles or standard CSS classes for up (green color) and down (red color) values where applicable.
+STRICT FORMATTING RULES:
+    1. Output must be strictly clean HTML markup.
+    2. Do NOT use markdown blocks (\`\`\`html).
+    3. Every <table> must include these inline styles: 
+       "border-collapse: collapse; width: 100%; border: 1px solid #ddd; font-family: sans-serif; margin-bottom: 20px;"
+    4. Every <th> and <td> must include these inline styles: 
+       "border: 1px solid #ddd; padding: 12px; text-align: left;"
+    5. For <th>, add: "background-color: #f4f4f4; font-weight: bold;"
 
 Sections required in the output HTML:
 

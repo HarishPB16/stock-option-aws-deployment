@@ -54,7 +54,11 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                responseMimeType: 'application/json'
+                tools: [
+                    {
+                        googleSearch: {}
+                    }
+                ]
             }
         });
 
@@ -65,10 +69,23 @@ export const generateOptionSuggestion = async (ticker: string): Promise<IOptionI
             durationMs: duration
         });
 
-        const textOutput = response.text || "{}";
+        let textOutput = response.text || "{}";
+
+        // --- FIX: Remove markdown code blocks ---
+        textOutput = textOutput
+            .replace(/```json/g, '')
+            .replace(/```/g, '')
+            .trim();
+
+        // --- FIX: Extract JSON object safely ---
+        const firstBrace = textOutput.indexOf('{');
+        const lastBrace = textOutput.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1) {
+            textOutput = textOutput.substring(firstBrace, lastBrace + 1);
+        }
+
         const jData = JSON.parse(textOutput);
 
-        // Quick validation of the AI output format
         if (!jData.action || !jData.confidence) {
             throw new Error('AI returned malformed JSON structure');
         }
@@ -139,7 +156,15 @@ export const generateSimpleAdvice = async (ticker: string): Promise<string> => {
     try {
         const response = await aiClient.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: prompt
+            contents: prompt,
+            // --- ADDED TOOLS SECTION ---
+            config: {
+                tools: [
+                    {
+                        googleSearch: {} // Enables real-time Google Search grounding
+                    }
+                ]
+            }
         });
 
         logger.info('Gemini AI Simple Advice Success', {
@@ -172,14 +197,25 @@ export const generateMarketBriefing = async (): Promise<string> => {
     try {
         const response = await aiClient.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: prompt
+            contents: prompt,
+            // --- ADDED TOOLS SECTION ---
+            config: {
+                tools: [
+                    {
+                        googleSearch: {} // Enables real-time Google Search grounding
+                    }
+                ]
+            }
         });
 
         logger.info('Gemini AI Market Briefing Success', {
             durationMs: Date.now() - t0
         });
 
+        // Use response.text() as a function or property depending on your SDK version
         let textOutput = response.text || "<div>No briefing generated.</div>";
+
+        // Clean up markdown artifacts
         textOutput = textOutput.replace(/```html\n?/g, '').replace(/```\n?/g, '');
         return textOutput;
     } catch (error: any) {
