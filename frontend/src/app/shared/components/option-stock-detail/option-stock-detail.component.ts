@@ -18,6 +18,18 @@ export class OptionStockDetailComponent {
   @Input() isAdviceCachedChatGPT: boolean = false;
   @Input() isChatGPTLoading: boolean = false;
 
+  // Claude Data
+  @Input() insightClaude: any;
+  @Input() simpleAdviceClaude: string | null = null;
+  @Input() isAdviceCachedClaude: boolean = false;
+  @Input() isClaudeLoading: boolean = false;
+
+  // DeepSeek Data
+  @Input() insightDeepSeek: any;
+  @Input() simpleAdviceDeepSeek: string | null = null;
+  @Input() isAdviceCachedDeepSeek: boolean = false;
+  @Input() isDeepSeekLoading: boolean = false;
+
   @Input() isDeleting: boolean = false;
 
   @Output() deleteData = new EventEmitter<void>();
@@ -37,16 +49,41 @@ export class OptionStockDetailComponent {
     this.deleteData.emit();
   }
 
-  openAdviceModal(aiProvider: 'gemini' | 'chatgpt') {
-    this.activeAdviceHtml = aiProvider === 'gemini' ? this.simpleAdviceGemini! : this.simpleAdviceChatGPT!;
-    this.activeAdviceIsCached = aiProvider === 'gemini' ? this.isAdviceCachedGemini : this.isAdviceCachedChatGPT;
-    this.activeAdviceTitle = aiProvider === 'gemini' ? "Gemini Strategy Breakdown" : "ChatGPT Strategy Breakdown";
+  openAdviceModal(aiProvider: 'gemini' | 'chatgpt' | 'claude' | 'deepseek') {
+    if (aiProvider === 'gemini') {
+      this.activeAdviceHtml = this.simpleAdviceGemini!;
+      this.activeAdviceIsCached = this.isAdviceCachedGemini;
+      this.activeAdviceTitle = "Gemini Strategy Breakdown";
+    } else if (aiProvider === 'chatgpt') {
+      this.activeAdviceHtml = this.simpleAdviceChatGPT!;
+      this.activeAdviceIsCached = this.isAdviceCachedChatGPT;
+      this.activeAdviceTitle = "ChatGPT Strategy Breakdown";
+    } else if (aiProvider === 'claude') {
+      this.activeAdviceHtml = this.simpleAdviceClaude!;
+      this.activeAdviceIsCached = this.isAdviceCachedClaude;
+      this.activeAdviceTitle = "Claude Strategy Breakdown";
+    } else if (aiProvider === 'deepseek') {
+      this.activeAdviceHtml = this.simpleAdviceDeepSeek!;
+      this.activeAdviceIsCached = this.isAdviceCachedDeepSeek;
+      this.activeAdviceTitle = "DeepSeek Strategy Breakdown";
+    }
     this.showAdviceModal = true;
   }
 
-  openFullDetailsModal(aiProvider: 'gemini' | 'chatgpt') {
-    this.activeInsight = aiProvider === 'gemini' ? this.insightGemini : this.insightChatGPT;
-    this.activeInsightTitle = aiProvider === 'gemini' ? "Gemini Comprehensive Diagnostics" : "ChatGPT Comprehensive Diagnostics";
+  openFullDetailsModal(aiProvider: 'gemini' | 'chatgpt' | 'claude' | 'deepseek') {
+    if (aiProvider === 'gemini') {
+      this.activeInsight = this.insightGemini;
+      this.activeInsightTitle = "Gemini Comprehensive Diagnostics";
+    } else if (aiProvider === 'chatgpt') {
+      this.activeInsight = this.insightChatGPT;
+      this.activeInsightTitle = "ChatGPT Comprehensive Diagnostics";
+    } else if (aiProvider === 'claude') {
+      this.activeInsight = this.insightClaude;
+      this.activeInsightTitle = "Claude Comprehensive Diagnostics";
+    } else if (aiProvider === 'deepseek') {
+      this.activeInsight = this.insightDeepSeek;
+      this.activeInsightTitle = "DeepSeek Comprehensive Diagnostics";
+    }
     this.showFullDetailsModal = true;
   }
 

@@ -41,10 +41,14 @@
     {{ errorMessage }}
   </div>
 
-  <app-option-stock-detail *ngIf="(insightGemini || insightChatGPT) && !isLoading" [insightGemini]="insightGemini"
-    [simpleAdviceGemini]="simpleAdviceGemini" [isAdviceCachedGemini]="isAdviceCachedGemini"
-    [isGeminiLoading]="isGeminiLoading" [insightChatGPT]="insightChatGPT" [simpleAdviceChatGPT]="simpleAdviceChatGPT"
-    [isAdviceCachedChatGPT]="isAdviceCachedChatGPT" [isChatGPTLoading]="isChatGPTLoading" [isDeleting]="isDeleting"
+  <app-option-stock-detail *ngIf="(insightGemini || insightChatGPT || insightClaude || insightDeepSeek) && !isLoading"
+    [insightGemini]="insightGemini" [simpleAdviceGemini]="simpleAdviceGemini"
+    [isAdviceCachedGemini]="isAdviceCachedGemini" [isGeminiLoading]="isGeminiLoading" [insightChatGPT]="insightChatGPT"
+    [simpleAdviceChatGPT]="simpleAdviceChatGPT" [isAdviceCachedChatGPT]="isAdviceCachedChatGPT"
+    [isChatGPTLoading]="isChatGPTLoading" [insightClaude]="insightClaude" [simpleAdviceClaude]="simpleAdviceClaude"
+    [isAdviceCachedClaude]="isAdviceCachedClaude" [isClaudeLoading]="isClaudeLoading"
+    [insightDeepSeek]="insightDeepSeek" [simpleAdviceDeepSeek]="simpleAdviceDeepSeek"
+    [isAdviceCachedDeepSeek]="isAdviceCachedDeepSeek" [isDeepSeekLoading]="isDeepSeekLoading" [isDeleting]="isDeleting"
     (deleteData)="onDelete()">
   </app-option-stock-detail>
 </div>

@@ -495,6 +495,21 @@
     box-shadow: 0 2px 10px rgba(75, 85, 99, 0.3);
 }
 
+.ai-avatar.chatgpt {
+    background: linear-gradient(135deg, #10a37f, #0d8a6a);
+    box-shadow: 0 2px 10px rgba(16, 163, 127, 0.3);
+}
+
+.ai-avatar.claude {
+    background: linear-gradient(135deg, #d97757, #cc5832);
+    box-shadow: 0 2px 10px rgba(217, 119, 87, 0.3);
+}
+
+.ai-avatar.deepseek {
+    background: linear-gradient(135deg, #4d6bfe, #2b4deb);
+    box-shadow: 0 2px 10px rgba(77, 107, 254, 0.3);
+}
+
 .ai-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -515,6 +530,18 @@
     background: rgba(245, 158, 11, 0.15);
     color: #f59e0b;
     border-color: rgba(245, 158, 11, 0.3);
+}
+
+.ai-badge.sonnet {
+    background: rgba(217, 119, 87, 0.15);
+    color: #d97757;
+    border-color: rgba(217, 119, 87, 0.3);
+}
+
+.ai-badge.v3 {
+    background: rgba(77, 107, 254, 0.15);
+    color: #4d6bfe;
+    border-color: rgba(77, 107, 254, 0.3);
 }
 
 /* Table Actions & Pills */

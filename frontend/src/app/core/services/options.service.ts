@@ -89,4 +89,40 @@ export class OptionsService {
     getMarketBriefingChatGPT(): Observable<any> {
         return this.http.get(`${environment.apiUrl}/chatgpt/market/briefing`);
     }
+
+    // --- Claude Endpoints ---
+
+    suggestOptionClaude(ticker: string): Observable<OptionResponse> {
+        return this.http.post<OptionResponse>(`${environment.apiUrl}/claude/options/suggest`, { ticker });
+    }
+
+    askOptionClaude(ticker: string): Observable<SimpleAdviceResponse> {
+        return this.http.post<SimpleAdviceResponse>(`${environment.apiUrl}/claude/options/ask`, { ticker });
+    }
+
+    deleteOptionClaude(ticker: string): Observable<any> {
+        return this.http.delete(`${environment.apiUrl}/claude/options/${ticker}`);
+    }
+
+    getHistoryByDateClaude(date: string): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/claude/options/history?date=${date}`);
+    }
+
+    // --- DeepSeek Endpoints ---
+
+    suggestOptionDeepSeek(ticker: string): Observable<OptionResponse> {
+        return this.http.post<OptionResponse>(`${environment.apiUrl}/deepseek/options/suggest`, { ticker });
+    }
+
+    askOptionDeepSeek(ticker: string): Observable<SimpleAdviceResponse> {
+        return this.http.post<SimpleAdviceResponse>(`${environment.apiUrl}/deepseek/options/ask`, { ticker });
+    }
+
+    deleteOptionDeepSeek(ticker: string): Observable<any> {
+        return this.http.delete(`${environment.apiUrl}/deepseek/options/${ticker}`);
+    }
+
+    getHistoryByDateDeepSeek(date: string): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/deepseek/options/history?date=${date}`);
+    }
 }

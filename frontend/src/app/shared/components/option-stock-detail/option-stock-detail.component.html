@@ -1,12 +1,12 @@
 <!-- Results Board -->
-<div class="insight-board" *ngIf="insightGemini || insightChatGPT || isGeminiLoading || isChatGPTLoading">
+<div class="insight-board" *ngIf="insightGemini || insightChatGPT || insightClaude || insightDeepSeek || isGeminiLoading || isChatGPTLoading || isClaudeLoading || isDeepSeekLoading">
 
     <!-- Modern AI Insights Table -->
     <div class="ai-table-container">
         <div class="table-header">
             <h3>AI Analyst Insights</h3>
             <button class="delete-db-btn" (click)="onDelete()"
-                [disabled]="isDeleting || (!insightGemini && !insightChatGPT)"
+                [disabled]="isDeleting || (!insightGemini && !insightChatGPT && !insightClaude && !insightDeepSeek)"
                 title="Permanently delete historical DB records for this stock">
                 <span *ngIf="!isDeleting">🗑️ Delete Data</span>
                 <span *ngIf="isDeleting" class="spinner">↻</span>
@@ -131,6 +131,116 @@
                                     <span class="conf-sm">{{ insightChatGPT?.confidence }}%</span>
                                 </span>
                                 <span *ngIf="!insightChatGPT" class="failed-text">-</span>
+                            </ng-template>
+                        </td>
+                    </tr>
+
+                    <!-- CLAUDE ROW -->
+                    <tr>
+                        <td>
+                            <div class="ai-name">
+                                <span class="ai-avatar claude">C</span>
+                                <span class="ai-title">Claude</span>
+                                <span class="ai-badge sonnet">3.5 Sonnet</span>
+                            </div>
+                        </td>
+
+                        <!-- Simple Advice Col -->
+                        <td>
+                            <div *ngIf="isClaudeLoading; else claudeAdviceBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #claudeAdviceBtn>
+                                <button class="ai-popup-btn" (click)="openAdviceModal('claude')"
+                                    *ngIf="simpleAdviceClaude">
+                                    <span class="pulse-icon">✨</span> View Strategy
+                                </button>
+                                <span *ngIf="!simpleAdviceClaude" class="failed-text">Failed</span>
+                            </ng-template>
+                        </td>
+
+                        <!-- Full Report Col -->
+                        <td>
+                            <div *ngIf="isClaudeLoading; else claudeInsightBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #claudeInsightBtn>
+                                <button class="ai-popup-btn" (click)="openFullDetailsModal('claude')"
+                                    *ngIf="insightClaude">
+                                    📊 View Analysis
+                                </button>
+                                <span *ngIf="!insightClaude" class="failed-text">Failed</span>
+                            </ng-template>
+                        </td>
+
+                        <!-- Action Col -->
+                        <td>
+                            <div *ngIf="isClaudeLoading; else claudeAction">
+                                <span class="analyzing-text">...</span>
+                            </div>
+                            <ng-template #claudeAction>
+                                <span class="action-pill"
+                                    [ngClass]="insightClaude?.action === 'CALL' ? 'pill-call' : 'pill-put'"
+                                    *ngIf="insightClaude">
+                                    {{ insightClaude?.action }}
+                                    <span class="conf-sm">{{ insightClaude?.confidence }}%</span>
+                                </span>
+                                <span *ngIf="!insightClaude" class="failed-text">-</span>
+                            </ng-template>
+                        </td>
+                    </tr>
+
+                    <!-- DEEPSEEK ROW -->
+                    <tr>
+                        <td>
+                            <div class="ai-name">
+                                <span class="ai-avatar deepseek">D</span>
+                                <span class="ai-title">DeepSeek</span>
+                                <span class="ai-badge v3">V3</span>
+                            </div>
+                        </td>
+
+                        <!-- Simple Advice Col -->
+                        <td>
+                            <div *ngIf="isDeepSeekLoading; else deepSeekAdviceBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #deepSeekAdviceBtn>
+                                <button class="ai-popup-btn" (click)="openAdviceModal('deepseek')"
+                                    *ngIf="simpleAdviceDeepSeek">
+                                    <span class="pulse-icon">✨</span> View Strategy
+                                </button>
+                                <span *ngIf="!simpleAdviceDeepSeek" class="failed-text">Failed</span>
+                            </ng-template>
+                        </td>
+
+                        <!-- Full Report Col -->
+                        <td>
+                            <div *ngIf="isDeepSeekLoading; else deepSeekInsightBtn">
+                                <span class="analyzing-text spinner-pulse">Analyzing...</span>
+                            </div>
+                            <ng-template #deepSeekInsightBtn>
+                                <button class="ai-popup-btn" (click)="openFullDetailsModal('deepseek')"
+                                    *ngIf="insightDeepSeek">
+                                    📊 View Analysis
+                                </button>
+                                <span *ngIf="!insightDeepSeek" class="failed-text">Failed</span>
+                            </ng-template>
+                        </td>
+
+                        <!-- Action Col -->
+                        <td>
+                            <div *ngIf="isDeepSeekLoading; else deepSeekAction">
+                                <span class="analyzing-text">...</span>
+                            </div>
+                            <ng-template #deepSeekAction>
+                                <span class="action-pill"
+                                    [ngClass]="insightDeepSeek?.action === 'CALL' ? 'pill-call' : 'pill-put'"
+                                    *ngIf="insightDeepSeek">
+                                    {{ insightDeepSeek?.action }}
+                                    <span class="conf-sm">{{ insightDeepSeek?.confidence }}%</span>
+                                </span>
+                                <span *ngIf="!insightDeepSeek" class="failed-text">-</span>
                             </ng-template>
                         </td>
                     </tr>

@@ -28,6 +28,18 @@ export class SearchOptionsComponent implements OnInit {
     simpleAdviceChatGPT: string | null = null;
     isAdviceCachedChatGPT: boolean = false;
 
+    // Claude State
+    isClaudeLoading = false;
+    insightClaude: OptionInsight | null = null;
+    simpleAdviceClaude: string | null = null;
+    isAdviceCachedClaude: boolean = false;
+
+    // DeepSeek State
+    isDeepSeekLoading = false;
+    insightDeepSeek: OptionInsight | null = null;
+    simpleAdviceDeepSeek: string | null = null;
+    isAdviceCachedDeepSeek: boolean = false;
+
     // Modals
     showAdviceModal: boolean = false;
     showForecastModal: boolean = false;
@@ -112,6 +124,16 @@ export class SearchOptionsComponent implements OnInit {
         this.isAdviceCachedChatGPT = false;
         this.isChatGPTLoading = true;
 
+        this.insightClaude = null;
+        this.simpleAdviceClaude = null;
+        this.isAdviceCachedClaude = false;
+        this.isClaudeLoading = true;
+
+        this.insightDeepSeek = null;
+        this.simpleAdviceDeepSeek = null;
+        this.isAdviceCachedDeepSeek = false;
+        this.isDeepSeekLoading = true;
+
         this.cdr.markForCheck();
 
         const queryTicker = this.optionForm.value.ticker; // "Name (TICKER)" format
@@ -169,20 +191,89 @@ export class SearchOptionsComponent implements OnInit {
                     : 'ChatGPT Error: ' + err.message;
             }
         });
+
+        // 3. Fire Claude Requests concurrently
+        forkJoin({
+            suggest: this.optionsService.suggestOptionClaude(queryTicker),
+            ask: this.optionsService.askOptionClaude(queryTicker)
+        }).pipe(
+            finalize(() => {
+                this.isClaudeLoading = false;
+                this.checkOverallLoadingState();
+                this.cdr.markForCheck();
+            })
+        ).subscribe({
+            next: (result) => {
+                if (result.suggest.success && result.suggest.data) {
+                    this.insightClaude = result.suggest.data.insight;
+                }
+                if (result.ask.success && result.ask.data) {
+                    this.simpleAdviceClaude = result.ask.data.advice;
+                    this.isAdviceCachedClaude = result.ask.cached;
+                }
+            },
+            error: (err) => {
+                this.errorMessage = this.errorMessage
+                    ? this.errorMessage + ' | Claude: ' + err.message
+                    : 'Claude Error: ' + err.message;
+            }
+        });
+
+        // 4. Fire DeepSeek Requests concurrently
+        forkJoin({
+            suggest: this.optionsService.suggestOptionDeepSeek(queryTicker),
+            ask: this.optionsService.askOptionDeepSeek(queryTicker)
+        }).pipe(
+            finalize(() => {
+                this.isDeepSeekLoading = false;
+                this.checkOverallLoadingState();
+                this.cdr.markForCheck();
+            })
+        ).subscribe({
+            next: (result) => {
+                if (result.suggest.success && result.suggest.data) {
+                    this.insightDeepSeek = result.suggest.data.insight;
+                }
+                if (result.ask.success && result.ask.data) {
+                    this.simpleAdviceDeepSeek = result.ask.data.advice;
+                    this.isAdviceCachedDeepSeek = result.ask.cached;
+                }
+            },
+            error: (err) => {
+                this.errorMessage = this.errorMessage
+                    ? this.errorMessage + ' | DeepSeek: ' + err.message
+                    : 'DeepSeek Error: ' + err.message;
+            }
+        });
     }
 
     private checkOverallLoadingState() {
         // Only remove main skeleton if AT LEAST ONE AI has returned its main Insight, 
         // OR both have fully finished loading (even if they failed).
-        if ((!this.isGeminiLoading || !this.isChatGPTLoading) || (this.insightGemini || this.insightChatGPT)) {
+        if ((!this.isGeminiLoading || !this.isChatGPTLoading || !this.isClaudeLoading || !this.isDeepSeekLoading) ||
+            (this.insightGemini || this.insightChatGPT || this.insightClaude || this.insightDeepSeek)) {
             this.isLoading = false;
         }
     }
 
-    openAdviceModal(aiProvider: 'gemini' | 'chatgpt') {
-        this.activeAdviceHtml = aiProvider === 'gemini' ? this.simpleAdviceGemini! : this.simpleAdviceChatGPT!;
-        this.activeAdviceIsCached = aiProvider === 'gemini' ? this.isAdviceCachedGemini : this.isAdviceCachedChatGPT;
-        this.activeAdviceTitle = aiProvider === 'gemini' ? "Gemini Strategy Breakdown" : "ChatGPT Strategy Breakdown";
+    openAdviceModal(aiProvider: 'gemini' | 'chatgpt' | 'claude' | 'deepseek') {
+        if (aiProvider === 'gemini') {
+            this.activeAdviceHtml = this.simpleAdviceGemini!;
+            this.activeAdviceIsCached = this.isAdviceCachedGemini;
+            this.activeAdviceTitle = "Gemini Strategy Breakdown";
+        } else if (aiProvider === 'chatgpt') {
+            this.activeAdviceHtml = this.simpleAdviceChatGPT!;
+            this.activeAdviceIsCached = this.isAdviceCachedChatGPT;
+            this.activeAdviceTitle = "ChatGPT Strategy Breakdown";
+        } else if (aiProvider === 'claude') {
+            this.activeAdviceHtml = this.simpleAdviceClaude!;
+            this.activeAdviceIsCached = this.isAdviceCachedClaude;
+            this.activeAdviceTitle = "Claude Strategy Breakdown";
+        } else if (aiProvider === 'deepseek') {
+            this.activeAdviceHtml = this.simpleAdviceDeepSeek!;
+            this.activeAdviceIsCached = this.isAdviceCachedDeepSeek;
+            this.activeAdviceTitle = "DeepSeek Strategy Breakdown";
+        }
         this.showAdviceModal = true;
     }
 
@@ -209,10 +300,12 @@ export class SearchOptionsComponent implements OnInit {
         this.isDeleting = true;
         this.cdr.markForCheck();
 
-        // Delete from both backend services
+        // Delete from all backend services
         forkJoin([
             this.optionsService.deleteOption(ticker),
-            this.optionsService.deleteOptionChatGPT(ticker)
+            this.optionsService.deleteOptionChatGPT(ticker),
+            this.optionsService.deleteOptionClaude(ticker),
+            this.optionsService.deleteOptionDeepSeek(ticker)
         ])
             .pipe(
                 finalize(() => {
@@ -229,6 +322,14 @@ export class SearchOptionsComponent implements OnInit {
                     this.insightChatGPT = null;
                     this.simpleAdviceChatGPT = null;
                     this.isAdviceCachedChatGPT = false;
+
+                    this.insightClaude = null;
+                    this.simpleAdviceClaude = null;
+                    this.isAdviceCachedClaude = false;
+
+                    this.insightDeepSeek = null;
+                    this.simpleAdviceDeepSeek = null;
+                    this.isAdviceCachedDeepSeek = false;
 
                     this.optionForm.reset();
                 },
