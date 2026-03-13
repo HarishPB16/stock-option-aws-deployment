@@ -125,4 +125,10 @@ export class OptionsService {
     getHistoryByDateDeepSeek(date: string): Observable<any> {
         return this.http.get(`${environment.apiUrl}/deepseek/options/history?date=${date}`);
     }
+
+    // --- Prompts Endpoints ---
+
+    generatePrompt(payload: { type: string; ticker?: string; date: string }): Observable<any> {
+        return this.http.post<any>(`${environment.apiUrl}/prompts/generate`, payload);
+    }
 }

@@ -1,0 +1,73 @@
+<div class="prompts-container">
+    <div class="header">
+        <h2>Prompt Generator</h2>
+        <p>Generate analytical prompts to copy into external AI agents.</p>
+    </div>
+
+    <div class="card form-card">
+        <form [formGroup]="promptForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+            <div class="form-group">
+                <label for="type">Prompt Type</label>
+                <select id="type" formControlName="type" class="form-control">
+                    <option *ngFor="let type of promptTypes" [value]="type.value">
+                        {{ type.label }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="promptForm.get('type')?.value !== 'market_briefing'">
+                <label for="ticker">Stock Ticker</label>
+                <div class="autocomplete-wrapper">
+                    <input type="text" id="ticker" formControlName="ticker" class="form-control"
+                        placeholder="ENTER TICKER (e.g. RELIANCE)" autocomplete="off" (focus)="onFocus()"
+                        (blur)="onBlur()" />
+
+                    <ul class="autocomplete-dropdown" *ngIf="showDropdown && (filteredStocks$ | async) as stocks">
+                        <li *ngIf="stocks.length === 0 && promptForm.get('ticker')?.value" class="no-results">
+                            Only top 400 records Nifty we can search for option trading
+                        </li>
+                        <li *ngFor="let stock of stocks" (mousedown)="selectStock(stock)" class="dropdown-item">
+                            <span class="stock-ticker">{{ stock.ticker }}</span>
+                            <span class="stock-name">{{ stock.name }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="error"
+                    *ngIf="promptForm.get('ticker')?.touched && promptForm.get('ticker')?.hasError('required')">
+                    Ticker is required for this prompt type.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Reference Date</label>
+                <input type="date" id="date" formControlName="date" class="form-control" />
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn-primary" [disabled]="promptForm.invalid || isLoading">
+                    <span *ngIf="isLoading" class="spinner"></span>
+                    {{ isLoading ? 'Generating...' : 'Generate Prompt' }}
+                </button>
+
+                <button type="button" class="btn-secondary btn-open-ais" (click)="openAIs()">
+                    Open AIs
+                </button>
+            </div>
+
+            <div class="error-msg" *ngIf="error">{{ error }}</div>
+        </form>
+    </div>
+
+    <div class="card result-card" *ngIf="generatedPrompt">
+        <div class="result-header">
+            <h3>Generated Prompt</h3>
+            <button class="btn-secondary copy-btn" (click)="copyToClipboard()">
+                {{ copied ? 'Copied!' : 'Copy to Clipboard' }}
+            </button>
+        </div>
+        <div class="prompt-box">
+            <pre>{{ generatedPrompt }}</pre>
+        </div>
+    </div>
+</div>
