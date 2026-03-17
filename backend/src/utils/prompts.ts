@@ -247,6 +247,10 @@ These are for internal analysis only.
 Focus strictly on the next 15–20 trading days.
 
 --------------------------------------------------
+If this stock is have GIFT NIFTY then only give the following table
+GIFT NIFTY Stock Name | Date | Points | percentage   
+
+--------------------------------------------------
 
 Formatting Rules:
 
@@ -291,10 +295,10 @@ STRICT FORMATTING RULES:
 Sections required in the output HTML:
 
 <h2>1. Ten Big News – Indian Market Impact</h2>
-Provide a standard <table> with columns: No | News | Date | Sector | Impact
+Provide a standard <table> with columns: No | News | Date | Sector | Positive/Negative | Reason
 
 <h2>2. Global Market Overview</h2>
-Provide a standard <table> with columns: Name | Country | Date | Open-Close Time | Market Start (IST) | Down/UP (Points) | Down/UP (%)
+Provide a standard <table> with columns: Name | Closed/Open | Down/UP (Points) | Down/UP (%) | Country | Date | Open-Close Time | Market Start (IST) 
 Markets to include, in this strict order:
 GIFT NIFTY, Nikkei 225, Dow Jones, S&P 500, Nasdaq, FTSE 100, DAX, Shanghai Composite, CAC 40
 
@@ -303,7 +307,7 @@ Provide a standard <table> with columns: Name | Date | Down/UP (Points) | Down/U
 
 <h2>4. Option Expiry Table</h2>
 Provide a standard <table> with columns: Name | Monthly/Weekly | Day | Date
-Include: NIFTY, BANK NIFTY, SENSEX, FINNIFTY, MIDCPNIFTY
+Include (Only these for next expiry only): NIFTY, BANK NIFTY, SENSEX, FINNIFTY, MIDCPNIFTY,Stock Expiry
 
 <h2>5. Upcoming Indian Stock Market Holidays (NSE/BSE)</h2>
 Provide a standard <table> with columns: Holiday | Date | Day
