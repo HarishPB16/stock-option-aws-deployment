@@ -141,5 +141,12 @@ export class PromptsComponent implements OnInit {
     setTimeout(() => {
       window.open('https://chatgpt.com/', '_blank');
     }, 200);
+<<<<<<< HEAD
+=======
+
+    setTimeout(() => {
+      window.open('https://grok.com/', '_blank');
+    }, 300);
+>>>>>>> 29c6cb5a845a0a6d6af498a59d37bbee2b20a740
   }
 }
