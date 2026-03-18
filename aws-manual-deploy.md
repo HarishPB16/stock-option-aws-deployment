@@ -185,29 +185,34 @@ mongodb+srv://harishpbansodeaws26_db_user:ZK5b16fD40xaxya2@cluster0.ca4dk4p.mong
 3. Paste the following JSON, replacing `YOUR_BUCKET_NAME` with your actual bucket name:
 
 ```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "PublicReadGetObject",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-    }
-  ]
-}
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "PublicReadGetObject",
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": "s3:GetObject",
+        "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+      }
+    ]
+  }
 ```
 
 4. Click **Save**.
 
-### 4. Upload Files
+### 4. Configure GitHub Actions for Automated UI Deployment
 
-1. Go to the **Objects** tab of your bucket.
-2. Click **Upload**.
-3. Drag and drop all the _contents_ (files and folders) from inside your local `frontend/dist/frontend/browser` folder into the upload box.
-4. Click **Upload**.
-5. Go back to the **Properties** tab, scroll to the bottom, and click the blue "Bucket website endpoint" link. Your site is now live!
+_Instead of manually uploading files, we will configure GitHub to do it automatically every time you push code to the `main` branch._
+
+1. Go to your repository on **GitHub.com**.
+2. Click the **Settings** tab -> **Secrets and variables** -> **Actions**.
+3. You should already have `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION` from the backend deployment.
+4. Click **New repository secret** and add:
+   - **Name**: `AWS_S3_BUCKET` | **Value**: (Your new S3 bucket name, e.g., `my-stock-option-app-frontend-123`)
+5. In your local code editor, a file named `.github/workflows/frontend-deploy.yml` has already been created for you. It contains the instructions GitHub needs to build the Angular app and sync it to AWS S3.
+6. Commit your changes and push to the `main` branch. 
+7. Go to the "Actions" tab on GitHub. You should see "Deploy Frontend to S3" running. Once it completes, go to the **Properties** tab of your S3 bucket, scroll to the bottom, and click the blue "Bucket website endpoint" link. Your site is now live!
 
 ### 5. Setup CloudFront (Optional but highly recommended for HTTPS)
 
@@ -242,6 +247,8 @@ App Runner failed the check the Application logs in same screen
 Git hub all pipeline job descriptions tak a screenshot and check with AI.
 Where we can see the imgage is deployed?
 Top 10 interview question of each above topics?
+Bucket Versioning why this needed?
+how AWS know the gitgub code is checked and need to deploy the code?  
 
 
 
