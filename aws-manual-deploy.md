@@ -251,6 +251,11 @@ Where we can see the imgage is deployed?
 Top 10 interview question of each above topics?
 Bucket Versioning why this needed?
 how AWS know the gitgub code is checked and need to deploy the code?  
+What mistake I did in this deployment?
+  Not added the DB password in connection string so backend not working
+  "Error document", enter `index.html`
+  Monog atlas added 0.0.0.0/0
+  Not added the properties of mongo db connection and UI url in app runner.
 
 
 
