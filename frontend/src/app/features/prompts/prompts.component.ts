@@ -14,12 +14,12 @@ import * as CryptoJS from 'crypto-js';
 export class PromptsComponent implements OnInit {
   promptForm!: FormGroup;
   loginForm!: FormGroup;
-  
+
   generatedPrompt: string = '';
   isLoading: boolean = false;
   error: string | null = null;
   copied: boolean = false;
-  
+
   // Authentication state
   isAuthenticated: boolean = false;
   loginError: string | null = null;
@@ -45,7 +45,7 @@ export class PromptsComponent implements OnInit {
 
   ngOnInit(): void {
     const today = new Date().toISOString().split('T')[0];
-    
+
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -183,12 +183,9 @@ export class PromptsComponent implements OnInit {
     setTimeout(() => {
       window.open('https://chatgpt.com/', '_blank');
     }, 200);
-<<<<<<< HEAD
-=======
 
     setTimeout(() => {
       window.open('https://grok.com/', '_blank');
     }, 300);
->>>>>>> 29c6cb5a845a0a6d6af498a59d37bbee2b20a740
   }
 }
