@@ -25,7 +25,7 @@ export class PromptsComponent implements OnInit {
   loginError: string | null = null;
   // A simulated encrypted value for "Aws@16" using secret "admin_secret".
   // Generated via CryptoJS.AES.encrypt('Aws@16', 'admin_secret').toString()
-  private encryptedAdminPass = 'U2FsdGVkX1+vG02e0Gj3oHh/U2nOq5R59nKk0I3t1Xw=';
+  private encryptedAdminPass = 'U2FsdGVkX1/PDGD/RNA7t8qSc2uWJ38PeML1BehNsKs=';
   private secretKey = 'admin_secret';
 
   promptTypes = [
@@ -90,7 +90,7 @@ export class PromptsComponent implements OnInit {
     try {
       const bytes = CryptoJS.AES.decrypt(this.encryptedAdminPass, this.secretKey);
       const decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
-
+      console.log("decryptedPass", decryptedPass)
       if (password === decryptedPass) {
         this.isAuthenticated = true;
       } else {

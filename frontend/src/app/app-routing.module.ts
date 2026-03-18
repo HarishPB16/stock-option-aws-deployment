@@ -6,7 +6,7 @@ const routes: Routes = [
     { path: 'home', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
     { path: 'search-options', loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule) },
     { path: 'history', loadChildren: () => import('./features/history/history.module').then(m => m.HistoryModule) },
-    { path: 'prompts', loadChildren: () => import('./features/prompts/prompts.module').then(m => m.PromptsModule) },
+    { path: 'admin', loadChildren: () => import('./features/prompts/prompts.module').then(m => m.PromptsModule) },
     { path: '**', redirectTo: 'home' }
 ];
 
