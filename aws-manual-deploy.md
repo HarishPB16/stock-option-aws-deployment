@@ -36,7 +36,9 @@ _This user will allow GitHub to automatically build and push your Docker images 
 1. Still in IAM, click **Users** -> **Add users**.
 2. Name the user (e.g., `github-actions-user`). Click **Next**.
 3. **Permissions**: Select **Attach policies directly**.
-4. Search for and attach the following policy: **AmazonEC2ContainerRegistryPowerUser** (This allows pushing Docker images to ECR).
+4. Search for and attach the following policies: 
+   - **AmazonEC2ContainerRegistryPowerUser** (Allows pushing backend Docker images to ECR)
+   - **AmazonS3FullAccess** (Allows syncing the frontend build to your S3 bucket)
 5. Click **Next**, then **Create user**.
 6. Click on the newly created `github-actions-user`.
 7. Go to the **Security credentials** tab.
