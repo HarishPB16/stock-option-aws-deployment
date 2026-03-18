@@ -16,11 +16,11 @@ const logger = winston.createLogger({
         timestamp(),
         json()
     ),
-    defaultMeta: { service: 'stock-options-api' },
     transports: [
         new winston.transports.File({ filename: path.join(logDir, 'error.log'), level: 'error' }),
         new winston.transports.File({ filename: path.join(logDir, 'security.log'), level: 'warn' }),
         new winston.transports.File({ filename: path.join(logDir, 'combined.log') }),
+        new winston.transports.Console()
     ],
 });
 
