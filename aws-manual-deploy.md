@@ -141,12 +141,16 @@ _App Runner takes your Docker image and runs it on the internet with an HTTPS UR
    - `FRONTEND_URL` = (We will set this later to your S3/CloudFront URL to allow CORS)
 9. Scroll securely to the bottom and click **Next**, then review and click **Create & deploy**.
 10. Wait 5-10 minutes. Once the status says "Running", copy the **Default domain** URL (e.g., `https://xyz123.us-east-1.awsapprunner.com`). This is your new live backend URL!
-
+Default domain
+https://b3pbays3fv.ap-south-1.awsapprunner.com
 ### 5. Update MongoDB Network Access
 
 1. Go to MongoDB Atlas.
 2. Under "Network Access", ensure you have allowed traffic from anywhere (`0.0.0.0/0`). App Runner IP addresses are dynamic, so whitelisting `0.0.0.0/0` is required unless you set up an advanced VPC configuration in AWS. Ensure your database relies heavily on the strong username/password in your `MONGO_URI`.
-
+ZK5b16fD40xaxya2
+harishpbansodeaws26_db_user
+Your current IP address (223.179.154.252) 
+mongodb+srv://harishpbansodeaws26_db_user:ZK5b16fD40xaxya2@cluster0.ca4dk4p.mongodb.net/?appName=Cluster0
 ---
 
 ## Phase 3: Frontend Deployment (S3 & CloudFront)
@@ -229,3 +233,15 @@ _S3 static websites only provide HTTP. CloudFront provides HTTPS and caching._
 1. **Update Backend CORS**: Now that your frontend has a live CloudFront URL, go back to your App Runner service settings. Under Configuration -> Environment variables, update the `FRONTEND_URL` to match your CloudFront URL (e.g., `https://d123456abcdef.cloudfront.net`) without a trailing slash. Restart the App Runner service.
 
 _Your application is now fully separated and deployed on AWS!_
+
+
+
+
+#### Check the folloing things
+App Runner failed the check the Application logs in same screen
+Git hub all pipeline job descriptions tak a screenshot and check with AI.
+Where we can see the imgage is deployed?
+Top 10 interview question of each above topics?
+
+
+

@@ -4,6 +4,7 @@ import { OptionsService } from '../../core/services/options.service';
 import { NSESecurity, NSE_STOCKS } from '../../core/data/nse-stocks.data';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-prompts',
@@ -12,10 +13,20 @@ import { Observable } from 'rxjs';
 })
 export class PromptsComponent implements OnInit {
   promptForm!: FormGroup;
+  loginForm!: FormGroup;
+  
   generatedPrompt: string = '';
   isLoading: boolean = false;
   error: string | null = null;
   copied: boolean = false;
+  
+  // Authentication state
+  isAuthenticated: boolean = false;
+  loginError: string | null = null;
+  // A simulated encrypted value for "Aws@16" using secret "admin_secret".
+  // Generated via CryptoJS.AES.encrypt('Aws@16', 'admin_secret').toString()
+  private encryptedAdminPass = 'U2FsdGVkX1+vG02e0Gj3oHh/U2nOq5R59nKk0I3t1Xw=';
+  private secretKey = 'admin_secret';
 
   promptTypes = [
     { value: 'suggestion', label: 'Option Suggestion' },
@@ -34,6 +45,12 @@ export class PromptsComponent implements OnInit {
 
   ngOnInit(): void {
     const today = new Date().toISOString().split('T')[0];
+    
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+
     this.promptForm = this.fb.group({
       type: ['suggestion', Validators.required],
       ticker: [''],
@@ -57,6 +74,31 @@ export class PromptsComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || ''))
     );
+  }
+
+  onLogin(): void {
+    if (this.loginForm.invalid) return;
+
+    this.loginError = null;
+    const { username, password } = this.loginForm.value;
+
+    if (username !== 'harishpb') {
+      this.loginError = 'Invalid username or password';
+      return;
+    }
+
+    try {
+      const bytes = CryptoJS.AES.decrypt(this.encryptedAdminPass, this.secretKey);
+      const decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
+
+      if (password === decryptedPass) {
+        this.isAuthenticated = true;
+      } else {
+        this.loginError = 'Invalid username or password';
+      }
+    } catch (e) {
+      this.loginError = 'Authentication failed';
+    }
   }
 
   private _filter(value: string): NSESecurity[] {

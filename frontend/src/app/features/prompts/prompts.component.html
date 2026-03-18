@@ -1,4 +1,4 @@
-<div class="prompts-container">
+<div class="prompts-container" *ngIf="isAuthenticated">
     <div class="header">
         <h2>Prompt Generator</h2>
         <p>Generate analytical prompts to copy into external AI agents.</p>
@@ -69,5 +69,30 @@
         <div class="prompt-box">
             <pre>{{ generatedPrompt }}</pre>
         </div>
+    </div>
+</div>
+
+<div class="login-container" *ngIf="!isAuthenticated">
+    <div class="card login-card">
+        <h2>Admin Authentication</h2>
+        <p>Please log in to access the prompt generator.</p>
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" autocomplete="off">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" formControlName="username" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" formControlName="password" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn-primary login-btn" [disabled]="loginForm.invalid">
+                Login
+            </button>
+
+            <div class="error-msg" *ngIf="loginError">{{ loginError }}</div>
+        </form>
     </div>
 </div>
