@@ -16,10 +16,16 @@ const app: Application = express();
 app.use(helmet());
 
 // 2. CORS restricted (update origin in production)
+const allowedOrigins = ['http://localhost', 'http://my-stock-option-app-frontend.s3-website.ap-south-1.amazonaws.com'];
+if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? ['http://localhost', 'https://yourdomain.com'] : '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: process.env.NODE_ENV === 'production' ? allowedOrigins : '*',
+
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
 // 3. Express JSON body parser & size limit (10kb)
