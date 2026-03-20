@@ -28,6 +28,13 @@ export class PromptsComponent implements OnInit {
   private encryptedAdminPass = 'U2FsdGVkX1/PDGD/RNA7t8qSc2uWJ38PeML1BehNsKs=';
   private secretKey = 'admin_secret';
 
+  // Admin Sub-Menu State
+  activeAdminTab: 'prompt' | 'study' | 'iq' = 'prompt';
+
+  switchAdminTab(tab: 'prompt' | 'study' | 'iq'): void {
+    this.activeAdminTab = tab;
+  }
+
   promptTypes = [
     { value: 'suggestion', label: 'Option Suggestion' },
     { value: 'advice', label: 'Simple Advice' },
