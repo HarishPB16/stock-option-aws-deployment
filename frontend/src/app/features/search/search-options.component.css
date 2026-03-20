@@ -51,8 +51,8 @@
     font-size: 1.1rem;
     border: 1px solid var(--border-light);
     border-radius: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    color: #fff;
+    background: var(--bg-input);
+    color: var(--text-primary);
     text-transform: uppercase;
     transition: all 0.3s ease;
 }
@@ -74,11 +74,11 @@
     left: 0;
     right: 0;
     margin-top: 8px;
-    background: rgba(15, 23, 42, 0.95);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-faint);
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-glow);
     list-style: none;
     padding: 0;
     max-height: 300px;
@@ -105,7 +105,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-faint);
     transition: background 0.2s;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--bg-surface);
 }
 
 .stock-ticker {
@@ -124,14 +124,14 @@
 }
 
 .stock-name {
-    color: #e2e8f0;
+    color: var(--text-muted);
     font-size: 0.9rem;
 }
 
 .no-results {
     padding: 16px;
     text-align: center;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-style: italic;
 }
 
@@ -187,14 +187,14 @@
 }
 
 .bg-call {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: var(--accent-call-bg);
+    border: 1px solid var(--border-faint);
     color: var(--accent-call);
 }
 
 .bg-put {
-    background: rgba(244, 63, 94, 0.1);
-    border: 1px solid rgba(244, 63, 94, 0.2);
+    background: var(--accent-put-bg);
+    border: 1px solid var(--border-faint);
     color: var(--accent-put);
 }
 
@@ -205,7 +205,7 @@
 }
 
 .metric {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-surface);
     padding: 1rem;
     border-radius: 12px;
     border: 1px solid var(--border-light);
@@ -238,9 +238,9 @@
 .alert {
     padding: 1rem;
     border-radius: 12px;
-    background: rgba(244, 63, 94, 0.1);
-    border: 1px solid rgba(244, 63, 94, 0.3);
-    color: #ffb3c1;
+    background: var(--accent-put-bg);
+    border: 1px solid var(--border-faint);
+    color: var(--accent-put);
     text-align: center;
     margin-bottom: 1rem;
 }
@@ -265,7 +265,7 @@
 }
 
 .text-block {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-surface);
     padding: 1.25rem;
     border-radius: 12px;
     border: 1px solid var(--border-light);
@@ -287,25 +287,24 @@
 
 .verdict-block {
     border: 1px solid var(--accent-blue);
-    background: rgba(56, 189, 248, 0.08);
+    background: rgba(56, 189, 248, 0.08); /* slight blue tint */
 }
 
 .verdict-block h3 {
-    color: #fff;
+    color: var(--accent-blue);
     font-size: 1.2rem;
-    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
 .verdict-block p {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 /* Dynamic Sentiment Formatting */
 .sentiment-green {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: var(--accent-call-bg);
+    border: 1px solid var(--border-faint);
 }
 
 .sentiment-yellow {
@@ -314,14 +313,14 @@
 }
 
 .sentiment-red {
-    background: rgba(244, 63, 94, 0.15);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: var(--accent-put-bg);
+    border: 1px solid var(--border-faint);
 }
 
 /* Simple Advice Styles */
 .simple-advice-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-faint);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -330,7 +329,7 @@
 
 .advice-header {
     margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-faint);
     padding-bottom: 0.8rem;
 }
 
@@ -348,7 +347,7 @@
 
 .badge {
     background: rgba(234, 179, 8, 0.2);
-    color: #fde047;
+    color: #fde047; /* yellow */
     padding: 4px 10px;
     border-radius: 12px;
     font-size: 0.8rem;
@@ -357,13 +356,13 @@
 
 .badge-new {
     background: rgba(16, 185, 129, 0.2);
-    color: #6ee7b7;
+    color: #6ee7b7; /* green */
 }
 
 .advice-text {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #e2e8f0;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -371,7 +370,7 @@
 .advice-html-content {
     font-size: 1.05rem;
     line-height: 1.6;
-    color: #e2e8f0;
+    color: var(--text-primary);
 }
 
 .advice-html-content h3 {
@@ -386,7 +385,7 @@
 }
 
 .advice-html-content strong {
-    color: #fff;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
@@ -434,10 +433,10 @@
 /* Delete DB Button */
 .delete-db-btn {
     background: transparent;
-    border: 1px solid rgba(244, 63, 94, 0.5);
+    border: 1px solid var(--accent-put);
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
-    color: #f43f5e;
+    color: var(--accent-put);
     font-weight: bold;
     font-size: 1rem;
     cursor: pointer;
@@ -450,8 +449,7 @@
 }
 
 .delete-db-btn:hover:not(:disabled) {
-    background: rgba(244, 63, 94, 0.1);
-    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+    background: var(--accent-put-bg);
 }
 
 .delete-db-btn:disabled {
@@ -483,7 +481,6 @@
     width: 100vw;
     height: 100vh;
     background: rgba(15, 23, 42, 0.85);
-    /* Dark slate blur */
     backdrop-filter: blur(8px);
     z-index: 9999;
     display: flex;
@@ -495,8 +492,8 @@
 .modal-content {
     position: relative;
     background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-glow);
     border-radius: 16px;
     width: 90%;
     max-width: 800px;
@@ -524,15 +521,14 @@
     right: 20px;
     background: transparent;
     border: none;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-size: 2rem;
     cursor: pointer;
     transition: color 0.2s;
 }
 
 .close-modal-btn:hover {
-    color: #ef4444;
-    /* Red close */
+    color: var(--accent-put);
 }
 
 /* Remove card inner padding and background for the modal */
@@ -546,7 +542,7 @@
 }
 
 /* --- Mobile Responsiveness --- */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .options-container {
         padding: 1rem;
         margin: 1rem auto;

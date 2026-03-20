@@ -5,25 +5,26 @@
 
 .header h2 {
     font-size: 2rem;
-    color: #1a1a1a;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
 .header p {
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .card {
-    background: white;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-glow);
     padding: 2rem;
     margin-bottom: 2rem;
 }
 
 .placeholder-text {
     text-align: center;
-    color: #666;
+    color: var(--text-secondary);
     padding: 2rem;
     font-size: 1.1rem;
 }

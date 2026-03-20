@@ -18,14 +18,14 @@
 }
 
 .bg-call {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: var(--accent-call-bg);
+    border: 1px solid var(--border-faint);
     color: var(--accent-call);
 }
 
 .bg-put {
-    background: rgba(244, 63, 94, 0.1);
-    border: 1px solid rgba(244, 63, 94, 0.2);
+    background: var(--accent-put-bg);
+    border: 1px solid var(--border-faint);
     color: var(--accent-put);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .metric {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-surface);
     padding: 1rem;
     border-radius: 12px;
     border: 1px solid var(--border-light);
@@ -86,7 +86,7 @@
 }
 
 .text-block {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-surface);
     padding: 1.25rem;
     border-radius: 12px;
     border: 1px solid var(--border-light);
@@ -112,21 +112,20 @@
 }
 
 .verdict-block h3 {
-    color: #fff;
+    color: var(--accent-blue);
     font-size: 1.2rem;
-    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
 .verdict-block p {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 /* Dynamic Sentiment Formatting */
 .sentiment-green {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: var(--accent-call-bg);
+    border: 1px solid var(--border-faint);
 }
 
 .sentiment-yellow {
@@ -135,14 +134,14 @@
 }
 
 .sentiment-red {
-    background: rgba(244, 63, 94, 0.15);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: var(--accent-put-bg);
+    border: 1px solid var(--border-faint);
 }
 
 /* Simple Advice Styles */
 .simple-advice-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-faint);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -151,7 +150,7 @@
 
 .advice-header {
     margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-faint);
     padding-bottom: 0.8rem;
 }
 
@@ -184,7 +183,7 @@
 .advice-text {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #e2e8f0;
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -192,7 +191,7 @@
 .advice-html-content {
     font-size: 1.05rem;
     line-height: 1.6;
-    color: #e2e8f0;
+    color: var(--text-primary);
 }
 
 .advice-html-content h3 {
@@ -207,7 +206,7 @@
 }
 
 .advice-html-content strong {
-    color: #fff;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
@@ -255,10 +254,10 @@
 /* Delete DB Button */
 .delete-db-btn {
     background: transparent;
-    border: 1px solid rgba(244, 63, 94, 0.5);
+    border: 1px solid var(--accent-put);
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
-    color: #f43f5e;
+    color: var(--accent-put);
     font-weight: bold;
     font-size: 1rem;
     cursor: pointer;
@@ -271,8 +270,7 @@
 }
 
 .delete-db-btn:hover:not(:disabled) {
-    background: rgba(244, 63, 94, 0.1);
-    box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+    background: var(--accent-put-bg);
 }
 
 .delete-db-btn:disabled {
@@ -315,8 +313,8 @@
 .modal-content {
     position: relative;
     background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-glow);
     border-radius: 16px;
     width: 90%;
     max-width: 800px;
@@ -344,14 +342,14 @@
     right: 20px;
     background: transparent;
     border: none;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-size: 2rem;
     cursor: pointer;
     transition: color 0.2s;
 }
 
 .close-modal-btn:hover {
-    color: #ef4444;
+    color: var(--accent-put);
 }
 
 /* Remove card inner padding and background for the modal */
@@ -394,8 +392,8 @@
 
 /* Modern AI Table Styles */
 .ai-table-container {
-    background: rgba(15, 23, 42, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-faint);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -407,14 +405,14 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-faint);
     padding-bottom: 1rem;
 }
 
 .table-header h3 {
     margin: 0;
     font-size: 1.4rem;
-    color: #f8fafc;
+    color: var(--text-primary);
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
@@ -434,7 +432,7 @@
 
 .ai-insight-table th {
     padding: 0 1rem 0.5rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-weight: 500;
     font-size: 0.95rem;
     text-transform: uppercase;
@@ -443,24 +441,25 @@
 
 .ai-insight-table td {
     padding: 1.25rem 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-faint);
+    border-bottom: 1px solid var(--border-faint);
     transition: background 0.2s;
+    color: var(--text-primary);
 }
 
 .ai-insight-table tr:hover td {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--bg-surface-hover);
 }
 
 .ai-insight-table td:first-child {
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 1px solid var(--border-faint);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
 }
 
 .ai-insight-table td:last-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid var(--border-faint);
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
 }
@@ -513,7 +512,7 @@
 .ai-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #f1f5f9;
+    color: var(--text-primary);
 }
 
 .ai-badge {
@@ -546,11 +545,11 @@
 
 /* Table Actions & Pills */
 .table-action-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
     padding: 0.7rem 1.25rem;
     border-radius: 50px;
-    color: #e2e8f0;
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 0.95rem;
     cursor: pointer;
@@ -561,13 +560,13 @@
 }
 
 .table-action-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--bg-surface-hover);
+    border-color: var(--border-faint);
     transform: translateY(-1px);
 }
 
 .analyzing-text {
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-style: italic;
     font-size: 0.95rem;
     display: flex;
@@ -596,21 +595,21 @@
 }
 
 .pill-call {
-    background: rgba(16, 185, 129, 0.15);
-    color: #34d399;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: var(--accent-call-bg);
+    color: var(--accent-call);
+    border: 1px solid var(--border-faint);
 }
 
 .pill-put {
-    background: rgba(244, 63, 94, 0.15);
-    color: #fb7185;
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: var(--accent-put-bg);
+    color: var(--accent-put);
+    border: 1px solid var(--border-faint);
 }
 
 .pill-neutral {
-    background: rgba(148, 163, 184, 0.15);
-    color: #cbd5e1;
-    border: 1px solid rgba(148, 163, 184, 0.3);
+    background: var(--bg-surface-hover);
+    color: var(--text-muted);
+    border: 1px solid var(--border-faint);
 }
 
 .conf-sm {
