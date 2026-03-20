@@ -34,8 +34,8 @@
   --accent-put: #e11d48;   
   --accent-put-bg: rgba(225, 29, 72, 0.15);
   --accent-blue: #2563eb;
-  --border-light: rgba(0, 0, 0, 0.1);
-  --border-faint: rgba(0, 0, 0, 0.05);
+  --border-light: rgba(0, 0, 0, 0.15);
+  --border-faint: rgba(0, 0, 0, 0.08);
   --shadow-glow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
