@@ -24,10 +24,34 @@ export class TopPicksComponent implements OnInit {
   ];
 
   isGlobalLoading = false;
+  availableDates: string[] = [];
+  selectedDate: string | null = null;
 
   constructor(private topPicksService: TopPicksService) { }
 
   ngOnInit(): void {
+    this.fetchAvailableDates();
+  }
+
+  fetchAvailableDates() {
+    this.topPicksService.getAvailableDates().subscribe({
+      next: (res) => {
+        if (res.success && res.dates) {
+          const todayStr = new Date().toISOString().split('T')[0];
+          // Filter out today if it's there so we use "Live Scan" option
+          this.availableDates = res.dates.filter(d => d !== todayStr);
+        }
+      },
+      error: (err) => console.error('Failed to load dates', err)
+    });
+  }
+
+  onDateChange() {
+      // Clear current UI state but don't auto-fetch unless desired. User clicks the button to fetch.
+      this.aiEngines.forEach(engine => {
+          engine.status = 'idle';
+          engine.data = null;
+      });
   }
 
   runMasterScan() {
@@ -37,7 +61,7 @@ export class TopPicksComponent implements OnInit {
       engine.status = 'loading';
       engine.errorMsg = '';
       
-      this.topPicksService.getTopPicks(engine.id).subscribe({
+      this.topPicksService.getTopPicks(engine.id, this.selectedDate || undefined).subscribe({
         next: (res) => {
           engine.data = res;
           engine.status = 'success';

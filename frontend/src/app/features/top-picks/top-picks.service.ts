@@ -24,7 +24,15 @@ export class TopPicksService {
 
   constructor(private http: HttpClient) { }
 
-  getTopPicks(ai: 'gemini' | 'chatgpt' | 'claude' | 'deepseek'): Observable<TopPicksResponse> {
-    return this.http.get<TopPicksResponse>(`${this.apiUrl}/top-picks?ai=${ai}`);
+  getAvailableDates(): Observable<{ success: boolean; dates: string[] }> {
+    return this.http.get<{ success: boolean; dates: string[] }>(`${this.apiUrl}/dates`);
+  }
+
+  getTopPicks(ai: 'gemini' | 'chatgpt' | 'claude' | 'deepseek', dateKey?: string): Observable<TopPicksResponse> {
+    let url = `${this.apiUrl}/top-picks?ai=${ai}`;
+    if (dateKey) {
+        url += `&date=${dateKey}`;
+    }
+    return this.http.get<TopPicksResponse>(url);
   }
 }

@@ -4,9 +4,18 @@
     <p>Top 5 Option Strategies verified by 4 discrete AI Architectures.</p>
   </div>
 
-  <div class="action-bar">
-    <button class="scan-btn" [disabled]="isGlobalLoading" (click)="runMasterScan()">
-      <span *ngIf="!isGlobalLoading">Run Master Scan <span class="ai-sparkles">✨</span></span>
+  <div class="action-bar flex-controls">
+    <div class="date-selector-wrapper">
+      <span class="icon">📅</span>
+      <select class="date-select" [(ngModel)]="selectedDate" (change)="onDateChange()">
+        <option [ngValue]="null">Today (Live Scan)</option>
+        <option *ngFor="let date of availableDates" [value]="date">{{ date }}</option>
+      </select>
+    </div>
+
+    <button class="scan-btn" [disabled]="isGlobalLoading" (click)="runMasterScan()" [class.historical]="selectedDate">
+      <span *ngIf="!isGlobalLoading && !selectedDate">Run Master Scan <span class="ai-sparkles">✨</span></span>
+      <span *ngIf="!isGlobalLoading && selectedDate">Load Historical Picks <span class="ai-sparkles">🕰️</span></span>
       <span *ngIf="isGlobalLoading">Analyzing Market... <span class="spinner"></span></span>
     </button>
   </div>
