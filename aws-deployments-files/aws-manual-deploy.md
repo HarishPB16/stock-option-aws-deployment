@@ -149,10 +149,7 @@ https://b3pbays3fv.ap-south-1.awsapprunner.com
 
 1. Go to MongoDB Atlas.
 2. Under "Network Access", ensure you have allowed traffic from anywhere (`0.0.0.0/0`). App Runner IP addresses are dynamic, so whitelisting `0.0.0.0/0` is required unless you set up an advanced VPC configuration in AWS. Ensure your database relies heavily on the strong username/password in your `MONGO_URI`.
-ZK5b16fD40xaxya2
-harishpbansodeaws26_db_user
-Your current IP address (223.179.154.252) 
-mongodb+srv://harishpbansodeaws26_db_user:ZK5b16fD40xaxya2@cluster0.ca4dk4p.mongodb.net/?appName=Cluster0
+
 ---
 
 ## Phase 3: Frontend Deployment (S3 & CloudFront)
