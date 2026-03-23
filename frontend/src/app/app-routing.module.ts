@@ -7,6 +7,7 @@ const routes: Routes = [
     { path: 'search-options', loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule) },
     { path: 'history', loadChildren: () => import('./features/history/history.module').then(m => m.HistoryModule) },
     { path: 'admin', loadChildren: () => import('./features/prompts/prompts.module').then(m => m.PromptsModule) },
+    { path: 'top-picks', loadChildren: () => import('./features/top-picks/top-picks.module').then(m => m.TopPicksModule) },
     { path: '**', redirectTo: 'home' }
 ];
 

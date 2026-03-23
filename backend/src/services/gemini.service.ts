@@ -236,3 +236,33 @@ export const generateMarketBriefing = async (): Promise<string> => {
         throw new Error('Failed to generate market briefing: ' + error.message);
     }
 };
+
+export const generateTopPicks = async (): Promise<any> => {
+    const t0 = Date.now();
+    const aiClient = getAIClient();
+    // Assuming getTopPicksPrompt is imported. If not, we will fix imports later, but let's assume it's imported dynamically or we add it to the import block.
+    // Wait, import is at the top of the file! I must also update the import statement!
+    const { getTopPicksPrompt } = require('../utils/prompts');
+    const prompt = getTopPicksPrompt(getFormattedDate());
+
+    try {
+        const response = await aiClient.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: { tools: [{ googleSearch: {} }] }
+        });
+
+        logger.info('Gemini AI Top Picks Success', { durationMs: Date.now() - t0 });
+        let textOutput = response.text || "{}";
+        textOutput = textOutput.replace(/```json/g, '').replace(/```/g, '').trim();
+        const firstBrace = textOutput.indexOf('{');
+        const lastBrace = textOutput.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1) {
+            textOutput = textOutput.substring(firstBrace, lastBrace + 1);
+        }
+        return JSON.parse(textOutput);
+    } catch (error: any) {
+        logger.error('Gemini AI Top Picks Failed', { durationMs: Date.now() - t0, error: error.message });
+        throw new Error('Gemini Top Picks Failed: ' + error.message);
+    }
+};

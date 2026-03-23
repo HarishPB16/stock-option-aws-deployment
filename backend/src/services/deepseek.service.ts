@@ -168,3 +168,29 @@ export const generateMarketBriefingDeepSeek = async (): Promise<string> => {
         </div>`;
     }
 };
+
+export const generateTopPicksDeepSeek = async (): Promise<any> => {
+    const t0 = Date.now();
+    const client = getDeepSeekClient();
+    const { getTopPicksPrompt } = require('../utils/prompts');
+    const prompt = getTopPicksPrompt(getFormattedDate());
+
+    try {
+        const response = await client.chat.completions.create({
+            model: "deepseek-chat",
+            messages: [{ role: "user", content: prompt }],
+            response_format: { type: "json_object" }
+        });
+
+        logger.info('DeepSeek AI Top Picks Success', { durationMs: Date.now() - t0 });
+        const textOutput = response.choices[0].message.content || "{}";
+        let jsonStr = textOutput;
+        const jsonMatch = textOutput.match(/\{[\s\S]*\}/);
+        if (jsonMatch) jsonStr = jsonMatch[0];
+        
+        return JSON.parse(jsonStr);
+    } catch (error: any) {
+        logger.error('DeepSeek AI Top Picks Failed', { durationMs: Date.now() - t0, error: error.message });
+        throw new Error('DeepSeek Top Picks Failed: ' + error.message);
+    }
+};

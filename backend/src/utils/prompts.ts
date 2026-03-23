@@ -313,3 +313,36 @@ Include (Only these for next expiry only): NIFTY, BANK NIFTY, SENSEX, FINNIFTY, 
 Provide a standard <table> with columns: Holiday | Date | Day
 `;
 };
+
+export const getTopPicksPrompt = (formattedDate: string): string => {
+  return `
+    You are an elite Indian Stock Market Options Analyst.
+    Today's Date is ${formattedDate}.
+    
+    Analyze the current Indian F&O equity market momentum, news, and technicals.
+    Identify exactly 5 CALL options and 5 PUT options that have the highest probability of success right now.
+
+    CRITICAL RULE - JSON FORMAT ONLY:
+    You MUST return ONLY a valid JSON object matching the exact structure below. Do NOT use markdown code blocks (\`\`\`json). Do NOT add conversational text.
+    {
+      "calls": [
+        {
+          "ticker": "RELIANCE",
+          "strike": "3000",
+          "expiry": "28-Mar-2024",
+          "premium": "150",
+          "reason": "Clear breakout above 200 EMA with heavy volume and bullish sector rotation."
+        }
+      ],
+      "puts": [
+        {
+          "ticker": "HDFCBANK",
+          "strike": "1400",
+          "expiry": "28-Mar-2024",
+          "premium": "45",
+          "reason": "Breaking critical support at 1420 with high short build-up."
+        }
+      ]
+    }
+  `;
+};

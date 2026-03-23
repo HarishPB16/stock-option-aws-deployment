@@ -184,3 +184,34 @@ export const generateMarketBriefingClaude = async (): Promise<string> => {
         </div>`;
     }
 };
+
+export const generateTopPicksClaude = async (): Promise<any> => {
+    const t0 = Date.now();
+    const client = getAnthropicClient();
+    const { getTopPicksPrompt } = require('../utils/prompts');
+    const prompt = getTopPicksPrompt(getFormattedDate()) + "\n\nCRITICAL: Respond ONLY with the raw JSON object. Do NOT wrap it in markdown block. Start immediately with { and end with }.";
+
+    try {
+        const response = await client.messages.create({
+            model: "claude-3-5-sonnet-20241022",
+            max_tokens: 1500,
+            messages: [{ role: "user", content: prompt }]
+        });
+
+        logger.info('Claude AI Top Picks Success', { durationMs: Date.now() - t0 });
+        let textOutput = "";
+        for (const block of response.content) {
+            if (block.type === 'text') {
+                textOutput += block.text;
+            }
+        }
+        
+        const jsonMatch = textOutput.match(/\{[\s\S]*\}/);
+        if (jsonMatch) textOutput = jsonMatch[0];
+        
+        return JSON.parse(textOutput);
+    } catch (error: any) {
+        logger.error('Claude AI Top Picks Failed', { durationMs: Date.now() - t0, error: error.message });
+        throw new Error('Claude Top Picks Failed: ' + error.message);
+    }
+};

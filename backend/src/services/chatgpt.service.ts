@@ -178,3 +178,25 @@ export const generateMarketBriefingChatGPT = async (): Promise<string> => {
         throw new Error(`Failed to generate market briefing via ChatGPT: ${error.message}`);
     }
 };
+
+export const generateTopPicksChatGPT = async (): Promise<any> => {
+    const t0 = Date.now();
+    const client = getOpenAIClient();
+    const { getTopPicksPrompt } = require('../utils/prompts');
+    const prompt = getTopPicksPrompt(getFormattedDate());
+
+    try {
+        const response = await client.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [{ role: "user", content: prompt }],
+            response_format: { type: "json_object" }
+        });
+
+        logger.info('ChatGPT AI Top Picks Success', { durationMs: Date.now() - t0 });
+        const textOutput = response.choices[0].message.content || "{}";
+        return JSON.parse(textOutput);
+    } catch (error: any) {
+        logger.error('ChatGPT AI Top Picks Failed', { durationMs: Date.now() - t0, error: error.message });
+        throw new Error('ChatGPT Top Picks Failed: ' + error.message);
+    }
+};
