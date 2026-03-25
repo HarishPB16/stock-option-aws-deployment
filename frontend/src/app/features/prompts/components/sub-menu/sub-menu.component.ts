@@ -6,10 +6,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./sub-menu.component.css']
 })
 export class SubMenuComponent {
-  @Input() activeTab: 'prompt' | 'study' | 'iq' = 'prompt';
-  @Output() tabChange = new EventEmitter<'prompt' | 'study' | 'iq'>();
+  @Input() activeTab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category' = 'prompt';
+  @Output() tabChange = new EventEmitter<'prompt' | 'study' | 'iq' | 'youtube' | 'category'>();
 
-  onTabClick(tab: 'prompt' | 'study' | 'iq'): void {
+  onTabClick(tab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category'): void {
     this.tabChange.emit(tab);
   }
 }

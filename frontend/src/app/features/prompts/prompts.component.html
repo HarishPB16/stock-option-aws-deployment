@@ -81,6 +81,9 @@
     <!-- NEW MODULAR TABS -->
     <app-study *ngIf="activeAdminTab === 'study'"></app-study>
     <app-iq *ngIf="activeAdminTab === 'iq'"></app-iq>
+    <!-- ADDITIONAL ADMIN TABS -->
+    <app-youtube-admin *ngIf="activeAdminTab === 'youtube'"></app-youtube-admin>
+    <app-category-form *ngIf="activeAdminTab === 'category'"></app-category-form>
 </div>
 
 <div class="login-container" *ngIf="!isAuthenticated">

@@ -1,0 +1,143 @@
+<div class="admin-container">
+  <div class="header">
+    <div class="header-text">
+      <h2>Category Mapping Form</h2>
+      <p>Select categories to manage the corresponding values</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary" (click)="saveData()" [disabled]="isSaving">
+        <span *ngIf="!isSaving">Save Configuration</span>
+        <span *ngIf="isSaving">Saving...</span>
+      </button>
+      <div class="save-msg" *ngIf="saveMessage">{{ saveMessage }}</div>
+    </div>
+  </div>
+
+  <div class="dropdown-section">
+    <div class="form-group">
+      <label for="categorySelect">Primary Category</label>
+      <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+        <option value="">-- Select Category --</option>
+        <option *ngFor="let key of categoryKeys" [value]="key">
+          {{ getCategoryLabel(key) }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="subCategories.length > 0">
+      <label for="subCategorySelect">Sub Category</label>
+      <select id="subCategorySelect" [(ngModel)]="selectedSubCategory" (change)="onSubCategoryChange()">
+        <option value="">-- Select Sub Category --</option>
+        <option *ngFor="let sub of subCategories" [value]="sub">
+          {{ sub }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-section" *ngIf="tableData.length > 0">
+    <div class="table-header">
+      <h3>Values Data</h3>
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Search values..." 
+          [(ngModel)]="searchQuery"
+          (input)="filterTable()"
+        />
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Value Name</th>
+            <th class="center">Completed</th>
+            <th>Comment</th>
+            <th class="center">YouTube URLs</th>
+            <th class="center">Short Notes</th>
+            <th class="center">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of filteredTableData; let i = index">
+            <tr>
+              <td class="name-cell">{{ item.name }}</td>
+              <td class="center">
+                <input type="checkbox" [(ngModel)]="item.completed" />
+              </td>
+              <td>
+                <input type="text" class="input-light" [(ngModel)]="item.comment" placeholder="Add a comment..." />
+              </td>
+              <td class="center">
+                <button class="btn btn-sm btn-outline" (click)="toggleYoutubePopup(item)">
+                  URLs ({{ item.youtubeUrls.length }})
+                </button>
+                
+                <!-- YouTube Popup Inline -->
+                <div class="inline-popup" *ngIf="item.showYoutubePopup">
+                  <div class="popup-header">
+                    <h4>Manage YouTube URLs</h4>
+                    <button class="close-btn" (click)="toggleYoutubePopup(item)">&times;</button>
+                  </div>
+                  <div class="popup-body">
+                    <ul class="url-list" *ngIf="item.youtubeUrls.length > 0">
+                      <li *ngFor="let url of item.youtubeUrls; let urlIdx = index">
+                        <a [href]="url" target="_blank">{{ url }}</a>
+                        <button class="remove-btn" (click)="removeYoutubeUrl(item, urlIdx)">&times;</button>
+                      </li>
+                    </ul>
+                    <p class="empty-list" *ngIf="item.youtubeUrls.length === 0">No URLs added.</p>
+                    <div class="add-url-box">
+                      <input type="text" [(ngModel)]="item.newYoutubeUrl" placeholder="Paste YouTube URL..." />
+                      <button class="btn btn-sm btn-primary" (click)="addYoutubeUrl(item)">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="center">
+                <button 
+                  class="toggle-btn" 
+                  [class.active]="item.shortNotesToggle"
+                  (click)="item.shortNotesToggle = !item.shortNotesToggle"
+                >
+                  {{ item.shortNotesToggle ? 'Hide' : 'Show' }}
+                </button>
+              </td>
+              <td class="center">
+                <button 
+                  class="toggle-btn" 
+                  [class.active]="item.notesToggle"
+                  (click)="item.notesToggle = !item.notesToggle"
+                >
+                  {{ item.notesToggle ? 'Hide' : 'Show' }}
+                </button>
+              </td>
+            </tr>
+            <!-- Expanded Rows for Notes -->
+            <tr class="expanded-row" *ngIf="item.shortNotesToggle">
+              <td colspan="6">
+                <div class="notes-container">
+                  <label>Short Notes:</label>
+                  <textarea [(ngModel)]="item.shortNotes" placeholder="Type short notes here..." rows="2"></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr class="expanded-row" *ngIf="item.notesToggle">
+              <td colspan="6">
+                <div class="notes-container">
+                  <label>Detailed Notes:</label>
+                  <textarea [(ngModel)]="item.notes" placeholder="Type detailed notes here..." rows="4"></textarea>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="empty-state" *ngIf="filteredTableData.length === 0">
+        No matching records found.
+      </div>
+    </div>
+  </div>
+</div>
