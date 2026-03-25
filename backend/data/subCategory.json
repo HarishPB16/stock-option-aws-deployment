@@ -1,0 +1,50 @@
+{
+  "english": [
+    "communication",
+    "interviewPrep"
+  ],
+  "technical": [
+    "angular",
+    "react",
+    "project",
+    "linuxCommands",
+    "gitCommands",
+    "mongoDb"
+  ],
+  "aiDevops": [
+    "genAI",
+    "aiPrompts",
+    "owasp",
+    "aws",
+    "ciCd",
+    "monitoring"
+  ],
+  "psychology": [
+    "behavior",
+    "intelligence",
+    "communicationSkills",
+    "mentalHealth",
+    "relationships",
+    "selfDevelopment"
+  ],
+  "health": [
+    "eyes",
+    "backBone",
+    "ears",
+    "teeth",
+    "tests",
+    "sugar",
+    "outsideFood"
+  ],
+  "utkarshVideo": [
+    "learningVideos",
+    "games",
+    "activities",
+    "environment",
+    "audioVideo",
+    "tongueTest"
+  ],
+  "stockMarket": [
+    "buyTwoOptions"
+  ]
+}

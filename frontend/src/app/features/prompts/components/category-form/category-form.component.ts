@@ -20,61 +20,14 @@ export interface TableRowItem {
   styleUrls: ['./category-form.component.css']
 })
 export class CategoryFormComponent implements OnInit {
-  categoryObj: Record<string, string> = {
-    english: "English",
-    technical: "Technical",
-    aiDevops: "AI / DevOps / AWS",
-    psychology: "Psychology",
-    health: "Health",
-    utkarshVideo: "Utkarsh Video",
-    stockMarket: "Stock Market"
-  };
+  categoryObj: Record<string, string> = {};
+  subCategoryObj: Record<string, string[]> = {};
+  valueObj: Record<string, any> = {};
 
-  subCategoryObj: Record<string, string[]> = {
-    english: ["communication", "interviewPrep"],
-    technical: ["angular", "react", "project", "linuxCommands", "gitCommands"],
-    aiDevops: ["genAI", "aiPrompts", "owasp", "aws", "ciCd", "monitoring"],
-    psychology: ["behavior", "intelligence", "communicationSkills", "mentalHealth", "relationships", "selfDevelopment"],
-    health: ["eyes", "backBone", "ears", "teeth", "tests", "sugar", "outsideFood"],
-    utkarshVideo: ["learningVideos", "games", "activities", "environment", "audioVideo", "tongueTest"],
-    stockMarket: ["buyTwoOptions"]
-  };
-
-  valueObj: Record<string, any> = {
-    communication: ["Writing (grammar, spelling)", "Speaking (confidence)", "Listening (understand native speakers)", "Technical vocabulary"],
-    interviewPrep: ["Scenario-based questions", "HR questions", "AI mock interview"],
-    angular: ["Angular Elements", "ngOnChanges", "Ivy engine", "Routing & Guards", "Signals", "Standalone components"],
-    react: ["useState", "useReducer", "Props", "Context API", "Lazy loading", "Routing"],
-    project: ["MEAN stack", "Architecture design", "Debugging"],
-    linuxCommands: ["ls, cd, pwd", "chmod", "ps, kill"],
-    gitCommands: ["clone, pull, push", "branch, merge"],
-    genAI: ["AI concepts", "Time complexity", "Use cases"],
-    aiPrompts: ["Prompt engineering", "Reusable prompts"],
-    owasp: ["OWASP Top 10", "Security practices"],
-    aws: ["S3", "Lambda", "IAM", "Cloud basics"],
-    ciCd: ["Pipeline setup", "SonarQube", "Deployment flow"],
-    monitoring: ["Logs", "Alerts", "Performance tracking"],
-    behavior: ["Human behavior", "Child parenting"],
-    intelligence: ["Emotional intelligence", "Cognitive skills"],
-    communicationSkills: ["Verbal communication", "Social interaction"],
-    mentalHealth: ["Stress management", "Mental wellness"],
-    relationships: ["Relationship understanding", "Leadership"],
-    selfDevelopment: ["Self awareness", "Personality growth"],
-    eyes: "Eye checkup",
-    backBone: "Backbone test",
-    ears: "Ear care",
-    teeth: "Brush twice",
-    tests: ["Calcium", "Vitamin B12", "Vitamin D", "Cholesterol", "Sugar"],
-    sugar: "Reduce sugar",
-    outsideFood: "Avoid outside food",
-    learningVideos: ["Jadu stories", "Wall videos", "Sound videos"],
-    games: ["Mobile games", "Learning games"],
-    activities: ["Story explain", "Music & story"],
-    environment: ["Box with soil", "Fish tank", "Home setup"],
-    audioVideo: ["Sound learning", "Video collection"],
-    tongueTest: ["Reaction test", "Tongue test"],
-    buyTwoOptions: "Buy two options per month"
-  };
+  showAddPopup = false;
+  popupType: 'category' | 'subcategory' | 'value' = 'category';
+  popupInputValue = '';
+  popupError = '';
 
   categoryKeys: string[] = [];
   selectedCategory = '';
@@ -236,6 +189,92 @@ export class CategoryFormComponent implements OnInit {
   }
 
   getCategoryLabel(key: string): string {
-    return this.categoryObj[key];
+    return this.categoryObj[key] || key;
+  }
+
+  openAddPopup(type: 'category' | 'subcategory' | 'value'): void {
+    this.popupType = type;
+    this.popupInputValue = '';
+    this.popupError = '';
+    this.showAddPopup = true;
+  }
+
+  closeAddPopup(): void {
+    this.showAddPopup = false;
+    this.popupInputValue = '';
+    this.popupError = '';
+  }
+
+  submitAddPopup(): void {
+    if (!this.popupInputValue.trim()) {
+      this.popupError = 'Name cannot be empty.';
+      return;
+    }
+    const val = this.popupInputValue.trim();
+    this.popupError = '';
+
+    if (this.popupType === 'category') {
+      const key = val.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase()).replace(/[^a-zA-Z0-9]/g, '');
+      
+      if (!key) {
+        this.popupError = 'Invalid category name.';
+        return;
+      }
+      if (this.categoryObj[key] || Object.values(this.categoryObj).some(existing => existing.toLowerCase() === val.toLowerCase())) {
+        this.popupError = 'This Category already exists.';
+        return;
+      }
+      
+      this.categoryObj[key] = val;
+      this.categoryKeys = Object.keys(this.categoryObj);
+      this.selectedCategory = key;
+      this.onCategoryChange();
+
+    } else if (this.popupType === 'subcategory') {
+      if (!this.selectedCategory) return;
+      const key = val.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase()).replace(/[^a-zA-Z0-9]/g, '');
+      
+      if (!key) {
+        this.popupError = 'Invalid sub category name.';
+        return;
+      }
+      if (!this.subCategoryObj[this.selectedCategory]) {
+        this.subCategoryObj[this.selectedCategory] = [];
+      }
+      if (this.subCategoryObj[this.selectedCategory].includes(key)) {
+        this.popupError = 'This Sub Category already exists under the selected Primary Category.';
+        return;
+      }
+      
+      this.subCategoryObj[this.selectedCategory].push(key);
+      this.subCategories = this.subCategoryObj[this.selectedCategory];
+      this.selectedSubCategory = key;
+      this.onSubCategoryChange();
+
+    } else if (this.popupType === 'value') {
+      if (!this.selectedSubCategory) return;
+      
+      const exists = this.tableData.some(item => item.name.toLowerCase() === val.toLowerCase());
+      if (exists) {
+        this.popupError = 'This Value already exists in this table.';
+        return;
+      }
+
+      this.tableData.push({
+        name: val,
+        completed: false,
+        comment: '',
+        youtubeUrls: [],
+        newYoutubeUrl: '',
+        showYoutubePopup: false,
+        shortNotesToggle: false,
+        notesToggle: false,
+        shortNotes: '',
+        notes: ''
+      });
+      this.filterTable();
+    }
+    this.closeAddPopup();
   }
 }
+
