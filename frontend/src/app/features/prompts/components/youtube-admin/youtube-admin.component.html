@@ -1,0 +1,63 @@
+<div class="admin-container">
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="icon-wrapper">
+        <span class="plus-icon">+</span>
+      </div>
+      <h2>Add Youtube Video</h2>
+      <p>Submit a YouTube link below and we will automatically harvest the thumbnail and add it to the user page layout.</p>
+    </div>
+
+    <form [formGroup]="videoForm" (ngSubmit)="onSubmit()" class="admin-form">
+      <!-- Title Input -->
+      <div class="form-group">
+        <label for="title">Video Title (Optional)</label>
+        <input 
+          id="title" 
+          type="text" 
+          formControlName="title" 
+          placeholder="Enter an aesthetic title"
+          [attr.disabled]="isSubmitting ? true : null"
+        />
+      </div>
+
+      <!-- URL Input -->
+      <div class="form-group" [class.has-error]="videoForm.get('url')?.invalid && videoForm.get('url')?.touched">
+        <label for="url">YouTube URL <span class="required">*</span></label>
+        <input 
+          id="url" 
+          type="url" 
+          formControlName="url" 
+          placeholder="https://www.youtube.com/watch?v=..."
+          [attr.disabled]="isSubmitting ? true : null"
+        />
+        <div class="error-msg" *ngIf="videoForm.get('url')?.invalid && videoForm.get('url')?.touched">
+          Please enter a valid YouTube URL.
+        </div>
+      </div>
+
+      <!-- Status Messages -->
+      <div class="alert success-alert" *ngIf="successMessage">
+        <span class="alert-icon">✓</span> {{ successMessage }}
+      </div>
+      <div class="alert error-alert" *ngIf="errorMessage">
+        <span class="alert-icon">!</span> {{ errorMessage }}
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="submit-btn" 
+        [disabled]="videoForm.invalid || isSubmitting"
+        [class.loading]="isSubmitting"
+      >
+        <span class="btn-text" *ngIf="!isSubmitting">Add Video to Vids Page</span>
+        <span class="spinner" *ngIf="isSubmitting"></span>
+      </button>
+
+      <div class="back-link">
+        <a routerLink="/youtube">View Youtube Page &rarr;</a>
+      </div>
+    </form>
+  </div>
+</div>

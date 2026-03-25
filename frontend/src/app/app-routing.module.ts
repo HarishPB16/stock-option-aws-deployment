@@ -8,6 +8,7 @@ const routes: Routes = [
     { path: 'history', loadChildren: () => import('./features/history/history.module').then(m => m.HistoryModule) },
     { path: 'admin', loadChildren: () => import('./features/prompts/prompts.module').then(m => m.PromptsModule) },
     { path: 'top-picks', loadChildren: () => import('./features/top-picks/top-picks.module').then(m => m.TopPicksModule) },
+    { path: 'youtube', loadChildren: () => import('./features/youtube/youtube.module').then(m => m.YoutubeModule) },
     { path: '**', redirectTo: 'home' }
 ];
 

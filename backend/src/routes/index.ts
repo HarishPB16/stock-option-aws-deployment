@@ -6,6 +6,7 @@ import claudeRoutes from './claude.routes';
 import deepseekRoutes from './deepseek.routes';
 import promptsRoutes from './prompts.routes';
 import recommendationsRoutes from './recommendations.routes';
+import videoRoutes from './video.routes';
 
 const router = Router();
 
@@ -17,6 +18,7 @@ router.use('/claude', claudeRoutes);
 router.use('/deepseek', deepseekRoutes);
 router.use('/prompts', promptsRoutes);
 router.use('/recommendations', recommendationsRoutes);
+router.use('/videos', videoRoutes);
 
 // Healthcheck
 router.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
