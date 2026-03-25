@@ -2,7 +2,37 @@ import { Request, Response } from 'express';
 import * as https from 'https';
 import * as fs from 'fs';
 import * as path from 'path';
-import Video, { IVideo } from '../models/video.model';
+
+// Define the absolute path to the data folder
+const DATA_DIR = path.join(__dirname, '../../data');
+const getFilePath = (fileName: string) => path.join(DATA_DIR, fileName);
+
+const ensureDataDir = () => {
+    if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+};
+
+const readFileSafely = (filePath: string, defaultData: any) => {
+    try {
+        if (fs.existsSync(filePath)) {
+            const data = fs.readFileSync(filePath, 'utf-8');
+            return JSON.parse(data);
+        }
+    } catch (err) {
+        console.error(`Error reading ${filePath}:`, err);
+    }
+    return defaultData;
+};
+
+export interface IVideoJSON {
+    url: string;
+    videoId: string;
+    thumbnailUrl: string;
+    title: string;
+    categories: string[];
+    createdAt: string;
+}
 
 // Helper to extract YouTube video ID from various URL formats
 const extractVideoId = (url: string): string | null => {
@@ -34,10 +64,15 @@ const downloadImage = (url: string, dest: string): Promise<void> => {
 
 export const addVideo = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { url, title } = req.body;
+        const { url, title, categories } = req.body;
         
         if (!url) {
             res.status(400).json({ success: false, message: 'YouTube URL is required' });
+            return;
+        }
+
+        if (!title || !title.trim()) {
+            res.status(400).json({ success: false, message: 'Video Title is required' });
             return;
         }
 
@@ -47,8 +82,12 @@ export const addVideo = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
+        ensureDataDir();
+        const youtubeDataPath = getFilePath('youtube.json');
+        const videos: IVideoJSON[] = readFileSafely(youtubeDataPath, []);
+
         // Check if video already exists
-        const existingVideo = await Video.findOne({ videoId });
+        const existingVideo = videos.find(v => v.videoId === videoId);
         if (existingVideo) {
             res.status(400).json({ success: false, message: 'Video already exists', data: existingVideo });
             return;
@@ -72,15 +111,18 @@ export const addVideo = async (req: Request, res: Response): Promise<void> => {
         // Download thumbnail
         await downloadImage(thumbnailUrlStr, localThumbnailPath);
         
-        // Save to DB
-        const video = new Video({
+        // Save to JSON
+        const video: IVideoJSON = {
             url,
             videoId,
             thumbnailUrl: `/public/thumbnails/${localThumbnailName}`,
-            title: title || ''
-        });
+            title: title || '',
+            categories: categories || [],
+            createdAt: new Date().toISOString()
+        };
         
-        await video.save();
+        videos.push(video);
+        fs.writeFileSync(youtubeDataPath, JSON.stringify(videos, null, 2), 'utf-8');
 
         res.status(201).json({ success: true, data: video });
     } catch (error: any) {
@@ -91,9 +133,27 @@ export const addVideo = async (req: Request, res: Response): Promise<void> => {
 
 export const getRandomVideos = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Fetch up to 50 random videos
-        const videos = await Video.aggregate([{ $sample: { size: 50 } }]);
-        res.status(200).json({ success: true, data: videos, count: videos.length });
+        const selectedCategory = req.query.category as string | undefined;
+
+        ensureDataDir();
+        const videos: IVideoJSON[] = readFileSafely(getFilePath('youtube.json'), []);
+
+        let filteredVideos = videos;
+        
+        if (selectedCategory && selectedCategory !== 'All') {
+            filteredVideos = videos.filter(v => v.categories && v.categories.includes(selectedCategory));
+        }
+
+        // Randomize the array
+        for (let i = filteredVideos.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [filteredVideos[i], filteredVideos[j]] = [filteredVideos[j], filteredVideos[i]];
+        }
+
+        // Fetch up to 50
+        const result = filteredVideos.slice(0, 50);
+
+        res.status(200).json({ success: true, data: result, count: result.length });
     } catch (error: any) {
         console.error('Error fetching random videos:', error);
         res.status(500).json({ success: false, message: 'Server error', error: error.message });

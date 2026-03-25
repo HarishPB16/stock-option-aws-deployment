@@ -12,6 +12,20 @@
     </div>
   </header>
 
+  <!-- Category Filter Bar -->
+  <div class="category-filters-wrapper">
+    <div class="category-filters">
+      <button 
+        *ngFor="let cat of categories" 
+        class="filter-chip" 
+        [class.active]="selectedCategory === cat"
+        (click)="selectCategory(cat)"
+      >
+        {{ cat }}
+      </button>
+    </div>
+  </div>
+
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-state">
     <div class="shimmer-card" *ngFor="let item of [1,2,3,4,5,6,7,8]">

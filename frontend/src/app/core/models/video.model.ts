@@ -3,8 +3,9 @@ export interface Video {
     url: string;
     videoId: string;
     thumbnailUrl: string;
-    title?: string;
-    createdAt?: Date;
+    title: string;
+    categories?: string[];
+    createdAt: string;
 }
 
 export interface VideoResponse {

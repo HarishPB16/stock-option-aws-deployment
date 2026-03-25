@@ -97,7 +97,6 @@ export class PromptsComponent implements OnInit {
     try {
       const bytes = CryptoJS.AES.decrypt(this.encryptedAdminPass, this.secretKey);
       const decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
-      console.log("decryptedPass", decryptedPass)
       if (password === decryptedPass) {
         this.isAuthenticated = true;
       } else {

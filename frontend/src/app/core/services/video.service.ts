@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { VideoResponse } from '../models/video.model';
@@ -12,11 +12,15 @@ export class VideoService {
 
     constructor(private http: HttpClient) { }
 
-    addVideo(url: string, title?: string): Observable<VideoResponse> {
-        return this.http.post<VideoResponse>(this.apiUrl, { url, title });
+    addVideo(url: string, title?: string, categories?: string[]): Observable<VideoResponse> {
+        return this.http.post<VideoResponse>(this.apiUrl, { url, title, categories });
     }
 
-    getRandomVideos(): Observable<VideoResponse> {
-        return this.http.get<VideoResponse>(`${this.apiUrl}/random`);
+    getRandomVideos(category?: string): Observable<VideoResponse> {
+        let params = new HttpParams();
+        if (category && category !== 'All') {
+            params = params.set('category', category);
+        }
+        return this.http.get<VideoResponse>(`${this.apiUrl}/random`, { params });
     }
 }

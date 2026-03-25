@@ -15,6 +15,10 @@ export class YoutubeComponent implements OnInit {
   safeVideoUrl: SafeResourceUrl | null = null;
   loading = true;
 
+  categories = ['All', 'Mobile', 'My Video', 'youtube', 'song', 'cartton song'];
+  selectedCategory = 'All';
+
+
   constructor(
     private videoService: VideoService,
     private sanitizer: DomSanitizer
@@ -26,10 +30,12 @@ export class YoutubeComponent implements OnInit {
 
   fetchVideos(): void {
     this.loading = true;
-    this.videoService.getRandomVideos().subscribe({
+    this.videoService.getRandomVideos(this.selectedCategory).subscribe({
       next: (res) => {
         if (res.success && Array.isArray(res.data)) {
           this.videos = res.data;
+        } else {
+          this.videos = [];
         }
         this.loading = false;
       },
@@ -40,6 +46,12 @@ export class YoutubeComponent implements OnInit {
     });
   }
 
+  selectCategory(category: string): void {
+    this.selectedCategory = category;
+    this.fetchVideos();
+  }
+
+
   openVideo(video: Video): void {
     this.selectedVideo = video;
     const embedUrl = `https://www.youtube.com/embed/${video.videoId}?autoplay=1`;
@@ -47,8 +59,7 @@ export class YoutubeComponent implements OnInit {
   }
 
   getThumbnailUrl(video: Video): string {
-    const baseUrl = environment.apiUrl.replace(/\/api\/v1\/?$/, '');
-    return `${baseUrl}${video.thumbnailUrl}`;
+    return `https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`;
   }
 
   closeVideo(): void {
