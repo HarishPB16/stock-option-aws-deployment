@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { VideoService } from '../../core/services/video.service';
 import { Video } from '../../core/models/video.model';
@@ -17,11 +17,12 @@ export class YoutubeComponent implements OnInit {
 
   categories = ['All', 'Mobile', 'My Video', 'youtube', 'song', 'cartton song'];
   selectedCategory = 'All';
-
+  private ytPlayer: any = null;
 
   constructor(
     private videoService: VideoService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -54,8 +55,51 @@ export class YoutubeComponent implements OnInit {
 
   openVideo(video: Video): void {
     this.selectedVideo = video;
-    const embedUrl = `https://www.youtube.com/embed/${video.videoId}?autoplay=1`;
-    this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+    
+    // Initialize YouTube Player via official IFrame API
+    if (!(window as any).YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      if (firstScriptTag && firstScriptTag.parentNode) {
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      } else {
+        document.head.appendChild(tag);
+      }
+      
+      (window as any).onYouTubeIframeAPIReady = () => {
+        this.createPlayer();
+      };
+    } else {
+      setTimeout(() => this.createPlayer(), 0);
+    }
+  }
+
+  createPlayer(): void {
+    if (this.ytPlayer) {
+      this.ytPlayer.destroy();
+    }
+    
+    this.ytPlayer = new (window as any).YT.Player('yt-player', {
+      height: '100%',
+      width: '100%',
+      videoId: this.selectedVideo?.videoId,
+      playerVars: {
+        autoplay: 1,
+        rel: 0,
+        modestbranding: 1
+      },
+      events: {
+        onStateChange: (event: any) => {
+          // YT.PlayerState.ENDED === 0
+          if (event.data === 0) {
+            this.ngZone.run(() => {
+              this.closeVideo();
+            });
+          }
+        }
+      }
+    });
   }
 
   getThumbnailUrl(video: Video): string {
@@ -63,7 +107,11 @@ export class YoutubeComponent implements OnInit {
   }
 
   closeVideo(): void {
+    if (this.ytPlayer) {
+      this.ytPlayer.destroy();
+      this.ytPlayer = null;
+    }
     this.selectedVideo = null;
-    this.safeVideoUrl = null;
   }
 }
+
