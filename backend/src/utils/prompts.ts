@@ -319,6 +319,7 @@ export const getTopPicksPrompt = (formattedDate: string): string => {
     You are an elite Indian Stock Market Options Analyst.
     Today's Date is ${formattedDate}.
     Search on the Google search engine.
+    Don't check the options trading websites or data if market is closed.
     
     Analyze the current Indian F&O equity market momentum, news, and technicals.
     Identify exactly 5 CALL options and 5 PUT options that have the highest probability of success right now.
