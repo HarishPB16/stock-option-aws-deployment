@@ -87,7 +87,10 @@ export class YoutubeComponent implements OnInit {
         autoplay: 1,
         rel: 0,
         modestbranding: 1,
-        vq: 'hd720' // Legacy URL parameter hack for quality
+        iv_load_policy: 3, // Disable video annotations
+        showinfo: 0,       // Deprecated but still applies to some legacy embeds
+        fs: 0,             // Hide fullscreen button to prevent breakout
+        vq: 'hd720'        // Legacy URL parameter hack for quality
       },
       events: {
         onReady: (event: any) => {
