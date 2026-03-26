@@ -10,7 +10,7 @@ const getDeepSeekClient = (): OpenAI => {
         try {
             deepseek = new OpenAI({
                 baseURL: 'https://api.deepseek.com',
-                apiKey: process.env.DEEPSEEK_API_KEY || 'dummy_key_for_build'
+                apiKey: process.env.DEEPSEEK_API_KEY || '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'
             });
         } catch (err) {
             logger.error('Failed to initialize DeepSeek SDK', { error: err });
@@ -187,7 +187,7 @@ export const generateTopPicksDeepSeek = async (): Promise<any> => {
         let jsonStr = textOutput;
         const jsonMatch = textOutput.match(/\{[\s\S]*\}/);
         if (jsonMatch) jsonStr = jsonMatch[0];
-        
+
         return JSON.parse(jsonStr);
     } catch (error: any) {
         logger.error('DeepSeek AI Top Picks Failed', { durationMs: Date.now() - t0, error: error.message });
