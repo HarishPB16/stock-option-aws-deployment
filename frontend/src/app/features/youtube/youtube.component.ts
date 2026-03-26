@@ -83,14 +83,28 @@ export class YoutubeComponent implements OnInit {
     this.ytPlayer = new (window as any).YT.Player('yt-player', {
       height: '100%',
       width: '100%',
-      videoId: this.selectedVideo?.videoId,
       playerVars: {
         autoplay: 1,
         rel: 0,
-        modestbranding: 1
+        modestbranding: 1,
+        vq: 'hd720' // Legacy URL parameter hack for quality
       },
       events: {
+        onReady: (event: any) => {
+          // Initialize video with explicit suggestedQuality
+          if (this.selectedVideo) {
+            event.target.loadVideoById({
+              videoId: this.selectedVideo.videoId,
+              suggestedQuality: 'hd720'
+            });
+          }
+        },
         onStateChange: (event: any) => {
+          // Force HD playback
+          if (event.data === 1 || event.data === -1 || event.data === 3) {
+            event.target.setPlaybackQuality('hd720');
+          }
+          
           // YT.PlayerState.ENDED === 0
           if (event.data === 0) {
             this.ngZone.run(() => {
