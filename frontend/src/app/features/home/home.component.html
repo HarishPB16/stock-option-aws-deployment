@@ -29,6 +29,11 @@
         <i class="fas fa-exclamation-triangle"></i> {{ error }}
     </div>
 
+    <!-- DB Cache Timestamp Badge -->
+    <div class="timestamp-badge" *ngIf="createdAt && !isLoading && !isRefreshing" style="text-align: center; margin: 15px 0; color: #a0aebf; font-weight: 500;">
+        <span class="icon">🕒</span> Database Cached At: {{ createdAt | date:'medium' }}
+    </div>
+
     <div class="content-wrapper">
         <div *ngIf="isLoading && !isRefreshing" class="loading-state">
             <div class="spinner"></div>

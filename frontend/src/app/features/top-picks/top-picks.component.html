@@ -55,6 +55,11 @@
 
         <!-- Success State -->
         <div class="success-container" *ngIf="ai.status === 'success' && ai.data">
+          
+          <div class="timestamp-badge" *ngIf="ai.data.createdAt">
+            <span class="icon">🕒</span> Database Cached At: {{ ai.data.createdAt | date:'medium' }}
+          </div>
+
           <!-- Calls Section -->
           <div class="options-section">
             <h4 class="section-title call-title">Top 5 Calls 🚀</h4>

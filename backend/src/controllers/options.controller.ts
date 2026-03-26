@@ -12,15 +12,35 @@ export const suggestOption = async (req: Request, res: Response, next: NextFunct
 
         logger.info(`Processing Option Suggestion Request`, { userId, ticker });
 
-        const insight = await generateOptionSuggestion(ticker);
-
         // Exact UTC boundaries for "Today"
         const todayStart = new Date();
         todayStart.setUTCHours(0, 0, 0, 0);
         const todayEnd = new Date();
         todayEnd.setUTCHours(23, 59, 59, 999);
 
-        // Save to DocumentDB using upsert (one record per stock per day)
+        // 1. Check DB First
+        const existingOption = await Option.findOne({
+            stock: ticker,
+            createdAt: { $gte: todayStart, $lte: todayEnd }
+        });
+
+        if (existingOption) {
+            logger.info(`Returning cached Option Suggestion for`, { ticker });
+            return res.status(200).json({
+                success: true,
+                cached: true,
+                data: {
+                    ticker,
+                    insight: existingOption,
+                    recordId: existingOption._id,
+                    createdAt: existingOption.createdAt
+                }
+            });
+        }
+
+        const insight = await generateOptionSuggestion(ticker);
+
+        // Save to DocumentDB using new Document
         const optionData = {
             userId,
             stock: ticker,
@@ -44,23 +64,19 @@ export const suggestOption = async (req: Request, res: Response, next: NextFunct
             analysis: insight.analysis
         };
 
-        const savedOption = await Option.findOneAndUpdate(
-            {
-                stock: ticker,
-                createdAt: { $gte: todayStart, $lte: todayEnd }
-            },
-            { $set: optionData },
-            { new: true, upsert: true, setDefaultsOnInsert: true }
-        );
+        const savedOption = new Option(optionData);
+        await savedOption.save();
 
         res.status(200).json({
             success: true,
             data: {
                 ticker,
                 insight,
-                recordId: savedOption?._id
+                recordId: savedOption._id,
+                createdAt: savedOption.createdAt
             }
         });
+
 
     } catch (error) {
         next(error); // Pass to global error handler

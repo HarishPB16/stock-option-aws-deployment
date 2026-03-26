@@ -41,6 +41,11 @@
     {{ errorMessage }}
   </div>
 
+  <!-- DB Cache Timestamp Badge -->
+  <div class="timestamp-badge" *ngIf="(insightGemini || insightChatGPT || insightClaude || insightDeepSeek) && !isLoading" style="text-align: center; margin: 15px 0; color: #a0aebf; font-weight: 500;">
+    <span class="icon">🕒</span> Database Cached At: {{ createdAtGemini || createdAtChatGPT || createdAtClaude || createdAtDeepSeek | date:'medium' }}
+  </div>
+
   <app-option-stock-detail *ngIf="(insightGemini || insightChatGPT || insightClaude || insightDeepSeek) && !isLoading"
     [insightGemini]="insightGemini" [simpleAdviceGemini]="simpleAdviceGemini"
     [isAdviceCachedGemini]="isAdviceCachedGemini" [isGeminiLoading]="isGeminiLoading" [insightChatGPT]="insightChatGPT"

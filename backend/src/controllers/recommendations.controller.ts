@@ -37,7 +37,7 @@ export const getTopPicks = async (req: Request, res: Response): Promise<void> =>
         let existingRun = await TopPicks.findOne({ dateKey, aiService });
         if (existingRun) {
             logger.info('Returning cached Top Picks from MongoDB', { aiService, dateKey });
-            res.status(200).json({ calls: existingRun.calls, puts: existingRun.puts });
+            res.status(200).json({ calls: existingRun.calls, puts: existingRun.puts, createdAt: existingRun.createdAt });
             return;
         }
 
@@ -77,7 +77,7 @@ export const getTopPicks = async (req: Request, res: Response): Promise<void> =>
             }
         }
 
-        res.status(200).json(result);
+        res.status(200).json({ ...result, createdAt: new Date() });
     } catch (error: any) {
         logger.error('Error fetching Top Picks', { error: error.message, ai: req.query.ai });
         res.status(500).json({ error: error.message || 'Internal Server Error' });

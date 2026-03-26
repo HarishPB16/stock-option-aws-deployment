@@ -14,6 +14,7 @@ export interface OptionPick {
 export interface TopPicksResponse {
   calls: OptionPick[];
   puts: OptionPick[];
+  createdAt?: string;
 }
 
 @Injectable({
