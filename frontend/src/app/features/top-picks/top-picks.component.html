@@ -1,0 +1,99 @@
+<div class="top-picks-container">
+  <div class="header">
+    <h1>Multi-AI Consensus Picks</h1>
+    <p>Top 5 Option Strategies verified by 4 discrete AI Architectures.</p>
+  </div>
+
+  <div class="action-bar flex-controls">
+    <div class="date-selector-wrapper">
+      <span class="icon">📅</span>
+      <select class="date-select" [(ngModel)]="selectedDate" (change)="onDateChange()">
+        <option [ngValue]="null">Today (Live Scan)</option>
+        <option *ngFor="let date of availableDates" [value]="date">{{ date }}</option>
+      </select>
+    </div>
+
+    <button class="scan-btn" [disabled]="isGlobalLoading" (click)="runMasterScan()" [class.historical]="selectedDate">
+      <span *ngIf="!isGlobalLoading && !selectedDate">Run Master Scan <span class="ai-sparkles">✨</span></span>
+      <span *ngIf="!isGlobalLoading && selectedDate">Load Historical Picks <span class="ai-sparkles">🕰️</span></span>
+      <span *ngIf="isGlobalLoading">Analyzing Market... <span class="spinner"></span></span>
+    </button>
+  </div>
+
+  <div class="ai-grid">
+    <div class="ai-card" *ngFor="let ai of aiEngines">
+      <div class="ai-card-header">
+        <h3 class="ai-name">
+          <span class="ai-avatar" [ngClass]="ai.id">{{ ai.name.charAt(0) }}</span>
+          {{ ai.name }}
+        </h3>
+        <span class="status-badge" [ngClass]="ai.status">
+          {{ ai.status | uppercase }}
+        </span>
+      </div>
+
+      <div class="ai-card-body">
+        <!-- Idle State -->
+        <div class="state-container" *ngIf="ai.status === 'idle'">
+          <p class="idle-text">Ready to scan the Indian Market.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div class="state-container" *ngIf="ai.status === 'loading'">
+          <div class="loader">
+            <div class="loader-pulse" [ngClass]="ai.id"></div>
+          </div>
+          <p class="loading-text">Mining Option Chains & Global News...</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="state-container" *ngIf="ai.status === 'error'">
+          <div class="error-banner">
+            ❌ {{ ai.errorMsg }}
+          </div>
+        </div>
+
+        <!-- Success State -->
+        <div class="success-container" *ngIf="ai.status === 'success' && ai.data">
+          
+          <div class="timestamp-badge" *ngIf="ai.data.createdAt">
+            <span class="icon">🕒</span> Database Cached At: {{ ai.data.createdAt | date:'medium' }}
+          </div>
+
+          <!-- Calls Section -->
+          <div class="options-section">
+            <h4 class="section-title call-title">Top 5 Calls 🚀</h4>
+            <div class="option-item call-item" *ngFor="let call of ai.data.calls">
+              <div class="option-header">
+                <strong>{{ call.ticker }}</strong>
+                <span class="strike">Strike: {{ call.strike }}</span>
+              </div>
+              <div class="option-meta">
+                <span class="expiry">{{ call.expiry }}</span>
+                <span class="premium">₹{{ call.premium }}</span>
+              </div>
+              <p class="option-reason">{{ call.reason }}</p>
+            </div>
+          </div>
+
+          <!-- Puts Section -->
+          <div class="options-section mt-4">
+            <h4 class="section-title put-title">Top 5 Puts 📉</h4>
+            <div class="option-item put-item" *ngFor="let put of ai.data.puts">
+              <div class="option-header">
+                <strong>{{ put.ticker }}</strong>
+                <span class="strike">Strike: {{ put.strike }}</span>
+              </div>
+              <div class="option-meta">
+                <span class="expiry">{{ put.expiry }}</span>
+                <span class="premium">₹{{ put.premium }}</span>
+              </div>
+              <p class="option-reason">{{ put.reason }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

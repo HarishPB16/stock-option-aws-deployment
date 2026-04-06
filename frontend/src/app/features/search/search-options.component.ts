@@ -21,24 +21,28 @@ export class SearchOptionsComponent implements OnInit {
     insightGemini: OptionInsight | null = null;
     simpleAdviceGemini: string | null = null;
     isAdviceCachedGemini: boolean = false;
+    createdAtGemini: string | null = null;
 
     // ChatGPT State
     isChatGPTLoading = false;
     insightChatGPT: OptionInsight | null = null;
     simpleAdviceChatGPT: string | null = null;
     isAdviceCachedChatGPT: boolean = false;
+    createdAtChatGPT: string | null = null;
 
     // Claude State
     isClaudeLoading = false;
     insightClaude: OptionInsight | null = null;
     simpleAdviceClaude: string | null = null;
     isAdviceCachedClaude: boolean = false;
+    createdAtClaude: string | null = null;
 
     // DeepSeek State
     isDeepSeekLoading = false;
     insightDeepSeek: OptionInsight | null = null;
     simpleAdviceDeepSeek: string | null = null;
     isAdviceCachedDeepSeek: boolean = false;
+    createdAtDeepSeek: string | null = null;
 
     // Modals
     showAdviceModal: boolean = false;
@@ -152,6 +156,7 @@ export class SearchOptionsComponent implements OnInit {
             next: (result) => {
                 if (result.suggest.success && result.suggest.data) {
                     this.insightGemini = result.suggest.data.insight;
+                    this.createdAtGemini = (result.suggest.data as any).createdAt || null;
                 }
                 if (result.ask.success && result.ask.data) {
                     this.simpleAdviceGemini = result.ask.data.advice;
@@ -179,6 +184,7 @@ export class SearchOptionsComponent implements OnInit {
             next: (result) => {
                 if (result.suggest.success && result.suggest.data) {
                     this.insightChatGPT = result.suggest.data.insight;
+                    this.createdAtChatGPT = (result.suggest.data as any).createdAt || null;
                 }
                 if (result.ask.success && result.ask.data) {
                     this.simpleAdviceChatGPT = result.ask.data.advice;
@@ -206,6 +212,7 @@ export class SearchOptionsComponent implements OnInit {
             next: (result) => {
                 if (result.suggest.success && result.suggest.data) {
                     this.insightClaude = result.suggest.data.insight;
+                    this.createdAtClaude = (result.suggest.data as any).createdAt || null;
                 }
                 if (result.ask.success && result.ask.data) {
                     this.simpleAdviceClaude = result.ask.data.advice;
@@ -233,6 +240,7 @@ export class SearchOptionsComponent implements OnInit {
             next: (result) => {
                 if (result.suggest.success && result.suggest.data) {
                     this.insightDeepSeek = result.suggest.data.insight;
+                    this.createdAtDeepSeek = (result.suggest.data as any).createdAt || null;
                 }
                 if (result.ask.success && result.ask.data) {
                     this.simpleAdviceDeepSeek = result.ask.data.advice;

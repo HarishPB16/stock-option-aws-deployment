@@ -1,0 +1,9 @@
+<div class="admin-nav">
+  <button class="btn-secondary" [class.btn-primary]="activeTab === 'prompt'"
+    (click)="onTabClick('prompt')">Prompt</button>
+  <button class="btn-secondary" [class.btn-primary]="activeTab === 'iq'" (click)="onTabClick('iq')">IQ</button>
+  <button class="btn-secondary" [class.btn-primary]="activeTab === 'youtube'" (click)="onTabClick('youtube')">YouTube
+    Admin</button>
+  <button class="btn-secondary" [class.btn-primary]="activeTab === 'category'"
+    (click)="onTabClick('category')">Study</button>
+</div>

@@ -25,13 +25,21 @@ export class PromptsComponent implements OnInit {
   loginError: string | null = null;
   // A simulated encrypted value for "Aws@16" using secret "admin_secret".
   // Generated via CryptoJS.AES.encrypt('Aws@16', 'admin_secret').toString()
-  private encryptedAdminPass = 'U2FsdGVkX1+vG02e0Gj3oHh/U2nOq5R59nKk0I3t1Xw=';
+  private encryptedAdminPass = 'U2FsdGVkX1/PDGD/RNA7t8qSc2uWJ38PeML1BehNsKs=';
   private secretKey = 'admin_secret';
+
+  // Admin Sub-Menu State
+  activeAdminTab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category' = 'prompt';
+
+  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category'): void {
+    this.activeAdminTab = tab;
+  }
 
   promptTypes = [
     { value: 'suggestion', label: 'Option Suggestion' },
     { value: 'advice', label: 'Simple Advice' },
-    { value: 'market_briefing', label: 'Market Briefing' }
+    { value: 'market_briefing', label: 'Market Briefing' },
+    { value: 'top_picks', label: 'Top Picks' }
   ];
 
   filteredStocks$!: Observable<NSESecurity[]>;
@@ -60,7 +68,7 @@ export class PromptsComponent implements OnInit {
     // Make ticker required only for suggestion and advice
     this.promptForm.get('type')?.valueChanges.subscribe(type => {
       const tickerControl = this.promptForm.get('ticker');
-      if (type === 'market_briefing') {
+      if (type === 'market_briefing' || type === 'top_picks') {
         tickerControl?.clearValidators();
         tickerControl?.disable();
       } else {
@@ -90,7 +98,6 @@ export class PromptsComponent implements OnInit {
     try {
       const bytes = CryptoJS.AES.decrypt(this.encryptedAdminPass, this.secretKey);
       const decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
-
       if (password === decryptedPass) {
         this.isAuthenticated = true;
       } else {
@@ -136,7 +143,7 @@ export class PromptsComponent implements OnInit {
 
     // Extract raw ticker text
     let queryTicker = this.promptForm.value.ticker;
-    if (this.promptForm.value.type !== 'market_briefing' && queryTicker) {
+    if (this.promptForm.value.type !== 'market_briefing' && this.promptForm.value.type !== 'top_picks' && queryTicker) {
       const match = queryTicker.match(/\(([^)]+)\)/);
       queryTicker = match ? match[1] : queryTicker;
     }

@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import core from 'cors'; // we will use cors default alias
 import hpp from 'hpp';
 import cors from 'cors';
+import path from 'path';
 import { errorMiddleware } from './middleware/error.middleware';
 import { requestLogger } from './middleware/requestLogger.middleware';
 import indexRoutes from './routes/index';
@@ -33,6 +34,9 @@ app.use(express.json({ limit: '10kb' }));
 
 // 4. HPP (prevent parameter pollution)
 app.use(hpp());
+
+// 5. Serve static files
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
 // Logging
 app.use(requestLogger);

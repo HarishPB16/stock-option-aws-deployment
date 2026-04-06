@@ -1,0 +1,174 @@
+<div class="admin-container">
+  <div class="header">
+    <div class="header-text">
+      <h2>Category Mapping Form</h2>
+      <p>Select categories to manage the corresponding values</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary" (click)="saveData()" [disabled]="isSaving">
+        <span *ngIf="!isSaving">Save Configuration</span>
+        <span *ngIf="isSaving">Saving...</span>
+      </button>
+      <div class="save-msg" *ngIf="saveMessage">{{ saveMessage }}</div>
+    </div>
+  </div>
+
+  <div class="dropdown-section">
+    <div class="dropdown-group">
+      <label>Primary Category</label>
+      <div class="flex-row">
+        <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="form-control">
+          <option value="">-- Select Category --</option>
+          <option *ngFor="let key of categoryKeys" [value]="key">
+            {{ getCategoryLabel(key) }}
+          </option>
+        </select>
+        <button class="btn btn-secondary" (click)="openAddPopup('category')">+ Add</button>
+      </div>
+    </div>
+
+    <div class="dropdown-group">
+      <label>Sub Category</label>
+      <div class="flex-row">
+        <select id="subCategorySelect" [(ngModel)]="selectedSubCategory" (change)="onSubCategoryChange()" class="form-control" [disabled]="!selectedCategory">
+          <option value="">-- Select Sub Category --</option>
+          <option *ngFor="let sub of subCategories" [value]="sub">
+            {{ sub }}
+          </option>
+        </select>
+        <button class="btn btn-secondary" (click)="openAddPopup('subcategory')" [disabled]="!selectedCategory">+ Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-section" *ngIf="tableData.length > 0">
+    <div class="section-header">
+      <div class="header-text">
+        <h3>Values Data</h3>
+      </div>
+      <div class="flex-row search-row">
+        <input type="text" class="search-input" placeholder="Search values..." [(ngModel)]="searchQuery" (input)="filterTable()" />
+        <button class="btn btn-secondary" (click)="openAddPopup('value')" [disabled]="!selectedSubCategory">+ Add Value</button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Value Name</th>
+            <th class="center">Completed</th>
+            <th>Comment</th>
+            <th class="center">YouTube URLs</th>
+            <th class="center">Short Notes</th>
+            <th class="center">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of filteredTableData; let i = index">
+            <tr>
+              <td class="name-cell">{{ item.name }}</td>
+              <td class="center">
+                <input type="checkbox" [(ngModel)]="item.completed" />
+              </td>
+              <td>
+                <input type="text" class="input-light" [(ngModel)]="item.comment" placeholder="Add a comment..." />
+              </td>
+              <td class="center">
+                <button class="btn btn-sm btn-outline" (click)="toggleYoutubePopup(item)">
+                  URLs ({{ item.youtubeUrls.length }})
+                </button>
+                
+                <!-- YouTube Popup Inline -->
+                <div class="inline-popup" *ngIf="item.showYoutubePopup">
+                  <div class="popup-header">
+                    <h4>Manage YouTube URLs</h4>
+                    <button class="close-btn" (click)="toggleYoutubePopup(item)">&times;</button>
+                  </div>
+                  <div class="popup-body">
+                    <ul class="url-list" *ngIf="item.youtubeUrls.length > 0">
+                      <li *ngFor="let url of item.youtubeUrls; let urlIdx = index">
+                        <a [href]="url" target="_blank">{{ url }}</a>
+                        <button class="remove-btn" (click)="removeYoutubeUrl(item, urlIdx)">&times;</button>
+                      </li>
+                    </ul>
+                    <p class="empty-list" *ngIf="item.youtubeUrls.length === 0">No URLs added.</p>
+                    <div class="add-url-box">
+                      <input type="text" [(ngModel)]="item.newYoutubeUrl" placeholder="Paste YouTube URL..." />
+                      <button class="btn btn-sm btn-primary" (click)="addYoutubeUrl(item)">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="center">
+                <button 
+                  class="toggle-btn" 
+                  [class.active]="item.shortNotesToggle"
+                  (click)="item.shortNotesToggle = !item.shortNotesToggle"
+                >
+                  {{ item.shortNotesToggle ? 'Hide' : 'Show' }}
+                </button>
+              </td>
+              <td class="center">
+                <button 
+                  class="toggle-btn" 
+                  [class.active]="item.notesToggle"
+                  (click)="item.notesToggle = !item.notesToggle"
+                >
+                  {{ item.notesToggle ? 'Hide' : 'Show' }}
+                </button>
+              </td>
+            </tr>
+            <!-- Expanded Rows for Notes -->
+            <tr class="expanded-row" *ngIf="item.shortNotesToggle">
+              <td colspan="6">
+                <div class="notes-container">
+                  <label>Short Notes:</label>
+                  <textarea [(ngModel)]="item.shortNotes" placeholder="Type short notes here..." rows="2"></textarea>
+                </div>
+              </td>
+            </tr>
+            <tr class="expanded-row" *ngIf="item.notesToggle">
+              <td colspan="6">
+                <div class="notes-container">
+                  <label>Detailed Notes:</label>
+                  <textarea [(ngModel)]="item.notes" placeholder="Type detailed notes here..." rows="4"></textarea>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="empty-state" *ngIf="filteredTableData.length === 0">
+        No matching records found.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Popup for Adding Elements -->
+<div class="modal-overlay" *ngIf="showAddPopup">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 *ngIf="popupType === 'category'">Add Primary Category</h3>
+      <h3 *ngIf="popupType === 'subcategory'">Add Sub Category</h3>
+      <h3 *ngIf="popupType === 'value'">Add New Value</h3>
+      <button class="close-btn" (click)="closeAddPopup()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input 
+        type="text" 
+        [(ngModel)]="popupInputValue" 
+        class="form-control" 
+        placeholder="Enter name..." 
+        (keyup.enter)="submitAddPopup()"
+        autofocus 
+      />
+      <div class="popup-error" *ngIf="popupError">{{ popupError }}</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeAddPopup()">Cancel</button>
+      <button class="btn btn-primary" (click)="submitAddPopup()">Save</button>
+    </div>
+  </div>
+</div>

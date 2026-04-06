@@ -1,6 +1,10 @@
 import app from './app';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.config';
+import dns from 'dns';
+
+// Force bypass local ISP DNS blocking for MongoDB SRV records
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 dotenv.config();
 

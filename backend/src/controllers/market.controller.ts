@@ -32,7 +32,8 @@ export const getDailyBriefing = async (req: Request, res: Response, next: NextFu
             success: true,
             data: {
                 dateKey: briefing.dateKey,
-                htmlContent: briefing.htmlContent
+                htmlContent: briefing.htmlContent,
+                createdAt: briefing.createdAt
             }
         });
 
@@ -58,7 +59,8 @@ export const refreshDailyBriefing = async (req: Request, res: Response, next: Ne
             success: true,
             data: {
                 dateKey: updatedBriefing.dateKey,
-                htmlContent: updatedBriefing.htmlContent
+                htmlContent: updatedBriefing.htmlContent,
+                createdAt: (updatedBriefing as any).createdAt || new Date()
             }
         });
 

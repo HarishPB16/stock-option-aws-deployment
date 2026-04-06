@@ -124,7 +124,8 @@ export const getMarketBriefingChatGPT = async (req: Request, res: Response, next
                 cached: true,
                 data: {
                     date: dateKey,
-                    briefing: existingBriefing.htmlContent
+                    briefing: existingBriefing.htmlContent,
+                    createdAt: (existingBriefing as any).createdAt
                 }
             });
         }
@@ -144,7 +145,8 @@ export const getMarketBriefingChatGPT = async (req: Request, res: Response, next
             cached: false,
             data: {
                 date: dateKey,
-                briefing: newBriefingHTML
+                briefing: newBriefingHTML,
+                createdAt: (newBriefingRecord as any).createdAt || new Date()
             }
         });
     } catch (error) {

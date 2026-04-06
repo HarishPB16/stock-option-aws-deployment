@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   briefingHtml: SafeHtml | null = null;
   isLoading: boolean = true;
   isRefreshing: boolean = false;
+  createdAt: string | null = null;
   error: string | null = null;
   selectedAiProvider: 'gemini' | 'chatgpt' = 'gemini';
 
@@ -50,6 +51,7 @@ export class HomeComponent implements OnInit {
         if (res.success && res.data) {
           // Both APIs return the HTML in either res.data.htmlContent or res.data.briefing (as per ChatGPT controller we wrote)
           const htmlContent = (res.data as any).htmlContent || (res.data as any).briefing;
+          this.createdAt = (res.data as any).createdAt || null;
           if (htmlContent) {
             this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
           }
@@ -79,6 +81,7 @@ export class HomeComponent implements OnInit {
       next: (res) => {
         if (res.success && res.data) {
           const htmlContent = (res.data as any).htmlContent || (res.data as any).briefing;
+          this.createdAt = (res.data as any).createdAt || null;
           if (htmlContent) {
             this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
           }

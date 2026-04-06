@@ -5,6 +5,9 @@ import chatgptRoutes from './chatgpt.routes';
 import claudeRoutes from './claude.routes';
 import deepseekRoutes from './deepseek.routes';
 import promptsRoutes from './prompts.routes';
+import recommendationsRoutes from './recommendations.routes';
+import videoRoutes from './video.routes';
+import categoryRoutes from './category.routes';
 
 const router = Router();
 
@@ -15,6 +18,9 @@ router.use('/chatgpt', chatgptRoutes);
 router.use('/claude', claudeRoutes);
 router.use('/deepseek', deepseekRoutes);
 router.use('/prompts', promptsRoutes);
+router.use('/recommendations', recommendationsRoutes);
+router.use('/videos', videoRoutes);
+router.use('/category', categoryRoutes);
 
 // Healthcheck
 router.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));

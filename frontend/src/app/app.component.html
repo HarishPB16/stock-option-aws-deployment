@@ -1,18 +1,26 @@
-<div class="app-container">
-  <nav class="top-nav">
-    <div class="nav-brand">
-      <span class="logo-icon">📈</span>
-      <span class="logo-text">AI Options Pro</span>
-    </div>
-    <div class="nav-links">
-      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-tab">Home</a>
-      <a routerLink="/search-options" routerLinkActive="active" class="nav-tab">Search</a>
-      <a routerLink="/history" routerLinkActive="active" class="nav-tab">History</a>
-      <a routerLink="/prompts" routerLinkActive="active" class="nav-tab">Prompts</a>
-    </div>
-  </nav>
+<div class="app-layout">
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-brand">
+            <span class="logo-icon">📈</span>
+            <span class="logo-text">AI Options Pro</span>
+        </div>
+        <div class="nav-links">
+            <a routerLink="/home" routerLinkActive="active" class="nav-tab">Home</a>
+            <a routerLink="/search-options" routerLinkActive="active" class="nav-tab">Search</a>
+            <a routerLink="/top-picks" routerLinkActive="active" class="nav-tab border-accent">Top Picks ✨</a>
+            <a routerLink="/history" routerLinkActive="active" class="nav-tab">History</a>
+            <a routerLink="/youtube" routerLinkActive="active" class="nav-tab">Vids</a>
+            <a routerLink="/admin" routerLinkActive="active" class="nav-tab admin-tab">Admin</a>
+            
+            <button class="theme-toggle-btn" (click)="toggleTheme()" [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'">
+                {{ isDarkTheme ? '☀️' : '🌙' }}
+            </button>
+        </div>
+    </nav>
 
-  <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
 </div>

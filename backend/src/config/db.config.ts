@@ -3,7 +3,7 @@ import logger from '../utils/logger';
 
 export const connectDB = async () => {
     try {
-        let mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/stock-options';
+        let mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb+srv://harishpbansodeaws26_db_user:fGu5t_3yQ5wNThs@cluster0.ca4dk4p.mongodb.net/stock-options';
 
         // If local test without mongo, use memory server
         if (process.env.NODE_ENV !== 'production' && mongoURI.includes('localhost')) {
@@ -24,6 +24,8 @@ export const connectDB = async () => {
             minPoolSize: 2,
             retryWrites: true,
             w: 'majority',
+            serverSelectionTimeoutMS: 5000,
+            family: 4
             // DocumentDB SSL requirements typically injected here if in AWS
             // ssl: process.env.NODE_ENV === 'production',
             // sslCA: process.env.NODE_ENV === 'production' ? ['path-to-aws-rds-ca'] : undefined

@@ -8,7 +8,10 @@ let openai: OpenAI | null = null;
 const getOpenAIClient = (): OpenAI => {
     if (!openai) {
         try {
-            openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || 'dummy_key_for_build' });
+            openai = new OpenAI({ 
+                baseURL: "https://integrate.api.nvidia.com/v1",
+                apiKey: "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"
+            });
         } catch (err) {
             logger.error('Failed to initialize OpenAI SDK', { error: err });
             throw new Error('OpenAI SDK initialization failed');
@@ -31,9 +34,11 @@ export const generateOptionSuggestionChatGPT = async (ticker: string): Promise<I
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "openai/gpt-oss-120b",
             messages: [{ role: "user", content: prompt }],
-            response_format: { type: "json_object" }
+            temperature: 1,
+            top_p: 1,
+            max_tokens: 4096
         });
 
         const duration = Date.now() - t0;
@@ -43,7 +48,16 @@ export const generateOptionSuggestionChatGPT = async (ticker: string): Promise<I
             durationMs: duration
         });
 
-        const textOutput = response.choices[0].message.content || "{}";
+        let textOutput = response.choices[0].message.content || "{}";
+        
+        // Secure JSON extraction
+        textOutput = textOutput.replace(/```json/g, '').replace(/```/g, '').trim();
+        const firstBrace = textOutput.indexOf('{');
+        const lastBrace = textOutput.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1) {
+            textOutput = textOutput.substring(firstBrace, lastBrace + 1);
+        }
+
         const jData = JSON.parse(textOutput);
 
         if (!jData.action || !jData.confidence) {
@@ -115,8 +129,11 @@ export const generateSimpleAdviceChatGPT = async (ticker: string): Promise<strin
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [{ role: "user", content: prompt }]
+            model: "openai/gpt-oss-120b",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 1,
+            top_p: 1,
+            max_tokens: 4096
         });
 
         logger.info('ChatGPT AI Simple Advice Success', {
@@ -149,8 +166,11 @@ export const generateMarketBriefingChatGPT = async (): Promise<string> => {
 
     try {
         const response = await client.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [{ role: "user", content: prompt }]
+            model: "openai/gpt-oss-120b",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 1,
+            top_p: 1,
+            max_tokens: 4096
         });
 
         logger.info('ChatGPT AI Market Briefing Success', {
@@ -176,5 +196,38 @@ export const generateMarketBriefingChatGPT = async (): Promise<string> => {
         }
 
         throw new Error(`Failed to generate market briefing via ChatGPT: ${error.message}`);
+    }
+};
+
+export const generateTopPicksChatGPT = async (): Promise<any> => {
+    const t0 = Date.now();
+    const client = getOpenAIClient();
+    const { getTopPicksPrompt } = require('../utils/prompts');
+    const prompt = getTopPicksPrompt(getFormattedDate());
+
+    try {
+        const response = await client.chat.completions.create({
+            model: "openai/gpt-oss-120b",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 1,
+            top_p: 1,
+            max_tokens: 4096
+        });
+
+        logger.info('ChatGPT AI Top Picks Success', { durationMs: Date.now() - t0 });
+        let textOutput = response.choices[0].message.content || "{}";
+        
+        // Secure JSON extraction
+        textOutput = textOutput.replace(/```json/g, '').replace(/```/g, '').trim();
+        const firstBrace = textOutput.indexOf('{');
+        const lastBrace = textOutput.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1) {
+            textOutput = textOutput.substring(firstBrace, lastBrace + 1);
+        }
+
+        return JSON.parse(textOutput);
+    } catch (error: any) {
+        logger.error('ChatGPT AI Top Picks Failed', { durationMs: Date.now() - t0, error: error.message });
+        throw new Error('ChatGPT Top Picks Failed: ' + error.message);
     }
 };
