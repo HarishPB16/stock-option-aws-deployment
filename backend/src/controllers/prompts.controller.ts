@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt } from '../utils/prompts';
+import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt } from '../utils/prompts';
 
 export const generatePrompt = async (req: Request, res: Response) => {
     try {
@@ -33,6 +33,9 @@ export const generatePrompt = async (req: Request, res: Response) => {
             case 'market_briefing':
                 compiledPrompt = getMarketBriefingPrompt(formattedDate);
                 break;
+            case 'top_picks':
+                compiledPrompt = getTopPicksPrompt(formattedDate);
+                break;
             default:
                 return res.status(400).json({ success: false, message: "Invalid prompt type." });
         }
@@ -49,6 +52,11 @@ export const generatePrompt = async (req: Request, res: Response) => {
 
         const formatRuleRegexMarket = /STRICT FORMATTING RULES:[\s\S]*?(?=Sections required in the output HTML:)/i;
         compiledPrompt = compiledPrompt.replace(formatRuleRegexMarket, "");
+
+        const formatRuleRegexTopPicks = /CRITICAL RULE - JSON FORMAT ONLY:[\s\S]*/gi;
+        if (type === 'top_picks') {
+            compiledPrompt = compiledPrompt.replace(formatRuleRegexTopPicks, "Insted of object show me data in table don't give me the object");
+        }
 
         // General cleanup of HTML references
         compiledPrompt = compiledPrompt.replace(/output HTML/gi, "output");

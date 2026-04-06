@@ -22,7 +22,7 @@
                     </select>
                 </div>
 
-                <div class="form-group" *ngIf="promptForm.get('type')?.value !== 'market_briefing'">
+                <div class="form-group" *ngIf="promptForm.get('type')?.value !== 'market_briefing' && promptForm.get('type')?.value !== 'top_picks'">
                     <label for="ticker">Stock Ticker</label>
                     <div class="autocomplete-wrapper">
                         <input type="text" id="ticker" formControlName="ticker" class="form-control"
