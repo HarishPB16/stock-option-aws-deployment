@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../../../core/services/category.service';
+import { SecureStorageService } from '../../../../core/services/secure-storage.service';
 
 export interface TableRowItem {
   name: string;
@@ -34,6 +35,7 @@ export class CategoryFormComponent implements OnInit {
   
   subCategories: string[] = [];
   selectedSubCategory = '';
+  currentLoadedSubCategory = '';
 
   tableData: TableRowItem[] = [];
   filteredTableData: TableRowItem[] = [];
@@ -42,7 +44,7 @@ export class CategoryFormComponent implements OnInit {
   isSaving = false;
   saveMessage = '';
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService, private secureStorage: SecureStorageService) {}
 
   ngOnInit(): void {
     this.categoryKeys = Object.keys(this.categoryObj);
@@ -50,17 +52,20 @@ export class CategoryFormComponent implements OnInit {
   }
 
   loadCategories(): void {
+    const cachedData = this.secureStorage.getItem('studyData');
+    if (cachedData) {
+      this.applyData(cachedData);
+    } else {
+      this.fetchFromApi();
+    }
+  }
+
+  fetchFromApi(): void {
     this.categoryService.getCategories().subscribe({
       next: (res) => {
         if (res.success && res.data) {
-          if (res.data.categoryObj) this.categoryObj = res.data.categoryObj;
-          if (res.data.subCategoryObj) this.subCategoryObj = res.data.subCategoryObj;
-          if (res.data.valueObj) this.valueObj = res.data.valueObj;
-          this.categoryKeys = Object.keys(this.categoryObj);
-          
-          if (this.selectedCategory) {
-            this.onCategoryChange();
-          }
+          this.secureStorage.setItem('studyData', res.data);
+          this.applyData(res.data);
         }
       },
       error: (err) => {
@@ -69,10 +74,31 @@ export class CategoryFormComponent implements OnInit {
     });
   }
 
+  refreshData(): void {
+    this.selectedCategory = '';
+    this.selectedSubCategory = '';
+    this.currentLoadedSubCategory = '';
+    this.tableData = [];
+    this.fetchFromApi();
+    this.saveMessage = 'Data refreshed from API.';
+    setTimeout(() => this.saveMessage = '', 3000);
+  }
+
+  applyData(data: any): void {
+    if (data.categoryObj) this.categoryObj = data.categoryObj;
+    if (data.subCategoryObj) this.subCategoryObj = data.subCategoryObj;
+    if (data.valueObj) this.valueObj = data.valueObj;
+    this.categoryKeys = Object.keys(this.categoryObj);
+    
+    if (this.selectedCategory) {
+      this.onCategoryChange();
+    }
+  }
+
   syncTableDataToValueObj(): void {
-    if (this.selectedSubCategory && this.tableData.length > 0) {
+    if (this.currentLoadedSubCategory && this.tableData.length > 0) {
       // Store the fully synchronized state items
-      this.valueObj[this.selectedSubCategory] = [...this.tableData];
+      this.valueObj[this.currentLoadedSubCategory] = [...this.tableData];
     }
   }
 
@@ -86,6 +112,9 @@ export class CategoryFormComponent implements OnInit {
       subCategoryObj: this.subCategoryObj,
       valueObj: this.valueObj
     };
+
+    // Update local secure cache immediately
+    this.secureStorage.setItem('studyData', payload);
 
     this.categoryService.saveCategories(payload).subscribe({
       next: (res) => {
@@ -104,7 +133,12 @@ export class CategoryFormComponent implements OnInit {
   }
 
   onCategoryChange(): void {
+    if (this.currentLoadedSubCategory && this.tableData.length > 0) {
+      this.syncTableDataToValueObj();
+    }
+    
     this.selectedSubCategory = '';
+    this.currentLoadedSubCategory = '';
     this.tableData = [];
     this.filteredTableData = [];
     this.searchQuery = '';
@@ -161,6 +195,9 @@ export class CategoryFormComponent implements OnInit {
         };
       });
       this.filterTable();
+      this.currentLoadedSubCategory = this.selectedSubCategory;
+    } else {
+      this.currentLoadedSubCategory = '';
     }
   }
 
