@@ -39,9 +39,22 @@
         </div>
       </div>
 
+      <!-- Parent Category Select -->
+      <div class="form-group parent-cat-group">
+        <label for="parentCategory">Parent Category</label>
+        <select 
+          id="parentCategory" 
+          class="form-select parent-select" 
+          (change)="onParentCategoryChange($event)"
+          [disabled]="isSubmitting"
+        >
+          <option *ngFor="let pCat of parentCategories" [value]="pCat">{{ pCat | titlecase }}</option>
+        </select>
+      </div>
+
       <!-- Categories Checkboxes -->
       <div class="form-group categories-group">
-        <label>Select Categories</label>
+        <label>Select Sub-Categories</label>
         <div class="checkbox-grid">
           <label class="checkbox-label" *ngFor="let cat of availableCategories">
             <input 

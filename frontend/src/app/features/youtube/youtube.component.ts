@@ -15,7 +15,19 @@ export class YoutubeComponent implements OnInit {
   safeVideoUrl: SafeResourceUrl | null = null;
   loading = true;
 
-  categories = ['All', 'Mobile', 'My Video', 'youtube', 'song', 'cartton song'];
+  parentCategories = ['child', 'stock market', 'technical'];
+  selectedParentCategory = 'child';
+
+  categoryMap: { [key: string]: string[] } = {
+    'child': ['All', 'Mobile', 'My Video', 'youtube', 'song', 'cartton song'],
+    'stock market': ['All'],
+    'technical': ['All', 'AI', 'prompt', 'GenAI', 'AWS', 'python', 'angular', 'react', 'Node js', 'Javascript', 'Typescript', 'Design pattern', 'system design', 'GraphQL', 'Database', 'Kubernetes', 'Security', 'Git', 'others']
+  };
+
+  get categories(): string[] {
+    return this.categoryMap[this.selectedParentCategory] || ['All'];
+  }
+  
   selectedCategory = 'All';
   private ytPlayer: any = null;
 
@@ -25,13 +37,21 @@ export class YoutubeComponent implements OnInit {
     private ngZone: NgZone
   ) {}
 
+  onParentCategoryChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedParentCategory = target.value;
+    this.selectedCategory = 'All';
+    this.fetchVideos();
+  }
+
   ngOnInit(): void {
     this.fetchVideos();
   }
 
   fetchVideos(): void {
     this.loading = true;
-    this.videoService.getRandomVideos(this.selectedCategory).subscribe({
+    const queryCategory = this.selectedCategory === 'All' ? this.selectedParentCategory : this.selectedCategory;
+    this.videoService.getRandomVideos(queryCategory).subscribe({
       next: (res) => {
         if (res.success && Array.isArray(res.data)) {
           this.videos = res.data;
