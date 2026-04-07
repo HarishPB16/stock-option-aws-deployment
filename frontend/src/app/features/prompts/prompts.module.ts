@@ -10,6 +10,8 @@ import { IqComponent } from './components/iq/iq.component';
 import { YoutubeAdminComponent } from './components/youtube-admin/youtube-admin.component';
 import { CategoryFormComponent } from './components/category-form/category-form.component';
 
+import { GamesAdminComponent } from './components/games-admin/games-admin.component';
+
 @NgModule({
   declarations: [
     PromptsComponent,
@@ -17,7 +19,8 @@ import { CategoryFormComponent } from './components/category-form/category-form.
     StudyComponent,
     IqComponent,
     YoutubeAdminComponent,
-    CategoryFormComponent
+    CategoryFormComponent,
+    GamesAdminComponent
   ],
   imports: [
     CommonModule,

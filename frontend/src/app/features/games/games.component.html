@@ -1,0 +1,55 @@
+<div class="games-container">
+  <!-- Header -->
+  <header class="games-header">
+    <div class="logo">
+      <span class="icon">🎮</span>
+      <h1>Games</h1>
+    </div>
+    <div class="actions">
+      <button class="icon-btn refresh-btn" (click)="onRefreshClick()">
+        <span class="sync-icon" [class.spin]="loading">↻</span> Refresh
+      </button>
+      <button class="icon-btn secondary-btn" routerLink="/admin/games">
+        <span class="plus-icon">+</span> Admin
+      </button>
+    </div>
+  </header>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="shimmer-card" *ngFor="let item of [1,2,3,4,5,6]">
+      <div class="shimmer-text"></div>
+      <div class="shimmer-text short"></div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="onRefreshClick()" class="retry-btn">Try Again</button>
+  </div>
+
+  <!-- Games Grid -->
+  <main class="games-grid" *ngIf="!loading && !error">
+    <a 
+      class="game-card" 
+      *ngFor="let game of games" 
+      [href]="game.url" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <div class="game-info">
+        <h3 class="game-title">{{ game.name }}</h3>
+        <p class="game-meta" *ngIf="game.createdAt">Added on {{ game.createdAt | date:'mediumDate' }}</p>
+        <p class="game-desc" *ngIf="game.description">{{ game.description }}</p>
+      </div>
+      <div class="play-overlay">
+        <span class="play-icon">▶</span>
+      </div>
+    </a>
+  </main>
+
+  <div class="empty-state" *ngIf="!loading && !error && games.length === 0">
+    <p>No games available right now. Check back later!</p>
+  </div>
+</div>
