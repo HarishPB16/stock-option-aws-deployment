@@ -5,6 +5,9 @@
       <p>Select categories to manage the corresponding values</p>
     </div>
     <div class="header-actions">
+      <button class="btn btn-secondary" (click)="refreshData()" [disabled]="isSaving" style="margin-right: 10px;">
+        Refresh Data
+      </button>
       <button class="btn btn-primary" (click)="saveData()" [disabled]="isSaving">
         <span *ngIf="!isSaving">Save Configuration</span>
         <span *ngIf="isSaving">Saving...</span>

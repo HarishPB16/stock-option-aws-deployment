@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarketService } from '../../core/services/market.service';
+import { SecureStorageService } from '../../core/services/secure-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private marketService: MarketService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private secureStorage: SecureStorageService
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +44,17 @@ export class HomeComponent implements OnInit {
     this.error = null;
     this.briefingHtml = null;
 
+    const today = new Date().toISOString().split('T')[0];
+    const cacheKey = `homeBriefing_${this.selectedAiProvider}`;
+    const cachedEntry = this.secureStorage.getItem(cacheKey);
+
+    if (cachedEntry && cachedEntry.date === today) {
+      this.createdAt = cachedEntry.data.createdAt;
+      this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(cachedEntry.data.htmlContent);
+      this.isLoading = false;
+      return;
+    }
+
     const req$ = this.selectedAiProvider === 'gemini'
       ? this.marketService.getDailyBriefing()
       : this.marketService.getDailyBriefingChatGPT();
@@ -54,6 +67,10 @@ export class HomeComponent implements OnInit {
           this.createdAt = (res.data as any).createdAt || null;
           if (htmlContent) {
             this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+            this.secureStorage.setItem(cacheKey, { 
+              date: today, 
+              data: { createdAt: this.createdAt, htmlContent: htmlContent } 
+            });
           }
         }
         this.isLoading = false;
@@ -84,6 +101,12 @@ export class HomeComponent implements OnInit {
           this.createdAt = (res.data as any).createdAt || null;
           if (htmlContent) {
             this.briefingHtml = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+            const today = new Date().toISOString().split('T')[0];
+            const cacheKey = `homeBriefing_${this.selectedAiProvider}`;
+            this.secureStorage.setItem(cacheKey, { 
+              date: today, 
+              data: { createdAt: this.createdAt, htmlContent: htmlContent } 
+            });
           }
         }
         this.isRefreshing = false;

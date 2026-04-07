@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TopPicksService, TopPicksResponse } from './top-picks.service';
+import { SecureStorageService } from '../../core/services/secure-storage.service';
 
 interface AIState {
   name: string;
@@ -27,7 +28,7 @@ export class TopPicksComponent implements OnInit {
   availableDates: string[] = [];
   selectedDate: string | null = null;
 
-  constructor(private topPicksService: TopPicksService) { }
+  constructor(private topPicksService: TopPicksService, private secureStorage: SecureStorageService) { }
 
   ngOnInit(): void {
     this.fetchAvailableDates();
@@ -56,15 +57,27 @@ export class TopPicksComponent implements OnInit {
 
   runMasterScan() {
     this.isGlobalLoading = true;
+    const targetDateStr = this.selectedDate || new Date().toISOString().split('T')[0];
     
     this.aiEngines.forEach(engine => {
       engine.status = 'loading';
       engine.errorMsg = '';
       
+      const cacheKey = `topPicks_${engine.id}`;
+      const cachedEntry = this.secureStorage.getItem(cacheKey);
+
+      if (cachedEntry && cachedEntry.date === targetDateStr) {
+        engine.data = cachedEntry.data;
+        engine.status = 'success';
+        this.checkGlobalLoading();
+        return;
+      }
+
       this.topPicksService.getTopPicks(engine.id, this.selectedDate || undefined).subscribe({
         next: (res) => {
           engine.data = res;
           engine.status = 'success';
+          this.secureStorage.setItem(cacheKey, { date: targetDateStr, data: res });
           this.checkGlobalLoading();
         },
         error: (err) => {

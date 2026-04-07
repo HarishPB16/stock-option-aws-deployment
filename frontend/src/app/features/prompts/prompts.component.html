@@ -59,6 +59,10 @@
                     <button type="button" class="btn-secondary btn-open-ais" (click)="openAIs()">
                         Open AIs
                     </button>
+                    
+                    <button type="button" class="btn-secondary" (click)="clearPromptCache()" *ngIf="generatedPrompt">
+                        Clear Cache
+                    </button>
                 </div>
 
                 <div class="error-msg" *ngIf="error">{{ error }}</div>

@@ -9,6 +9,7 @@ const routes: Routes = [
     { path: 'admin', loadChildren: () => import('./features/prompts/prompts.module').then(m => m.PromptsModule) },
     { path: 'top-picks', loadChildren: () => import('./features/top-picks/top-picks.module').then(m => m.TopPicksModule) },
     { path: 'youtube', loadChildren: () => import('./features/youtube/youtube.module').then(m => m.YoutubeModule) },
+    { path: 'games', loadChildren: () => import('./features/games/games.module').then(m => m.GamesModule) },
     { path: '**', redirectTo: 'home' }
 ];
 

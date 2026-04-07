@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SecureStorageService } from '../../core/services/secure-storage.service';
 import { OptionsService } from '../../core/services/options.service';
 import { NSESecurity, NSE_STOCKS } from '../../core/data/nse-stocks.data';
 import { startWith, map } from 'rxjs/operators';
@@ -48,7 +49,8 @@ export class PromptsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private optionsService: OptionsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private secureStorage: SecureStorageService
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +84,16 @@ export class PromptsComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || ''))
     );
+
+    const cachedPromptData = this.secureStorage.getItem('promptData');
+    if (cachedPromptData) {
+      if (cachedPromptData.generatedPrompt) {
+        this.generatedPrompt = cachedPromptData.generatedPrompt;
+      }
+      if (cachedPromptData.formValue) {
+        this.promptForm.patchValue(cachedPromptData.formValue);
+      }
+    }
   }
 
   onLogin(): void {
@@ -154,6 +166,10 @@ export class PromptsComponent implements OnInit {
       next: (res) => {
         if (res.success && res.data) {
           this.generatedPrompt = res.data.prompt;
+          this.secureStorage.setItem('promptData', {
+            generatedPrompt: this.generatedPrompt,
+            formValue: this.promptForm.value
+          });
         } else {
           this.error = res.message || 'Error generating prompt';
         }
@@ -194,5 +210,15 @@ export class PromptsComponent implements OnInit {
     setTimeout(() => {
       window.open('https://grok.com/', '_blank');
     }, 300);
+  }
+
+  clearPromptCache(): void {
+    this.secureStorage.removeItem('promptData');
+    this.generatedPrompt = '';
+    this.promptForm.reset({
+      type: 'suggestion',
+      ticker: '',
+      date: new Date().toISOString().split('T')[0]
+    });
   }
 }

@@ -14,7 +14,25 @@ export class YoutubeAdminComponent {
   successMessage = '';
   errorMessage = '';
 
-  availableCategories = ['Mobile', 'My Video', 'youtube', 'song', 'cartton song'];
+  parentCategories = ['child', 'stock market', 'technical'];
+  selectedParentCategory = 'child';
+
+  categoryMap: { [key: string]: string[] } = {
+    'child': ['Mobile', 'My Video', 'youtube', 'song', 'cartton song'],
+    'stock market': ['All'],
+    'technical': ['AI', 'prompt', 'GenAI', 'AWS', 'python', 'angular', 'react', 'Node js', 'Javascript', 'Typescript', 'Design pattern', 'system design', 'GraphQL', 'Database', 'Kubernetes', 'Security', 'Git', 'others']
+  };
+
+  get availableCategories(): string[] {
+    return this.categoryMap[this.selectedParentCategory] || [];
+  }
+
+  onParentCategoryChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedParentCategory = target.value;
+    this.selectedCategories = [];
+  }
+
   selectedCategories: string[] = [];
 
   constructor(
@@ -46,8 +64,9 @@ export class YoutubeAdminComponent {
     this.errorMessage = '';
 
     const { url, title } = this.videoForm.value;
+    const finalCategories = [...new Set([...this.selectedCategories, this.selectedParentCategory])];
 
-    this.videoService.addVideo(url, title, this.selectedCategories).subscribe({
+    this.videoService.addVideo(url, title, finalCategories).subscribe({
       next: (res: VideoResponse) => {
         if (res.success) {
           this.successMessage = 'Video added successfully!';
