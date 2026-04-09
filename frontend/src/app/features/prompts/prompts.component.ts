@@ -30,9 +30,9 @@ export class PromptsComponent implements OnInit {
   private secretKey = 'admin_secret';
 
   // Admin Sub-Menu State
-  activeAdminTab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category' = 'prompt';
+  activeAdminTab: 'prompt' | 'study' | 'iq' | 'content' | 'category' = 'prompt';
 
-  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category'): void {
+  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'content' | 'category'): void {
     this.activeAdminTab = tab;
   }
 
