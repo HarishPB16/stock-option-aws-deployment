@@ -11,6 +11,7 @@ import { YoutubeAdminComponent } from './components/youtube-admin/youtube-admin.
 import { CategoryFormComponent } from './components/category-form/category-form.component';
 
 import { GamesAdminComponent } from './components/games-admin/games-admin.component';
+import { ContentAdminComponent } from './components/content-admin/content-admin.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { GamesAdminComponent } from './components/games-admin/games-admin.compon
     IqComponent,
     YoutubeAdminComponent,
     CategoryFormComponent,
-    GamesAdminComponent
+    GamesAdminComponent,
+    ContentAdminComponent
   ],
   imports: [
     CommonModule,

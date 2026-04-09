@@ -1,0 +1,27 @@
+<div class="content-admin-container">
+  <div class="content-header">
+    <h2>Multimedia Content Management</h2>
+    <p>Select which platform you wish to insert new entries into.</p>
+  </div>
+
+  <div class="content-toggle">
+    <button 
+      class="toggle-btn" 
+      [class.active]="activeContentTab === 'vids'" 
+      (click)="onTabClick('vids')">
+      YouTube Vids
+    </button>
+    <button 
+      class="toggle-btn" 
+      [class.active]="activeContentTab === 'games'" 
+      (click)="onTabClick('games')">
+      Interactive Games
+    </button>
+  </div>
+
+  <!-- Component Insertion Blocks -->
+  <div class="admin-workspace">
+    <app-youtube-admin *ngIf="activeContentTab === 'vids'"></app-youtube-admin>
+    <app-games-admin *ngIf="activeContentTab === 'games'"></app-games-admin>
+  </div>
+</div>

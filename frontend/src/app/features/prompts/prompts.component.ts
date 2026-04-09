@@ -30,9 +30,9 @@ export class PromptsComponent implements OnInit {
   private secretKey = 'admin_secret';
 
   // Admin Sub-Menu State
-  activeAdminTab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category' = 'prompt';
+  activeAdminTab: 'prompt' | 'study' | 'iq' | 'content' | 'category' = 'prompt';
 
-  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'youtube' | 'category'): void {
+  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'content' | 'category'): void {
     this.activeAdminTab = tab;
   }
 
@@ -185,19 +185,61 @@ export class PromptsComponent implements OnInit {
 
   copyToClipboard(): void {
     if (!this.generatedPrompt) return;
-    navigator.clipboard.writeText(this.generatedPrompt).then(() => {
-      this.copied = true;
-      setTimeout(() => this.copied = false, 2000);
-    }).catch(err => {
-      console.error('Failed to copy', err);
-    });
+
+    // Modern approach (requires secure context like HTTPS or localhost)
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(this.generatedPrompt).then(() => {
+        this.setCopiedState();
+      }).catch(err => {
+        console.warn('Clipboard API failed, attempting fallback...', err);
+        this.fallbackCopyTextToClipboard(this.generatedPrompt);
+      });
+    } else {
+      // Fallback approach for insecure environments (HTTP IP addresses)
+      this.fallbackCopyTextToClipboard(this.generatedPrompt);
+    }
+  }
+
+  private fallbackCopyTextToClipboard(text: string): void {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
+        this.setCopiedState();
+      } else {
+        console.error('Fallback: Copying text command was unsuccessful');
+      }
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.body.removeChild(textArea);
+  }
+
+  private setCopiedState(): void {
+    this.copied = true;
+    setTimeout(() => {
+      this.copied = false;
+      this.cdr.markForCheck();
+    }, 2000);
   }
 
   openAIs(): void {
     // Note: Most browsers will block multiple window.open calls triggered from a single click 
     // as a spam popup protection measure. The user will likely need to allow popups in their browser 
     // for localhost to see all three tabs open simultaneously.
-    window.open('https://chat.deepseek.com/', '_blank');
+    // window.open('https://chat.deepseek.com/', '_blank');
 
     setTimeout(() => {
       window.open('https://gemini.google.com/app?hl=en-IN', '_blank');

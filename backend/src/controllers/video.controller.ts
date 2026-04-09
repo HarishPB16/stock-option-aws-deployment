@@ -2,37 +2,7 @@ import { Request, Response } from 'express';
 import * as https from 'https';
 import * as fs from 'fs';
 import * as path from 'path';
-
-// Define the absolute path to the data folder
-const DATA_DIR = path.join(__dirname, '../../data');
-const getFilePath = (fileName: string) => path.join(DATA_DIR, fileName);
-
-const ensureDataDir = () => {
-    if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-};
-
-const readFileSafely = (filePath: string, defaultData: any) => {
-    try {
-        if (fs.existsSync(filePath)) {
-            const data = fs.readFileSync(filePath, 'utf-8');
-            return JSON.parse(data);
-        }
-    } catch (err) {
-        console.error(`Error reading ${filePath}:`, err);
-    }
-    return defaultData;
-};
-
-export interface IVideoJSON {
-    url: string;
-    videoId: string;
-    thumbnailUrl: string;
-    title: string;
-    categories: string[];
-    createdAt: string;
-}
+import { Video } from '../models/video.model';
 
 // Helper to extract YouTube video ID from various URL formats
 const extractVideoId = (url: string): string | null => {
@@ -47,7 +17,7 @@ const downloadImage = (url: string, dest: string): Promise<void> => {
         const file = fs.createWriteStream(dest);
         https.get(url, (response) => {
             if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-                // Handle redirects if needed (YouTube thumbnails usually don't redirect but good practice)
+                // Handle redirects if needed
                 return downloadImage(response.headers.location, dest).then(resolve).catch(reject);
             }
             response.pipe(file);
@@ -82,12 +52,8 @@ export const addVideo = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        ensureDataDir();
-        const youtubeDataPath = getFilePath('youtube.json');
-        const videos: IVideoJSON[] = readFileSafely(youtubeDataPath, []);
-
-        // Check if video already exists
-        const existingVideo = videos.find(v => v.videoId === videoId);
+        // Check if video already exists in database
+        const existingVideo = await Video.findOne({ videoId });
         if (existingVideo) {
             res.status(400).json({ success: false, message: 'Video already exists', data: existingVideo });
             return;
@@ -111,18 +77,14 @@ export const addVideo = async (req: Request, res: Response): Promise<void> => {
         // Download thumbnail
         await downloadImage(thumbnailUrlStr, localThumbnailPath);
         
-        // Save to JSON
-        const video: IVideoJSON = {
+        // Save to Database
+        const video = await Video.create({
             url,
             videoId,
             thumbnailUrl: `/public/thumbnails/${localThumbnailName}`,
             title: title || '',
-            categories: categories || [],
-            createdAt: new Date().toISOString()
-        };
-        
-        videos.push(video);
-        fs.writeFileSync(youtubeDataPath, JSON.stringify(videos, null, 2), 'utf-8');
+            categories: categories || []
+        });
 
         res.status(201).json({ success: true, data: video });
     } catch (error: any) {
@@ -135,23 +97,16 @@ export const getRandomVideos = async (req: Request, res: Response): Promise<void
     try {
         const selectedCategory = req.query.category as string | undefined;
 
-        ensureDataDir();
-        const videos: IVideoJSON[] = readFileSafely(getFilePath('youtube.json'), []);
-
-        let filteredVideos = videos;
-        
+        let matchQuery = {};
         if (selectedCategory && selectedCategory !== 'All') {
-            filteredVideos = videos.filter(v => v.categories && v.categories.includes(selectedCategory));
+            matchQuery = { categories: selectedCategory };
         }
 
-        // Randomize the array
-        for (let i = filteredVideos.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [filteredVideos[i], filteredVideos[j]] = [filteredVideos[j], filteredVideos[i]];
-        }
-
-        // Fetch up to 50
-        const result = filteredVideos.slice(0, 50);
+        // Fetch randomly with MongoDB aggregate ($sample is optimized for randomness and fast extraction)
+        const result = await Video.aggregate([
+            { $match: matchQuery },
+            { $sample: { size: 50 } }
+        ]);
 
         res.status(200).json({ success: true, data: result, count: result.length });
     } catch (error: any) {
