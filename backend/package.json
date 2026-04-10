@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
+    "@types/crypto-js": "^4.2.2",
     "@types/express": "^5.0.6",
     "@types/hpp": "^0.2.7",
     "@types/jest": "^30.0.0",

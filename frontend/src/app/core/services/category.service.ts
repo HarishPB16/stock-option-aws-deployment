@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { decryptPayload } from '../utils/encryption.util';
 
 export interface CategoryDataResponse {
   success: boolean;
@@ -26,7 +28,17 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   getCategories(): Observable<CategoryDataResponse> {
-    return this.http.get<CategoryDataResponse>(this.apiUrl);
+    return this.http.get<{ success: boolean; encryptedData?: string; data?: any }>(this.apiUrl)
+      .pipe(
+        map(res => {
+          if (res.success && res.encryptedData) {
+             const decrypted = decryptPayload(res.encryptedData);
+             return { success: res.success, data: decrypted } as CategoryDataResponse;
+          }
+          // Fallback legacy support
+          return { success: res.success, data: res.data } as CategoryDataResponse;
+        })
+      );
   }
 
   saveCategories(payload: { categoryObj: any; subCategoryObj: any; valueObj: any }): Observable<SaveResponse> {

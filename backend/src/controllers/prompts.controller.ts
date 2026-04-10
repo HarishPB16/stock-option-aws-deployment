@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt } from '../utils/prompts';
+import { encryptPayload } from '../utils/encryption.util';
 
 export const generatePrompt = async (req: Request, res: Response) => {
     try {
@@ -62,11 +63,12 @@ export const generatePrompt = async (req: Request, res: Response) => {
         compiledPrompt = compiledPrompt.replace(/output HTML/gi, "output");
         compiledPrompt = compiledPrompt.replace(/clean HTML markup/gi, "clean markdown");
 
+        // Wrap sensitive generation into AES cipher stream
+        const payloadData = { prompt: compiledPrompt };
+        
         res.status(200).json({
             success: true,
-            data: {
-                prompt: compiledPrompt,
-            }
+            encryptedData: encryptPayload(payloadData)
         });
     } catch (error) {
         console.error("Generate Prompt error:", error);
