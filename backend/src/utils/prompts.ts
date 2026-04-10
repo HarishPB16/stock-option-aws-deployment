@@ -171,6 +171,10 @@ Overall | Buy Call / Buy Put / None
 News | Buy Call / Buy Put / None
 Technical | Buy Call / Buy Put / None
 Confidence Score – Out of 10
+Quarter result in Next 20 days | Yes or No / Date
+Divident in Next 20 days | Yes or No / Date
+Bonus in Next 20 days | Yes or No / Date
+Stock Split in Next 20 days | Yes or No / Date
 
 --------------------------------------------------
 
@@ -304,6 +308,9 @@ GIFT NIFTY, Nikkei 225, Dow Jones, S&P 500, Nasdaq, FTSE 100, DAX, Shanghai Comp
 
 <h2>3. GIFT NIFTY All Stocks Trend</h2>
 Provide a standard <table> with columns: Name | Date | Down/UP (Points) | Down/UP (%)
+
+<h2>3. crude oil and INR vs Doller Trend</h2>
+Provide a standard <table> with columns: Name | Date | Price | Down/UP (Points) | Down/UP (%)
 
 <h2>4. Option Expiry Table</h2>
 Provide a standard <table> with columns: Name | Monthly/Weekly | Day | Date
