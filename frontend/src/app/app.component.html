@@ -1,27 +1,78 @@
 <div class="app-layout">
-    <!-- Top Navigation Bar -->
-    <nav class="top-nav">
-        <div class="nav-brand">
-            <span class="logo-icon">📈</span>
-            <span class="logo-text">AI Options Pro</span>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" [class.open]="isSidebarOpen">
+        <div class="sidebar-header">
+            <div class="nav-brand">
+                <span class="logo-icon">📈</span>
+                <span class="logo-text">AI Options Pro</span>
+            </div>
+            <button class="close-btn mobile-only" (click)="toggleSidebar()">✕</button>
         </div>
-        <div class="nav-links">
-            <a routerLink="/home" routerLinkActive="active" class="nav-tab">Home</a>
-            <a routerLink="/search-options" routerLinkActive="active" class="nav-tab">Search</a>
-            <a routerLink="/top-picks" routerLinkActive="active" class="nav-tab border-accent">Top Picks ✨</a>
-            <a routerLink="/history" routerLinkActive="active" class="nav-tab">History</a>
-            <a routerLink="/youtube" routerLinkActive="active" class="nav-tab">Vids</a>
-            <a routerLink="/games" routerLinkActive="active" class="nav-tab">Games 🎮</a>
-            <a routerLink="/admin" routerLinkActive="active" class="nav-tab admin-tab">Admin</a>
+        
+        <div class="sidebar-menu">
+            <div class="menu-group">
+                <div class="menu-label">Main</div>
+                <a routerLink="/home" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">🏠</span> Home
+                </a>
+                <a routerLink="/search-options" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">🔍</span> Search
+                </a>
+                <a routerLink="/top-picks" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">✨</span> Top Picks
+                </a>
+                <a routerLink="/history" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">🕒</span> History
+                </a>
+                <a routerLink="/youtube" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">▶️</span> Vids
+                </a>
+                <a routerLink="/games" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">🎮</span> Games
+                </a>
+            </div>
             
+            <div class="menu-group">
+                <div class="menu-label admin-label">Admin Routes</div>
+                <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item admin-item">
+                    <span class="nav-icon">⚙️</span> Prompts Settings
+                </a>
+                <a routerLink="/admin/youtube" routerLinkActive="active" class="nav-item admin-item">
+                    <span class="nav-icon">📺</span> YouTube Admin
+                </a>
+                <a routerLink="/admin/category" routerLinkActive="active" class="nav-item admin-item">
+                    <span class="nav-icon">📁</span> Category
+                </a>
+                <a routerLink="/admin/games" routerLinkActive="active" class="nav-item admin-item">
+                    <span class="nav-icon">🕹️</span> Games Admin
+                </a>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
             <button class="theme-toggle-btn" (click)="toggleTheme()" [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'">
-                {{ isDarkTheme ? '☀️' : '🌙' }}
+                <span class="theme-text">{{ isDarkTheme ? 'Light Mode' : 'Dark Mode' }}</span>
+                <span class="theme-icon">{{ isDarkTheme ? '☀️' : '🌙' }}</span>
             </button>
         </div>
-    </nav>
+    </aside>
 
     <!-- Main Content Area -->
-    <main class="main-content">
-        <router-outlet></router-outlet>
-    </main>
+    <div class="main-wrapper">
+        <header class="mobile-header mobile-only">
+            <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+            <div class="nav-brand">
+                <span class="logo-icon">📈</span>
+                <span class="logo-text">AI Options Pro</span>
+            </div>
+            <div style="width: 32px;"></div>
+        </header>
+        
+        <main class="main-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
 </div>
+
+<!-- Overlay for mobile sidebar -->
+<div class="sidebar-overlay mobile-only" *ngIf="isSidebarOpen" (click)="toggleSidebar()"></div>

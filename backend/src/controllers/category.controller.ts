@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { CategoryData } from '../models/category.model';
+import { encryptPayload } from '../utils/encryption.util';
 
 const defaultCategoryObj = {
   english: "English",
@@ -61,13 +62,16 @@ export const getCategories = async (req: Request, res: Response): Promise<void> 
   try {
     const config = await CategoryData.findOne({ singletonId: 'global_config' });
 
+    // Encrypt the sensitive dictionary mappings
+    const rawData = {
+      categoryObj: config?.categoryObj || defaultCategoryObj,
+      subCategoryObj: config?.subCategoryObj || defaultSubCategoryObj,
+      valueObj: config?.valueObj || defaultValueObj
+    };
+
     res.status(200).json({
       success: true,
-      data: {
-        categoryObj: config?.categoryObj || defaultCategoryObj,
-        subCategoryObj: config?.subCategoryObj || defaultSubCategoryObj,
-        valueObj: config?.valueObj || defaultValueObj
-      }
+      encryptedData: encryptPayload(rawData)
     });
   } catch (error: any) {
     console.error('Error fetching categories from MongoDB:', error);

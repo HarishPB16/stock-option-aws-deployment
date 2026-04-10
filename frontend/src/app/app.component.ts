@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   isDarkTheme = true;
+  isSidebarOpen = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        if (window.innerWidth <= 1024) {
+          this.isSidebarOpen = false;
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     const savedTheme = localStorage.getItem('theme');
@@ -24,5 +36,8 @@ export class AppComponent implements OnInit {
     document.body.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
   }
-}
 
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+}
