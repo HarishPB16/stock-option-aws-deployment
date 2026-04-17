@@ -12,6 +12,7 @@ import { CategoryFormComponent } from './components/category-form/category-form.
 
 import { GamesAdminComponent } from './components/games-admin/games-admin.component';
 import { ContentAdminComponent } from './components/content-admin/content-admin.component';
+import { OptionCalculatorComponent } from './components/option-calculator/option-calculator.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ContentAdminComponent } from './components/content-admin/content-admin.
     YoutubeAdminComponent,
     CategoryFormComponent,
     GamesAdminComponent,
-    ContentAdminComponent
+    ContentAdminComponent,
+    OptionCalculatorComponent
   ],
   imports: [
     CommonModule,

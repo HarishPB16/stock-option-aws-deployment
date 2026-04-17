@@ -1,0 +1,47 @@
+<div class="card form-card">
+  <div class="header" style="margin-bottom: 1.5rem;">
+    <h2>Option Calculator</h2>
+    <p>Calculate target price and stop loss based on your desired percentage.</p>
+  </div>
+
+  <!-- Price Input -->
+  <div class="form-group" style="text-align: left;">
+    <label>Price</label>
+    <input type="number" [(ngModel)]="price" (input)="calculate()" class="form-control" placeholder="Enter option price" />
+  </div>
+
+  <div class="row" style="text-align: left;">
+      <!-- Profit Dropdown -->
+      <div class="form-group col">
+        <label>Profit %</label>
+        <select [(ngModel)]="selectedProfit" (change)="calculate()" class="form-control">
+          <option *ngFor="let p of profitPercents" [value]="p">
+            {{ p }}%
+          </option>
+        </select>
+      </div>
+
+      <!-- Stoploss Dropdown -->
+      <div class="form-group col">
+        <label>Stop Loss %</label>
+        <select [(ngModel)]="selectedStopLoss" (change)="calculate()" class="form-control">
+          <option *ngFor="let s of stopLossPercents" [value]="s">
+            {{ s }}%
+          </option>
+        </select>
+      </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-container">
+    <div class="result-box success-box">
+      <div class="result-label">Target Price (+{{selectedProfit}}%)</div>
+      <div class="result-value">{{ targetPrice | number:'1.2-2' }}</div>
+    </div>
+
+    <div class="result-box danger-box">
+      <div class="result-label">Stop Loss (-{{selectedStopLoss}}%)</div>
+      <div class="result-value">{{ stopLossPrice | number:'1.2-2' }}</div>
+    </div>
+  </div>
+</div>
