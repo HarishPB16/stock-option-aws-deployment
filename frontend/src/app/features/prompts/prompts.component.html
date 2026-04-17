@@ -88,6 +88,7 @@
     <!-- ADDITIONAL ADMIN TABS -->
     <app-content-admin *ngIf="activeAdminTab === 'content'"></app-content-admin>
     <app-category-form *ngIf="activeAdminTab === 'category'"></app-category-form>
+    <app-option-calculator *ngIf="activeAdminTab === 'calculator'"></app-option-calculator>
 </div>
 
 <div class="login-container" *ngIf="!isAuthenticated">

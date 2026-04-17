@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { AuthService } from '../../core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SecureStorageService } from '../../core/services/secure-storage.service';
 import { OptionsService } from '../../core/services/options.service';
@@ -30,9 +31,9 @@ export class PromptsComponent implements OnInit {
   private secretKey = 'admin_secret';
 
   // Admin Sub-Menu State
-  activeAdminTab: 'prompt' | 'study' | 'iq' | 'content' | 'category' = 'prompt';
+  activeAdminTab: 'prompt' | 'study' | 'iq' | 'content' | 'category' | 'calculator' = 'prompt';
 
-  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'content' | 'category'): void {
+  switchAdminTab(tab: 'prompt' | 'study' | 'iq' | 'content' | 'category' | 'calculator'): void {
     this.activeAdminTab = tab;
   }
 
@@ -50,10 +51,12 @@ export class PromptsComponent implements OnInit {
     private fb: FormBuilder,
     private optionsService: OptionsService,
     private cdr: ChangeDetectorRef,
-    private secureStorage: SecureStorageService
+    private secureStorage: SecureStorageService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
+    this.isAuthenticated = this.authService.isAdmin;
     const today = new Date().toISOString().split('T')[0];
 
     this.loginForm = this.fb.group({
@@ -112,6 +115,7 @@ export class PromptsComponent implements OnInit {
       const decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
       if (password === decryptedPass) {
         this.isAuthenticated = true;
+        this.authService.setAdminAuth(true);
       } else {
         this.loginError = 'Invalid username or password';
       }
