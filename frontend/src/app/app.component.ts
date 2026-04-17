@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,10 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   isDarkTheme = true;
-  isSidebarOpen = false;
+  isSidebarOpen = window.innerWidth > 1024;
+  isAdmin = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (window.innerWidth <= 1024) {
@@ -21,6 +23,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.isAdmin$.subscribe(status => {
+      this.isAdmin = status;
+    });
+
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
       this.isDarkTheme = false;

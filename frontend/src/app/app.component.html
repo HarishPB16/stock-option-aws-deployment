@@ -32,7 +32,7 @@
                 </a>
             </div>
             
-            <div class="menu-group">
+            <div class="menu-group" *ngIf="isAdmin">
                 <div class="menu-label admin-label">Admin Routes</div>
                 <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item admin-item">
                     <span class="nav-icon">⚙️</span> Prompts Settings
@@ -58,8 +58,8 @@
     </aside>
 
     <!-- Main Content Area -->
-    <div class="main-wrapper">
-        <header class="mobile-header mobile-only">
+    <div class="main-wrapper" [class.sidebar-open]="isSidebarOpen">
+        <header class="mobile-header">
             <button class="menu-btn" (click)="toggleSidebar()">☰</button>
             <div class="nav-brand">
                 <span class="logo-icon">📈</span>
