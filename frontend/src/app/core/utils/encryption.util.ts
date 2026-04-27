@@ -13,3 +13,14 @@ export const decryptPayload = (encryptedHex: string): any => {
         throw e;
     }
 };
+
+export const encryptPayload = (data: any): string => {
+    try {
+        const jsonStr = JSON.stringify(data);
+        return CryptoJS.AES.encrypt(jsonStr, SECRET_KEY).toString();
+    } catch (e) {
+        console.error('Encryption failed for secure payload.', e);
+        throw e;
+    }
+};
+

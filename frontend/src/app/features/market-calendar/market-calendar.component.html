@@ -1,0 +1,66 @@
+<div class="calendar-container">
+  <div class="header-section">
+    <h1>📅 Market Calendar</h1>
+    <p>Upcoming Expiries & Market Holidays</p>
+  </div>
+
+  <div class="cards-wrapper">
+    <!-- Expiry Table Card -->
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">⏰</span>
+        <h2>Option Expiry Table</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Monthly/Weekly</th>
+              <th>Day</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let expiry of expiries">
+              <td class="highlight">{{ expiry.name }}</td>
+              <td>
+                <span class="badge">{{ expiry.type }}</span>
+              </td>
+              <td>{{ expiry.day }}</td>
+              <td>{{ expiry.date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Holidays Table Card -->
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🏖️</span>
+        <h2>Upcoming NSE/BSE Holidays</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="premium-table holiday-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Holiday</th>
+              <th>Date</th>
+              <th>Day</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let h of holidays">
+              <td class="text-center">{{ h.no }}</td>
+              <td class="highlight-holiday">{{ h.holiday }}</td>
+              <td>{{ h.date }}</td>
+              <td>{{ h.day }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

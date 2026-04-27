@@ -266,3 +266,45 @@ export const generateTopPicks = async (): Promise<any> => {
         throw new Error('Gemini Top Picks Failed: ' + error.message);
     }
 };
+
+export const generateTradeSetup = async (indexName: string): Promise<string> => {
+    const t0 = Date.now();
+    const aiClient = getAIClient();
+    const { getTradeSetupPrompt } = require('../utils/prompts');
+    let prompt = getTradeSetupPrompt(indexName, getFormattedDate());
+
+    prompt += `\n\nCRITICAL: Provide your response ONLY as valid, clean HTML. 
+Do not use markdown blocks like \`\`\`html. 
+Use semantic HTML tags (e.g., <h3>, <p>, <ul>, <li>, <strong>, <br>). Add some inline styles (like colors for bullish/bearish, spacing, padding) so it looks like a premium, professional dashboard component. Do NOT output raw text. Do NOT wrap the entire thing in <html> or <body>, just output the fragment that can be placed inside an Angular component's innerHTML.
+
+Structure it exactly like this visually:
+<h3>Market Sentiment</h3>
+<p>(Bullish / Bearish / Neutral)</p>
+<h3>Key Levels</h3>
+...
+<h3>TRADE SETUP</h3>
+...
+<h3>RISK RULES</h3>
+...
+<h3>Confidence Score:</h3>`;
+
+    try {
+        const response = await aiClient.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: { tools: [{ googleSearch: {} }] }
+        });
+
+        logger.info('Gemini AI Trade Setup Success', { durationMs: Date.now() - t0, indexName });
+        let textOutput = response.text || "<div>No trade setup generated.</div>";
+        textOutput = textOutput.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
+        return textOutput;
+    } catch (error: any) {
+        logger.error('Gemini AI Trade Setup Failed', { durationMs: Date.now() - t0, error: error.message, indexName });
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('Quota exceeded') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+            return `<div class="error-msg">Gemini AI Quota Exceeded. Please try again later.</div>`;
+        }
+        throw new Error('Gemini Trade Setup Failed: ' + error.message);
+    }
+};

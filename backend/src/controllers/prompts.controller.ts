@@ -1,10 +1,21 @@
 import { Request, Response } from 'express';
-import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt } from '../utils/prompts';
-import { encryptPayload } from '../utils/encryption.util';
+import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt, getTradeSetupPrompt } from '../utils/prompts';
+import { encryptPayload, decryptPayload } from '../utils/encryption.util';
 
 export const generatePrompt = async (req: Request, res: Response) => {
     try {
-        const { type, ticker, date } = req.body;
+        let payload = req.body;
+        
+        // Handle end-to-end encryption if provided
+        if (req.body.encryptedData) {
+            try {
+                payload = decryptPayload(req.body.encryptedData);
+            } catch (decErr) {
+                return res.status(400).json({ success: false, message: "Invalid encrypted payload." });
+            }
+        }
+        
+        const { type, ticker, date } = payload;
 
         if (!type) {
             return res.status(400).json({ success: false, message: "Prompt 'type' is required." });
@@ -36,6 +47,10 @@ export const generatePrompt = async (req: Request, res: Response) => {
                 break;
             case 'top_picks':
                 compiledPrompt = getTopPicksPrompt(formattedDate);
+                break;
+            case 'trade_setup':
+                if (!ticker) return res.status(400).json({ success: false, message: "Index is required for trade setup prompts." });
+                compiledPrompt = getTradeSetupPrompt(ticker, formattedDate); // `ticker` here acts as `indexName`
                 break;
             default:
                 return res.status(400).json({ success: false, message: "Invalid prompt type." });

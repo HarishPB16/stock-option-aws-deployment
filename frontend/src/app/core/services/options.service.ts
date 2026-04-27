@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { decryptPayload } from '../utils/encryption.util';
+import { decryptPayload, encryptPayload } from '../utils/encryption.util';
 
 export interface OptionInsight {
     action: 'CALL' | 'PUT';
@@ -131,7 +131,9 @@ export class OptionsService {
     // --- Prompts Endpoints ---
 
     generatePrompt(payload: { type: string; ticker?: string; date: string }): Observable<any> {
-        return this.http.post<{ success: boolean; encryptedData?: string; data?: any }>(`${environment.apiUrl}/prompts/generate`, payload)
+        const encryptedRequest = { encryptedData: encryptPayload(payload) };
+        
+        return this.http.post<{ success: boolean; encryptedData?: string; data?: any }>(`${environment.apiUrl}/prompts/generate`, encryptedRequest)
             .pipe(
                 map(res => {
                     if (res.success && res.encryptedData) {

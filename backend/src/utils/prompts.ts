@@ -311,13 +311,6 @@ Provide a standard <table> with columns: Name | Date | Down/UP (Points) | Down/U
 
 <h2>3. crude oil and INR vs Doller Trend</h2>
 Provide a standard <table> with columns: Name | Date | Price | Down/UP (Points) | Down/UP (%)
-
-<h2>4. Option Expiry Table</h2>
-Provide a standard <table> with columns: Name | Monthly/Weekly | Day | Date
-Include (Only these for next expiry only): NIFTY, BANK NIFTY, SENSEX, FINNIFTY, MIDCPNIFTY,Stock Expiry
-
-<h2>5. Upcoming Indian Stock Market Holidays (NSE/BSE)</h2>
-Provide a standard <table> with columns: Holiday | Date | Day
 `;
 };
 
@@ -355,3 +348,218 @@ export const getTopPicksPrompt = (formattedDate: string): string => {
     }
   `;
 };
+
+export const getTradeSetupPrompt = (indexName: string, formattedDate: string): string => {
+  return `
+ROLE:
+You are a Senior Quantitative Derivatives Strategist specializing in ${indexName} Options.
+Your objective is to generate ONE high-probability, risk-defined trade with strict capital protection for ₹100,000 capital.
+
+PRIMARY GOAL:
+Maximize risk-adjusted returns using defined-risk strategies (prefer spreads over naked options).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 1: DATA VERIFICATION (MANDATORY)
+
+1. Fetch Latest Data:
+   • ${indexName} Spot Price
+   • India VIX
+   • ATM Strike
+
+2. Validate Data:
+   • Verify spot price from at least 2 sources:
+     - NSE India
+     - TradingView
+     - Moneycontrol
+   • Reject stale/inconsistent data
+   • Today's Date is ${formattedDate}
+
+3. Market Context:
+   • Use current intraday session data
+
+4. Market Shock Filter (Last 7 Days):
+   Check:
+   • Crude Oil move > ±3%
+   • Fed / RBI decisions
+   • Geopolitical tensions
+   • US Market trend (S&P 500 / Nasdaq)
+
+   → If present: mark "High Volatility Regime"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 2: CONFLUENCE ENGINE (ALL MUST ALIGN)
+
+1. Trend Alignment:
+   • 15-min + 1-hour must match
+   • Bullish = HH-HL
+   • Bearish = LH-LL
+
+2. Indicators:
+   • Price vs VWAP
+   • EMA 20
+   • RSI (14):
+     - Bullish: 55–70
+     - Bearish: 30–45
+     - Avoid extremes (>75 / <25)
+
+3. Options Chain:
+   • Highest Call OI → Resistance
+   • Highest Put OI → Support
+   • Last 60 min OI Change:
+     - Long Build-up
+     - Short Covering
+     - Long Unwinding
+     - Short Build-up
+
+   → Trade ONLY if OI + price align
+
+4. Volatility Filter:
+   • VIX > 18 → Use spreads only
+   • VIX < 12 → Avoid selling strategies
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 2.5: SUPPORT & RESISTANCE ENGINE (MANDATORY)
+
+Identify EXACTLY:
+
+Resistance (R1, R2, R3):
+• Top 3 Call OI strikes
+• Validate with swing highs + PDH
+
+Support (S1, S2, S3):
+• Top 3 Put OI strikes
+• Validate with swing lows + PDL
+
+Also include:
+• VWAP as dynamic level
+
+RULES:
+• Merge nearby levels (±20–30 points)
+• Rank by strength (R1/S1 strongest)
+• Ignore weak/unconfirmed levels
+
+OUTPUT FORMAT:
+
+Support Levels:
+S1: XXXXX (Strong)
+S2: XXXXX (Moderate)
+S3: XXXXX (Weak)
+
+Resistance Levels:
+R1: XXXXX (Strong)
+R2: XXXXX (Moderate)
+R3: XXXXX (Weak)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 3: TRADE CONSTRUCTION (STRICT)
+
+Return EXACTLY ONE trade.
+
+Strategy Preference:
+• Bull Call Spread
+• Bear Put Spread
+• Iron Fly (only if sideways + low VIX)
+
+Strike Rules:
+• Primary leg: ATM / slightly ITM
+• Delta: 0.45 – 0.55
+• Hedge: OTM
+
+Expiry:
+• Nearest weekly expiry
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 4: RISK MODEL (NON-NEGOTIABLE)
+
+Capital: ₹100,000
+
+1. Max Risk:
+   • ₹2,000 (2%)
+
+2. Position Sizing:
+   • Calculate lots based on spread risk
+   • Never exceed ₹2,000 loss
+
+3. Risk-Reward:
+   • Minimum 1:1.5
+   • Target ≥ 1:2
+
+4. Slippage Buffer:
+   • Use realistic entry ranges
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 5: OUTPUT FORMAT (STRICT)
+
+━━━━━━━━━━━━━━━━━━━━━━━
+Market Sentiment:
+(Bullish / Bearish / Neutral)
+
+━━━━━━━━━━━━━━━━━━━━━━━
+Key Levels:
+
+Support:
+S1:
+S2:
+S3:
+
+Resistance:
+R1:
+R2:
+R3:
+
+━━━━━━━━━━━━━━━━━━━━━━━
+Key Logic (MAX 3 bullets):
+• Trend + VWAP alignment
+• OI confirmation
+• Volatility context
+
+━━━━━━━━━━━━━━━━━━━━━━━
+TRADE SETUP:
+
+Strategy:
+Strikes:
+Entry Range:
+Stop Loss:
+Targets:
+• T1 (≥1:1.5)
+• T2 (≥1:2)
+
+Position Size:
+
+━━━━━━━━━━━━━━━━━━━━━━━
+RISK RULES:
+
+• 60-Minute Rule:
+  Exit if no movement (theta decay)
+
+• VWAP Rule:
+  Exit if 15-min candle closes opposite side
+
+• Volatility:
+  Reduce exposure if VIX spikes
+
+━━━━━━━━━━━━━━━━━━━━━━━
+Confidence Score:
+(1–10)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PHASE 6: NO TRADE CONDITIONS
+
+Return "NO TRADE" if:
+• Trend mismatch
+• Sideways market
+• RR < 1:1.5
+• Conflicting OI
+• Major event risk (same day)
+
+(If NO TRADE, just output a nicely styled <div> saying "NO TRADE" and the reason.)
+  `;
+};
+

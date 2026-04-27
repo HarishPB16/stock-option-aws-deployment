@@ -9,6 +9,7 @@ import recommendationsRoutes from './recommendations.routes';
 import videoRoutes from './video.routes';
 import categoryRoutes from './category.routes';
 import gamesRoutes from './games.routes';
+import tradeRoutes from './trade.routes';
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.use('/recommendations', recommendationsRoutes);
 router.use('/videos', videoRoutes);
 router.use('/category', categoryRoutes);
 router.use('/games', gamesRoutes);
+router.use('/trade', tradeRoutes);
 
 // Healthcheck
 router.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
