@@ -12,6 +12,7 @@ const defaultCategoryObj = {
   stockMarket: "Stock Market"
 };
 
+
 const defaultSubCategoryObj = {
   english: ["communication", "interviewPrep"],
   technical: ["angular", "react", "project", "linuxCommands", "gitCommands"],
@@ -82,18 +83,18 @@ export const getCategories = async (req: Request, res: Response): Promise<void> 
 export const saveCategories = async (req: Request, res: Response): Promise<void> => {
   try {
     const { categoryObj, subCategoryObj, valueObj } = req.body;
-    
+
     // Utilize atomic upsert to overwrite the global singleton mapping document
     await CategoryData.findOneAndUpdate(
-        { singletonId: 'global_config' },
-        { 
-            $set: {
-                categoryObj: categoryObj || {},
-                subCategoryObj: subCategoryObj || {},
-                valueObj: valueObj || {}
-            }
-        },
-        { upsert: true, new: true }
+      { singletonId: 'global_config' },
+      {
+        $set: {
+          categoryObj: categoryObj || {},
+          subCategoryObj: subCategoryObj || {},
+          valueObj: valueObj || {}
+        }
+      },
+      { upsert: true, new: true }
     );
 
     res.status(200).json({ success: true, message: 'Data saved to MongoDB successfully.' });

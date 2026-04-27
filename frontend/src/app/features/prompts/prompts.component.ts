@@ -71,7 +71,7 @@ export class PromptsComponent implements OnInit {
       type: ['suggestion', Validators.required],
       ticker: [''],
       indexName: ['NIFTY 50'],
-      date: [today, Validators.required]
+      date: [{ value: today, disabled: true }, Validators.required]
     });
 
     // Make ticker required only for suggestion and advice
@@ -180,7 +180,9 @@ export class PromptsComponent implements OnInit {
       queryTicker = match ? match[1] : queryTicker;
     }
 
-    const payload = { ...this.promptForm.value, ticker: queryTicker };
+    // Since 'date' is disabled, it won't be in this.promptForm.value, we must use getRawValue() or just grab the value
+    const todayStr = new Date().toISOString().split('T')[0];
+    const payload = { ...this.promptForm.value, ticker: queryTicker, date: todayStr };
 
     this.optionsService.generatePrompt(payload).subscribe({
       next: (res) => {
@@ -283,5 +285,7 @@ export class PromptsComponent implements OnInit {
       indexName: 'NIFTY 50',
       date: new Date().toISOString().split('T')[0]
     });
+    // Ensure date stays disabled after reset
+    this.promptForm.get('date')?.disable();
   }
 }
