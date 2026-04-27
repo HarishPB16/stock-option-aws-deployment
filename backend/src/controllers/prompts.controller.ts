@@ -1,10 +1,21 @@
 import { Request, Response } from 'express';
 import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt, getTradeSetupPrompt } from '../utils/prompts';
-import { encryptPayload } from '../utils/encryption.util';
+import { encryptPayload, decryptPayload } from '../utils/encryption.util';
 
 export const generatePrompt = async (req: Request, res: Response) => {
     try {
-        const { type, ticker, date } = req.body;
+        let payload = req.body;
+        
+        // Handle end-to-end encryption if provided
+        if (req.body.encryptedData) {
+            try {
+                payload = decryptPayload(req.body.encryptedData);
+            } catch (decErr) {
+                return res.status(400).json({ success: false, message: "Invalid encrypted payload." });
+            }
+        }
+        
+        const { type, ticker, date } = payload;
 
         if (!type) {
             return res.status(400).json({ success: false, message: "Prompt 'type' is required." });
