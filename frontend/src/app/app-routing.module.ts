@@ -10,6 +10,7 @@ const routes: Routes = [
     { path: 'top-picks', loadChildren: () => import('./features/top-picks/top-picks.module').then(m => m.TopPicksModule) },
     { path: 'youtube', loadChildren: () => import('./features/youtube/youtube.module').then(m => m.YoutubeModule) },
     { path: 'games', loadChildren: () => import('./features/games/games.module').then(m => m.GamesModule) },
+    { path: 'trade-setup', loadChildren: () => import('./features/trade-setup/trade-setup.module').then(m => m.TradeSetupModule) },
     { path: '**', redirectTo: 'home' }
 ];
 

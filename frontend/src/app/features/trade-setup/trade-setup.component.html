@@ -1,0 +1,53 @@
+<div class="trade-setup-container">
+  <div class="header-section">
+    <h1>📈 AI Trade Setup Generator</h1>
+    <p>Generate high-probability options trade setups for major indices.</p>
+  </div>
+
+  <div class="controls-section card">
+    <div class="control-group">
+      <label for="indexSelect">Select Index:</label>
+      <select id="indexSelect" [(ngModel)]="selectedIndex" class="premium-select">
+        <option *ngFor="let idx of indexOptions" [value]="idx">{{ idx }}</option>
+      </select>
+    </div>
+
+    <div class="ai-tabs">
+      <button 
+        *ngFor="let ai of aiOptions" 
+        class="ai-tab-btn" 
+        [class.active]="selectedAi === ai.id"
+        (click)="selectedAi = ai.id"
+      >
+        <span class="icon" *ngIf="ai.id === 'gemini'">✨</span>
+        <span class="icon" *ngIf="ai.id === 'chatgpt'">🤖</span>
+        <span class="icon" *ngIf="ai.id === 'claude'">🧠</span>
+        {{ ai.label }}
+      </button>
+    </div>
+
+    <button 
+      class="generate-btn" 
+      [disabled]="isLoading" 
+      (click)="generateTradeSetup()"
+    >
+      <span *ngIf="!isLoading">🚀 Generate Trade Setup</span>
+      <span *ngIf="isLoading" class="spinner-container">
+        <span class="spinner"></span> Analyzing Market...
+      </span>
+    </button>
+  </div>
+
+  <div class="error-banner" *ngIf="errorMessage">
+    ⚠️ {{ errorMessage }}
+  </div>
+
+  <div class="result-section card" *ngIf="setupResultHtml && !isLoading">
+    <div class="result-header">
+      <div class="badge">Live AI Analysis</div>
+      <div class="timestamp">Generated just now</div>
+    </div>
+    
+    <div class="html-content" [innerHTML]="setupResultHtml"></div>
+  </div>
+</div>

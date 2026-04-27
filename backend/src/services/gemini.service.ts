@@ -266,3 +266,30 @@ export const generateTopPicks = async (): Promise<any> => {
         throw new Error('Gemini Top Picks Failed: ' + error.message);
     }
 };
+
+export const generateTradeSetup = async (indexName: string): Promise<string> => {
+    const t0 = Date.now();
+    const aiClient = getAIClient();
+    const { getTradeSetupPrompt } = require('../utils/prompts');
+    const prompt = getTradeSetupPrompt(indexName, getFormattedDate());
+
+    try {
+        const response = await aiClient.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: { tools: [{ googleSearch: {} }] }
+        });
+
+        logger.info('Gemini AI Trade Setup Success', { durationMs: Date.now() - t0, indexName });
+        let textOutput = response.text || "<div>No trade setup generated.</div>";
+        textOutput = textOutput.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
+        return textOutput;
+    } catch (error: any) {
+        logger.error('Gemini AI Trade Setup Failed', { durationMs: Date.now() - t0, error: error.message, indexName });
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('429') || errorMessage.includes('Quota exceeded') || errorMessage.includes('RESOURCE_EXHAUSTED')) {
+            return `<div class="error-msg">Gemini AI Quota Exceeded. Please try again later.</div>`;
+        }
+        throw new Error('Gemini Trade Setup Failed: ' + error.message);
+    }
+};

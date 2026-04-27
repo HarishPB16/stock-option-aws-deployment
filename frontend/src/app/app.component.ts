@@ -46,4 +46,11 @@ export class AppComponent implements OnInit {
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
+
+  logout() {
+    this.authService.logout();
+    if (window.innerWidth <= 1024) {
+      this.isSidebarOpen = false;
+    }
+  }
 }

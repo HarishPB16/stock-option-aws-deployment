@@ -21,6 +21,9 @@
                 <a routerLink="/top-picks" routerLinkActive="active" class="nav-item">
                     <span class="nav-icon">✨</span> Top Picks
                 </a>
+                <a routerLink="/trade-setup" routerLinkActive="active" class="nav-item">
+                    <span class="nav-icon">🎯</span> Trade Setup
+                </a>
                 <a routerLink="/history" routerLinkActive="active" class="nav-item">
                     <span class="nav-icon">🕒</span> History
                 </a>
@@ -48,6 +51,9 @@
                 </a>
                 <a routerLink="/admin/calculator" routerLinkActive="active" class="nav-item admin-item">
                     <span class="nav-icon">🧮</span> Calculator
+                </a>
+                <a (click)="logout()" class="nav-item admin-item logout-btn" style="cursor: pointer; color: var(--accent-put);">
+                    <span class="nav-icon">🚪</span> Logout
                 </a>
             </div>
         </div>
