@@ -311,13 +311,6 @@ Provide a standard <table> with columns: Name | Date | Down/UP (Points) | Down/U
 
 <h2>3. crude oil and INR vs Doller Trend</h2>
 Provide a standard <table> with columns: Name | Date | Price | Down/UP (Points) | Down/UP (%)
-
-<h2>4. Option Expiry Table</h2>
-Provide a standard <table> with columns: Name | Monthly/Weekly | Day | Date
-Include (Only these for next expiry only): NIFTY, BANK NIFTY, SENSEX, FINNIFTY, MIDCPNIFTY,Stock Expiry
-
-<h2>5. Upcoming Indian Stock Market Holidays (NSE/BSE)</h2>
-Provide a standard <table> with columns: Holiday | Date | Day
 `;
 };
 

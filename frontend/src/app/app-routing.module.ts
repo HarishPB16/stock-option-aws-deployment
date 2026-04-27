@@ -11,6 +11,7 @@ const routes: Routes = [
     { path: 'youtube', loadChildren: () => import('./features/youtube/youtube.module').then(m => m.YoutubeModule) },
     { path: 'games', loadChildren: () => import('./features/games/games.module').then(m => m.GamesModule) },
     { path: 'trade-setup', loadChildren: () => import('./features/trade-setup/trade-setup.module').then(m => m.TradeSetupModule) },
+    { path: 'market-calendar', loadChildren: () => import('./features/market-calendar/market-calendar.module').then(m => m.MarketCalendarModule) },
     { path: '**', redirectTo: 'home' }
 ];
 
