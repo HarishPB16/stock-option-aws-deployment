@@ -41,8 +41,11 @@ export class PromptsComponent implements OnInit {
     { value: 'suggestion', label: 'Option Suggestion' },
     { value: 'advice', label: 'Simple Advice' },
     { value: 'market_briefing', label: 'Market Briefing' },
-    { value: 'top_picks', label: 'Top Picks' }
+    { value: 'top_picks', label: 'Top Picks' },
+    { value: 'trade_setup', label: 'Trade Setup' }
   ];
+
+  indexOptions = ['NIFTY 50', 'SENSEX', 'BANK NIFTY'];
 
   filteredStocks$!: Observable<NSESecurity[]>;
   showDropdown: boolean = false;
@@ -67,20 +70,31 @@ export class PromptsComponent implements OnInit {
     this.promptForm = this.fb.group({
       type: ['suggestion', Validators.required],
       ticker: [''],
+      indexName: ['NIFTY 50'],
       date: [today, Validators.required]
     });
 
     // Make ticker required only for suggestion and advice
     this.promptForm.get('type')?.valueChanges.subscribe(type => {
       const tickerControl = this.promptForm.get('ticker');
+      const indexControl = this.promptForm.get('indexName');
+
       if (type === 'market_briefing' || type === 'top_picks') {
         tickerControl?.clearValidators();
         tickerControl?.disable();
+        indexControl?.disable();
+      } else if (type === 'trade_setup') {
+        tickerControl?.clearValidators();
+        tickerControl?.disable();
+        indexControl?.setValidators([Validators.required]);
+        indexControl?.enable();
       } else {
         tickerControl?.setValidators([Validators.required]);
         tickerControl?.enable();
+        indexControl?.disable();
       }
       tickerControl?.updateValueAndValidity();
+      indexControl?.updateValueAndValidity();
     });
 
     this.filteredStocks$ = this.promptForm.get('ticker')!.valueChanges.pipe(
@@ -159,7 +173,9 @@ export class PromptsComponent implements OnInit {
 
     // Extract raw ticker text
     let queryTicker = this.promptForm.value.ticker;
-    if (this.promptForm.value.type !== 'market_briefing' && this.promptForm.value.type !== 'top_picks' && queryTicker) {
+    if (this.promptForm.value.type === 'trade_setup') {
+        queryTicker = this.promptForm.getRawValue().indexName;
+    } else if (this.promptForm.value.type !== 'market_briefing' && this.promptForm.value.type !== 'top_picks' && queryTicker) {
       const match = queryTicker.match(/\(([^)]+)\)/);
       queryTicker = match ? match[1] : queryTicker;
     }
@@ -264,6 +280,7 @@ export class PromptsComponent implements OnInit {
     this.promptForm.reset({
       type: 'suggestion',
       ticker: '',
+      indexName: 'NIFTY 50',
       date: new Date().toISOString().split('T')[0]
     });
   }

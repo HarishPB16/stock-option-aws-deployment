@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt } from '../utils/prompts';
+import { getOptionSuggestionPrompt, getSimpleAdvicePrompt, getMarketBriefingPrompt, getTopPicksPrompt, getTradeSetupPrompt } from '../utils/prompts';
 import { encryptPayload } from '../utils/encryption.util';
 
 export const generatePrompt = async (req: Request, res: Response) => {
@@ -36,6 +36,10 @@ export const generatePrompt = async (req: Request, res: Response) => {
                 break;
             case 'top_picks':
                 compiledPrompt = getTopPicksPrompt(formattedDate);
+                break;
+            case 'trade_setup':
+                if (!ticker) return res.status(400).json({ success: false, message: "Index is required for trade setup prompts." });
+                compiledPrompt = getTradeSetupPrompt(ticker, formattedDate); // `ticker` here acts as `indexName`
                 break;
             default:
                 return res.status(400).json({ success: false, message: "Invalid prompt type." });

@@ -220,7 +220,22 @@ export const generateTradeSetupClaude = async (indexName: string): Promise<strin
     const t0 = Date.now();
     const client = getAnthropicClient();
     const { getTradeSetupPrompt } = require('../utils/prompts');
-    const prompt = getTradeSetupPrompt(indexName, getFormattedDate());
+    let prompt = getTradeSetupPrompt(indexName, getFormattedDate());
+
+    prompt += `\n\nCRITICAL: Provide your response ONLY as valid, clean HTML. 
+Do not use markdown blocks like \`\`\`html. 
+Use semantic HTML tags (e.g., <h3>, <p>, <ul>, <li>, <strong>, <br>). Add some inline styles (like colors for bullish/bearish, spacing, padding) so it looks like a premium, professional dashboard component. Do NOT output raw text. Do NOT wrap the entire thing in <html> or <body>, just output the fragment that can be placed inside an Angular component's innerHTML.
+
+Structure it exactly like this visually:
+<h3>Market Sentiment</h3>
+<p>(Bullish / Bearish / Neutral)</p>
+<h3>Key Levels</h3>
+...
+<h3>TRADE SETUP</h3>
+...
+<h3>RISK RULES</h3>
+...
+<h3>Confidence Score:</h3>`;
 
     try {
         const response = await client.messages.create({

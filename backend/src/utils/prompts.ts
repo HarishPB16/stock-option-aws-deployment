@@ -503,57 +503,57 @@ Capital: ₹100,000
 
 PHASE 5: OUTPUT FORMAT (STRICT)
 
-Provide your response ONLY as valid, clean HTML. 
-Do not use markdown blocks like \`\`\`html. 
-Use semantic HTML tags (e.g., <h3>, <p>, <ul>, <li>, <strong>, <br>). Add some inline styles (like colors for bullish/bearish, spacing, padding) so it looks like a premium, professional dashboard component. Do NOT output raw text. Do NOT wrap the entire thing in <html> or <body>, just output the fragment that can be placed inside an Angular component's innerHTML.
+━━━━━━━━━━━━━━━━━━━━━━━
+Market Sentiment:
+(Bullish / Bearish / Neutral)
 
-Structure it exactly like this visually:
+━━━━━━━━━━━━━━━━━━━━━━━
+Key Levels:
 
-<h3>Market Sentiment</h3>
-<p>(Bullish / Bearish / Neutral)</p>
+Support:
+S1:
+S2:
+S3:
 
-<h3>Key Levels</h3>
-<p><strong>Support:</strong></p>
-<ul>
-  <li>S1:</li>
-  <li>S2:</li>
-  <li>S3:</li>
-</ul>
-<p><strong>Resistance:</strong></p>
-<ul>
-  <li>R1:</li>
-  <li>R2:</li>
-  <li>R3:</li>
-</ul>
+Resistance:
+R1:
+R2:
+R3:
 
-<h3>Key Logic (MAX 3 bullets)</h3>
-<ul>
-  <li>Trend + VWAP alignment</li>
-  <li>OI confirmation</li>
-  <li>Volatility context</li>
-</ul>
+━━━━━━━━━━━━━━━━━━━━━━━
+Key Logic (MAX 3 bullets):
+• Trend + VWAP alignment
+• OI confirmation
+• Volatility context
 
-<h3>TRADE SETUP</h3>
-<p><strong>Strategy:</strong></p>
-<p><strong>Strikes:</strong></p>
-<p><strong>Entry Range:</strong></p>
-<p><strong>Stop Loss:</strong></p>
-<p><strong>Targets:</strong></p>
-<ul>
-  <li>T1 (≥1:1.5)</li>
-  <li>T2 (≥1:2)</li>
-</ul>
-<p><strong>Position Size:</strong></p>
+━━━━━━━━━━━━━━━━━━━━━━━
+TRADE SETUP:
 
-<h3>RISK RULES</h3>
-<ul>
-  <li><strong>60-Minute Rule:</strong> Exit if no movement (theta decay)</li>
-  <li><strong>VWAP Rule:</strong> Exit if 15-min candle closes opposite side</li>
-  <li><strong>Volatility:</strong> Reduce exposure if VIX spikes</li>
-</ul>
+Strategy:
+Strikes:
+Entry Range:
+Stop Loss:
+Targets:
+• T1 (≥1:1.5)
+• T2 (≥1:2)
 
-<h3>Confidence Score:</h3>
-<p>(1–10)</p>
+Position Size:
+
+━━━━━━━━━━━━━━━━━━━━━━━
+RISK RULES:
+
+• 60-Minute Rule:
+  Exit if no movement (theta decay)
+
+• VWAP Rule:
+  Exit if 15-min candle closes opposite side
+
+• Volatility:
+  Reduce exposure if VIX spikes
+
+━━━━━━━━━━━━━━━━━━━━━━━
+Confidence Score:
+(1–10)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
