@@ -274,7 +274,7 @@ Structure it exactly like this visually:
             return `<div class="error-msg">ChatGPT Quota Exceeded. Please try again later.</div>`;
         }
 
-        throw new Error(\`Failed to generate trade setup via ChatGPT: \${error.message}\`);
+        throw new Error(`Failed to generate trade setup via ChatGPT: ${error.message}`);
     }
 };
 
