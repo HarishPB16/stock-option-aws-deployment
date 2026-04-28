@@ -41,8 +41,8 @@ export class PromptsComponent implements OnInit {
     { value: 'suggestion', label: 'Option Suggestion' },
     { value: 'advice', label: 'Simple Advice' },
     { value: 'market_briefing', label: 'Market Briefing' },
-    { value: 'top_picks', label: 'Top Picks' },
-    { value: 'trade_setup', label: 'Trade Setup' }
+    { value: 'top_picks', label: 'Top Picks (Give the top 10)' },
+    { value: 'trade_setup', label: 'Trade Setup (Nifty 50, Bank Nifty, etc)' }
   ];
 
   indexOptions = ['NIFTY 50', 'SENSEX', 'BANK NIFTY'];
@@ -174,7 +174,7 @@ export class PromptsComponent implements OnInit {
     // Extract raw ticker text
     let queryTicker = this.promptForm.value.ticker;
     if (this.promptForm.value.type === 'trade_setup') {
-        queryTicker = this.promptForm.getRawValue().indexName;
+      queryTicker = this.promptForm.getRawValue().indexName;
     } else if (this.promptForm.value.type !== 'market_briefing' && this.promptForm.value.type !== 'top_picks' && queryTicker) {
       const match = queryTicker.match(/\(([^)]+)\)/);
       queryTicker = match ? match[1] : queryTicker;
