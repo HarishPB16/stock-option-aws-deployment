@@ -58,9 +58,17 @@ export class PromptsComponent implements OnInit {
     private authService: AuthService
   ) { }
 
+  private getLocalDateString(): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAdmin;
-    const today = new Date().toISOString().split('T')[0];
+    const today = this.getLocalDateString();
 
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -181,7 +189,7 @@ export class PromptsComponent implements OnInit {
     }
 
     // Since 'date' is disabled, it won't be in this.promptForm.value, we must use getRawValue() or just grab the value
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = this.getLocalDateString();
     const payload = { ...this.promptForm.value, ticker: queryTicker, date: todayStr };
 
     this.optionsService.generatePrompt(payload).subscribe({
@@ -283,7 +291,7 @@ export class PromptsComponent implements OnInit {
       type: 'suggestion',
       ticker: '',
       indexName: 'NIFTY 50',
-      date: new Date().toISOString().split('T')[0]
+      date: this.getLocalDateString()
     });
     // Ensure date stays disabled after reset
     this.promptForm.get('date')?.disable();
