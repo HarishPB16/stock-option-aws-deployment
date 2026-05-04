@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Angular Study</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #f1f1f1;
+            padding: 10px;
+        }
+
+        .tab {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            color: blue;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: white;
+            color: red;
+            font-weight: bold;
+        }
+
+        .content {
+            display: none;
+            padding: 15px;
+            border-top: 1px solid #ccc;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* ✅ Responsive */
+        @media (max-width: 600px) {
+            .tab {
+                flex: 1 1 45%;
+                text-align: center;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="tabs">
+        <div class="tab active" onclick="openTab('angular', this)">Angular-IQ</div>
+        <div class="tab" onclick="openTab('security', this)">Security</div>
+        <div class="tab" onclick="openTab('performance', this)">Performance</div>
+        <div class="tab" onclick="openTab('ngrx', this)">Ngrx</div>
+        <div class="tab" onclick="openTab('newfeature', this)">New Feature</div>
+        <div class="tab" onclick="openTab('scalability', this)">Scalability</div>
+        <div class="tab" onclick="openTab('folder', this)">Folder</div>
+        <div class="tab" onclick="openTab('exception', this)">Exception</div>
+        <div class="tab" onclick="openTab('saml', this)">SAML</div>
+        <div class="tab" onclick="openTab('logger', this)">Logger</div>
+    </div>
+
+    <div id="angular" class="content active">
+
+        <!-- Angular-IQ TAB CONTENT -->
+
+        <h2 style="color: blue;"><u><b><i>Angular</i></b></u></h2>
+
+        <ul>
+            <li><b><i>framework, developed by Google, browsers, mobiles & desktop</i></b></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Used</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>SPA, Google, open source, DI, TypeScript & ES6</i></li>
+            <li><i>re-usable components, modules, router</i></li>
+            <li><i>Great community support</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Fundamentals</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Component, Module, Data binding, Services, DI</i></li>
+            <li><i>directive, template, Application Bootstrapping</i></li>
+            <li><i>Navigation, mobile</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Update Angular</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>ng update @angular/core @angular/cli</i></li>
+            <li><i>update.angular.io → select two version</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Angular CLI</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>ng new → command line interface</i></li>
+            <li><i>ng serve -o</i></li>
+            <li><i>ng generate class/component/module/library/guard/enum/universal</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Angular elements</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>web components, we can used outside of angular</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Angular 7 material new</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Virtual scrolling → import ScrollingModule</i></li>
+            <li><i>drag & drop → import DragDropModule</i></li>
+            <li><i>&lt;div cdkDrag&gt;&lt;/div&gt;</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Budget bundle</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>angular.json file</i></li>
+            <li><i>maximumWarning, maximumError</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Ivy Renderer</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>view engine (component will convert into normal HTML & javascript)</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Angular console</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>GUI alternative of CLI command</i></li>
+            <li><i>build CLI command visually</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Add dependency to the project</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>ng add @angular/material</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: ng build</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>uglify all javascript, dist folder</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: ng config</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>get the complete data of the angular.json file like project name, default output directory</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: ng test</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>used Karma</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: ng version</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: ng new</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>ng new &lt;project-name&gt; --style &lt;style&gt;</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Component</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Template, class, metadata</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Template Expression</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>&#123;&#123; &#125&#125</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Template Statement</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>triggered event, right side of the event (click)</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Data Binding</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Two way binding</i></li>
+            <li><i>One way binding</i></li>
+            <li><i>Interpolation, attribute, property, class, style</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Two way binding</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>[(ngModel)]</i></li>
+        </ul>
+
+        <!-- Angular-IQ TAB CONTENT -->
+
+        <h3 style="color: red;"><u><b><i>Question: ngClass vs class</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>class → toggles single class dynamically</i></li>
+            <li><i>ngClass → supports multiple classes</i></li>
+            <li><i>&lt;div [class.active]="isActive"&gt;&lt;/div&gt;</i></li>
+            <li><i>&lt;div [ngClass]="{'active': isActive, 'disabled': isDisabled}"&gt;&lt;/div&gt;</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Lifecycle Hooks Summary</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>ngOnChanges → input changes</i></li>
+            <li><i>ngOnInit → initialization</i></li>
+            <li><i>ngDoCheck → custom change detection</i></li>
+            <li><i>ngAfterContentInit → content init</i></li>
+            <li><i>ngAfterContentChecked → content checked</i></li>
+            <li><i>ngAfterViewInit → view init</i></li>
+            <li><i>ngOnDestroy → cleanup</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Constructor vs ngOnInit</i></b></u></h3>
+
+        <ul>
+            <li>
+                <b><i>Answer: constructor</i></b>
+                <ul>
+                    <li><i>used for dependency injection</i></li>
+                    <li><i>avoid writing business logic</i></li>
+                    <li><i>should not use @Input here</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: ngOnInit</i></b>
+                <ul>
+                    <li><i>used for initialization</i></li>
+                    <li><i>API calls</i></li>
+                    <li><i>safe to use @Input</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: EventEmitter vs @Output</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>@Output → decorator</i></li>
+            <li><i>EventEmitter → class</i></li>
+            <li><i>EventEmitter extends RxJS Subject</i></li>
+            <li><i>used to emit event from child to parent</i></li>
+            <li><i>They work together</i></li>
+            <li><i>EventEmitter cannot work alone</i></li>
+        </ul>
+
+        <h3 style="color: blue;"><u><b><i>FINAL STATUS (ALL PAGES)</i></b></u></h3>
+
+        <ul>
+            <li><i>✔ Page 1 → Modules</i></li>
+            <li><i>✔ Page 2 → Providers / DI</i></li>
+            <li><i>✔ Page 3 → Directives + Lifecycle + Change Detection</i></li>
+            <li><i>✔ Page 4 → Angular Basics + CLI</i></li>
+            <li><i>✔ Page 5 → Binding + Final Concepts</i></li>
+        </ul>
+
+        <!-- Angular-IQ TAB CONTENT -->
+
+        <h2 style="color: blue;"><u><b><i>Module</i></b></u></h2>
+
+        <ul>
+            <li><b><i>Organize app into a distributive manner</i></b></li>
+            <li><b><i>Must have one parent Module</i></b></li>
+            <li><b><i>@NgModule</i></b></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Diff types of module</i></b></u></h3>
+
+        <ul>
+            <li>
+                <b><i>Answer: Routing Module</i></b>
+                <ul>
+                    <li><i>Configuration for particular module</i></li>
+                    <li><i>Each feature module have its own Routing Module</i></li>
+                    <li><i>Load the child module</i></li>
+                    <li><i>path: 'admin'</i></li>
+                    <li><i>loadChildren(() => import('./admin/admin.module').then(m => m.AdminModule))</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Feature Module</i></b>
+                <ul>
+                    <li><i>Organizes related functionality (user, product, Admin..)</i></li>
+                    <li><i>Loaded - Eagerly or Lazy</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Shared Module</i></b>
+                <ul>
+                    <li><i>Reusable components, pipes & directive used by multiple modules</i></li>
+                    <li><i>Do not include services with providedIn root here (to avoid multiple instances)</i></li>
+                    <li><i>@NgModule</i></li>
+                    <li><i>declarations: [CustomButtonComponent, HighlightDirective]</i></li>
+                    <li><i>imports: [CommonModule]</i></li>
+                    <li><i>exports: [all above three]</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Core Module</i></b>
+                <ul>
+                    <li><i>Holds Singleton services</i></li>
+                    <li><i>Imported only in AppModule</i></li>
+                    <li><i>Also have components, directive and pipes, and imported into the appmodule only</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Root Module</i></b>
+                <ul>
+                    <li><i>Global imports</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Widget Module</i></b>
+                <ul>
+                    <li><i>It is not official angular module</i></li>
+                    <li><i>Mini feature module</i></li>
+                    <li><i>weather, news, stock</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Lazy Loaded Module</i></b>
+                <ul>
+                    <li><i>Loaded on demand</i></li>
+                    <li><i>Loaded feature module lazy using loadChildren</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: CommonModule</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Do we need to import CommonModule in every above module? → Yes</i></li>
+            <li><i>This module gives access of all angular directive, pipes like *ngIf, *ngFor, datepipe</i></li>
+            <li><i>AppModule uses BrowserModule not use the CommonModule</i></li>
+        </ul>
+
+        <!-- Angular-IQ TAB CONTENT - PAGE 2 -->
+
+        <h2 style="color: blue;"><u><b><i>AppModule basic structure</i></b></u></h2>
+
+        <ul>
+            <li><i>@NgModule({</i></li>
+            <li><i>declarations: [ AppComponent ]</i></li>
+            <li><i>imports: [ BrowserModule, FormsModule, routingFile ]</i></li>
+            <li><i>exports: []</i></li>
+            <li><i>providers: []</i></li>
+            <li><i>bootstrap: [AppComponent]</i></li>
+            <li><i>})</i></li>
+            <li><i>export class AppModule &#123; &#125</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Built-in modules</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Angular has built-in library module starting with @angular</i></li>
+            <li><i>@angular/core, routers, forms, http</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Diff betn Javascript module & NgModule?</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Separate javascript file & can export them</i></li>
+            <li><i>NgModule is typescript class decorated with @NgModule</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Provider</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>used for DI, Angular will create object and inject in constructor</i></li>
+            <li><i>Root injector</i></li>
+            <li><i>providedIn: 'root'</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Types of Provider</i></b></u></h3>
+
+        <ul>
+            <li>
+                <b><i>Answer: class provider</i></b>
+                <ul>
+                    <li><i>default like DI in constructor</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Value provider</i></b>
+                <ul>
+                    <li><i>Add in providers array</i></li>
+                    <li><i>{ provide: 'CONFIG', useValue: AnyObject }</i></li>
+                    <li><i>constructor(@Inject('CONFIG') private config: any) {}</i></li>
+                    <li><i>Commonly used in ENV specific configurations</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Factory provider</i></b>
+                <ul>
+                    <li><i>Create service based on condition</i></li>
+                    <li><i>{ provide: LoggerService, useFactory: isProd ? new LoggerService() : new OtherService() }</i>
+                    </li>
+                    <li><i>when we need the diff service for dev and prod</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Existing provider (Alias)</i></b>
+                <ul>
+                    <li><i>You want two tokens to points to the same instance</i></li>
+                    <li><i>{ provide: LoggerService, useClass: RealLoggerService }</i></li>
+                    <li><i>{ provide: 'AliasLogger', useExisting: LoggerService }</i></li>
+                    <li><i>used useExisting keyword here</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Multi provider</i></b>
+                <ul>
+                    <li><i>provide multiple value for same token</i></li>
+                    <li><i>&#123; provide: LOGGER_TOKEN, useValue: 'consoleLogger', multi: true &#125;</i></li>
+                    <li><i>&#123; provide: LOGGER_TOKEN, useValue: 'fileLogger', multi: true &#125;</i></li>
+                    <li><i>create a array and inject into the constructor</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Root provider</i></b>
+                <ul>
+                    <li><i>providedIn: 'root'</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Angular-IQ TAB CONTENT -->
+
+        <h2 style="color: blue;"><u><b><i>Directive</i></b></u></h2>
+
+        <ul>
+            <li><b><i>Basically a class with decorators</i></b></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Types</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer: Component</i></b></li>
+
+            <li>
+                <b><i>Answer: Structural</i></b>
+                <ul>
+                    <li><i>*ngIf, *ngFor, *ngSwitch → adding & remove HTML</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: Attribute</i></b>
+                <ul>
+                    <li><i>ngStyle, ngClass and ngModel</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Lifecycle hooks</i></b></u></h3>
+
+        <ul>
+            <li>
+                <b><i>Answer: ngOnChanges()</i></b>
+                <ul>
+                    <li><i>Before execute on ngOnInit()</i></li>
+                    <li><i>Called when @Input property changed</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: ngOnInit()</i></b>
+                <ul>
+                    <li><i>Called only once</i></li>
+                    <li><i>Used in component or a directive</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: ngDoCheck</i></b>
+                <ul>
+                    <li><i>Called every change detection</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: ngAfterContentInit</i></b>
+                <ul>
+                    <li><i>Called when component’s content will be initialized</i></li>
+                    <li><i>Run only once</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: ngAfterContentChecked</i></b>
+                <ul>
+                    <li><i>Called after every ngDoCheck()</i></li>
+                    <li><i>After content will be projected into our component</i></li>
+                    <li><i>&lt;ng-content&gt;&lt;/ng-content&gt;</i></li>
+                    <li><i>@ContentChild(ChildComponent, { static: false }) contentChild: ChildComponent;</i></li>
+                    <li><i>Content projection is a way to import HTML content from outside the component</i></li>
+                    <li><i>When ContentChild view is checked then this event called</i></li>
+                </ul>
+            </li>
+
+            <li>
+                <b><i>Answer: ngOnDestroy</i></b>
+                <ul>
+                    <li><i>unsubscribe observables, stop interval timers</i></li>
+                    <li><i>unregister callback, detach event handlers</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Shared Data between Angular Components</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>@Input</i></li>
+            <li><i>@ViewChild</i></li>
+            <li><i>using RxJS</i></li>
+            <li><i>@Output and EventEmitter</i></li>
+            <li><i>EventEmitter (called EventEmitter from child via emit)</i></li>
+            <li><i>Parent component create event called by child above way</i></li>
+            <li><i>&lt;app-child (inputChange)="changeInput($event)"&gt;&lt;/app-child&gt;</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Change Detection</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Angular detect the change & update in DOM</i></li>
+            <li><i>Used zone.js</i></li>
+            <li><i>Traversing from root to child component & update the DOM</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Types</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Default & OnPush</i></li>
+            <li><i>every component will check → when @Input reference is changed</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Content projection</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>parent component will inject the content into the child</i></li>
+            <li><i>app.component.html</i></li>
+            <li><i>&lt;app-child&gt;</i></li>
+            <li><i>&nbsp;&nbsp;&lt;div class="my-css"&gt; This is my footer section &lt;/div&gt;</i></li>
+            <li><i>&nbsp;&nbsp;&lt;div class="my-css1"&gt; This is my form section &lt;/div&gt;</i></li>
+            <li><i>&lt;/app-child&gt;</i></li>
+            <li><i>child.component.ts</i></li>
+            <li><i>&lt;ng-content select=".my-css"&gt;&lt;/ng-content&gt;</i></li>
+        </ul>
+
+    </div>
+    <div id="ngrx" class="content">
+        <h2 style="color: blue;"><u><b><i>NgRx</i></b></u></h2>
+
+        <h3 style="color: red;"><u><b><i>Question: What is NgRx?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>reactive state management library, inspired by Redux and built on RxJS</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: What problem does NgRx solve?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>complex state management</i></li>
+            <li><i>shared state across components</i></li>
+            <li><i>unpredictable data flow in large Angular applications</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: When should you avoid NgRx?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Small applications, simple forms, or when state is limited to a single component.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Core Building Blocks</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer: Store</i></b>
+                <ul>
+                    <li><i>Centralized, immutable application state.</i></li>
+                    <li><i>Read-only from components.</i></li>
+                    <li><i>Updated only via dispatched actions.</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Actions</i></b>
+                <ul>
+                    <li><i>Describe WHAT happened → Sent to UI or Effects</i></li>
+                    <li><i>Plain objects describing what happened.</i></li>
+                    <li><i>It has a type and optional payload.</i></li>
+                    <li><i>Example: loadUsers, addItem, loginSuccess.</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Reducers</i></b>
+                <ul>
+                    <li><i>Pure functions that calculate new state from old state + action.</i></li>
+                    <li><i>No side effects.</i></li>
+                    <li><i>Pure</i></li>
+                    <li><i>Deterministic</i></li>
+                    <li><i>Synchronous</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Selectors</i></b>
+                <ul>
+                    <li><i>Pure functions used to extract specific slices of state from the store.</i></li>
+                    <li><i>Read-only queries to extract data from the store.</i></li>
+                    <li><i>Improve performance via memoization.</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Effects</i></b>
+                <ul>
+                    <li><i>Handle side effects (API calls, async logic).</i></li>
+                    <li><i>Listen for actions and dispatch new actions.</i></li>
+                    <li><i>Non-deterministic (network, time, randomness)</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Are Selectors memoized?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Yes — NgRx selectors are memoized by default</i></li>
+            <li><i>When you create selectors using createSelector, NgRx caches the last result.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Can we dispatch an action from a reducer?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No. Reducers cannot dispatch actions.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Definition of Pure Function</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Same input → same output</i></li>
+            <li><i>No side effects</i></li>
+            <li><i>Does not modify original data (immutable)</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Data Flow (Unidirectional)</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Component → Action → Reducer → Store → Selector → Component</i></li>
+            <li><i>(Action → Effect → API → Action) [for async]</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: How to call the effect?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Component dispatches an action → Effect listens for that action</i></li>
+            <li><i>loadUsers$ = createEffect(() =&gt; &#123;&#125;)</i></li>
+            <li><i>Effect dispatches a new action</i></li>
+            <li><i>loadUsersSuccess and loadUsersFailure</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Reducer vs Effect</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Reducer = Calculator</i></li>
+            <li><i>Effect = Worker</i></li>
+            <li><i>Reducer: “Given old state + action → return new state”</i></li>
+            <li><i>Effect: “I heard this action → I’ll do work → I’ll emit another action”</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Quick Comparison Table</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>API calls → Reducer ❌ | Effect ✅</i></li>
+            <li><i>Async work → Reducer ❌ | Effect ✅</i></li>
+            <li><i>State mutation → Reducer ❌ | Effect ❌</i></li>
+            <li><i>Dispatch actions → Reducer ❌ | Effect ✅</i></li>
+            <li><i>Pure function → Reducer ✅ | Effect ❌</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Do Selectors listen to actions?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Reducer → ✅ Yes</i></li>
+            <li><i>Effect → ✅ Yes</i></li>
+            <li><i>Selector → ❌ No</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: State mutation means?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Changing the existing state object directly instead of creating a new state object.</i></li>
+            <li><i>In NgRx, state must be immutable.</i></li>
+            <li><i>Reducers must return a new state, not modify the old one.</i></li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: State (Mutation Wrong vs Immutable Correct) state
+                        updating</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+
+            <li><i>on(addUser, (state, &#123; user &#125;) =&gt; &#123;</i></li>
+            <li><i>&nbsp;&nbsp;state.users.push(user); // ❌ mutating existing array</i></li>
+            <li><i>&nbsp;&nbsp;state.count++; // ❌ modifying existing object</i></li>
+            <li><i>&nbsp;&nbsp;return state; // ❌ returning same reference</i></li>
+            <li><i>&#125;);</i></li>
+
+            <li><i>on(addUser, (state, &#123; user &#125;) =&gt; (&#123;</i></li>
+            <li><i>&nbsp;&nbsp;...state, // new object</i></li>
+            <li><i>&nbsp;&nbsp;users: [...state.users, user],// new array</i></li>
+            <li><i>&nbsp;&nbsp;count: state.count + 1</i></li>
+            <li><i>&#125;));</i></li>
+
+            <li><i>state.user.name = 'Harish'; // wrong</i></li>
+            <li><i>user: &#123; ...state.user, name: 'Harish' &#125; // correct</i></li>
+
+            <li><i>Nested object mutation</i></li>
+            <li><i>state.settings.theme.dark = true;</i></li>
+            <li><i>settings: &#123;</i></li>
+            <li><i>&nbsp;&nbsp;...state.settings,</i></li>
+            <li><i>&nbsp;&nbsp;theme: &#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;...state.settings.theme,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;dark: true</i></li>
+            <li><i>&nbsp;&nbsp;&#125;</i></li>
+            <li><i>&#125;</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: What is state mutation?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Directly modifying the existing state object or its nested properties</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: What happens if state is mutated?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>We are not changing the object reference</i></li>
+            <li><i>Selectors may not emit</i></li>
+            <li><i>UI may not update</i></li>
+            <li><i>DevTools break</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Are selectors synchronous or asynchronous?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Selectors are synchronous and pure</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Difference between Store and Service?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Services manage local or feature-specific state imperatively</i></li>
+            <li><i>Store manages global state reactively with immutability and unidirectional data flow</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Explain NgRx data flow</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Component dispatches an action</i></li>
+            <li><i>↓</i></li>
+            <li><i>Reducer updates state</i></li>
+            <li><i>↓</i></li>
+            <li><i>Store emits new state</i></li>
+            <li><i>↓</i></li>
+            <li><i>Component reads via selector</i></li>
+
+            <li><i>For async With API</i></li>
+            <li><i>Action → Effect → API → Success/Failure Action → Reducer → Store → Selector → Component</i></li>
+
+            <li><i>For async Without API</i></li>
+            <li><i>Action → Reducer → Store → Selector → Component</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Why immutability is important in NgRx?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>efficient change detection</i></li>
+            <li><i>selector memoization</i></li>
+            <li><i>predictable state transitions</i></li>
+            <li><i>time-travel debugging</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: How does NgRx handle async operations?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Uses Effects along with RxJS operators like switchMap, mergeMap, and catchError</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Difference between switchMap and mergeMap in Effects?</i></b></u>
+        </h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>switchMap: Cancels previous requests (used for search)</i></li>
+            <li><i>mergeMap: Runs multiple requests in parallel</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: What is Store DevTools?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Enable debugging features like action inspection, state history, and time-travel debugging</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: How do you handle errors in NgRx?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Effects using catchError and dispatching failure actions</i></li>
+            <li><i>Reducers update error state</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Difference between switchMap and mergeMap in Effects?</i></b></u>
+        </h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>switchMap: Cancels previous requests (used for search)</i></li>
+            <li><i>mergeMap: Runs multiple requests in parallel</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: What happens if you mutate state accidentally?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Selectors may not emit new values</i></li>
+            <li><i>Change detection may fail</i></li>
+            <li><i>DevTools debugging becomes unreliable</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: NgRx vs Angular Signals?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>NgRx is best for large, complex, global state with async flows</i></li>
+            <li><i>Signals are simpler and better suited for local or medium complexity state</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Does NgRx prevent duplicate API calls automatically?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No. RxJS operators control that behavior</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Action dispatched but API not called — why?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Effect is not registered or ofType does not match</i></li>
+            <li><i>EffectsModule.forRoot([UserEffects])</i></li>
+            <li><i>EffectsModule.forFeature([UserEffects])</i></li>
+            <li><i>ofType(loadUser) // Effect listens for loadUser</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Why is switchMap preferred for search APIs?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>It cancels previous requests</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Can we use subscribe() inside an Effect?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No. Effects must return observables</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: OnPush + NgRx — Does it work correctly?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>When NgRx updates state:</i></li>
+            <li><i>Reference changes → OnPush detects → UI updates</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: When OnPush + NgRx does NOT work</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>The real issue is state mutation</i></li>
+            <li><i>state.users.push(user); // ❌ mutation</i></li>
+            <li><i>When reference is not changed</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Can Effects be time-traveled?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No. Only reducers/state can be replayed</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Prevent duplicate API calls if data already in store</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Use withLatestFrom + selector + condition</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Multiple API calls on navigation</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Cause: Effect subscribed multiple times due to lazy module reloading</i></li>
+            <li><i>Fix: Use forFeature properly and avoid duplicate effect registration</i></li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: Can we store UI state in NgRx?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>YES—but selectively</i></li>
+            <li><i>Sidebar open/close (used across pages)</i></li>
+            <li><i>Theme (dark/light)</i></li>
+            <li><i>Logged-in user UI flags</i></li>
+            <li><i>Global loading spinner</i></li>
+            <li><i>Filters used in multiple components</i></li>
+            <li><i>Other are store in ngrx</i></li>
+        </ul>
+
+        <h3 style="color: blue;"><u><b><i>NgRx vs Signals — Trap Questions</i></b></u></h3>
+
+        <h3 style="color: red;"><u><b><i>Question: Can Signals be used to share data between components?</i></b></u>
+        </h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Yes, but NOT directly</i></li>
+            <li><i>Signals + Service = Shared state</i></li>
+            <li><i>No, Signals alone = Local state</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Trap 1</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Can Signals replace NgRx in enterprise apps?</i></li>
+            <li><i>❌ No. Signals lack global orchestration, time-travel, action audit, and effect isolation.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Trap 2</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Signals are faster than NgRx, so NgRx is obsolete?</i></li>
+            <li><i>❌ Performance is not the main goal. Predictability, traceability, and scalability are.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Trap 3</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Signals also immutable, so same as NgRx?</i></li>
+            <li><i>❌ Signals allow mutation. NgRx enforces immutability and unidirectional flow.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Trap 4</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Signals support time-travel debugging?</i></li>
+            <li><i>❌ No action log, no replay mechanism.</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Is NgRx obsolete because of Signals?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No. Signals are reactive primitives, not state architecture replacements.</i></li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: Adapter</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Utility that manages entity collections with immutable CRUD helpers</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Obsolete</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Replaced by a superior modern approach</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Traceability</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Ability to audit and replay every state change via actions</i></li>
+        </ul>
+
+        <h3 style="color: blue;"><u><b><i>NgRx philosophy</i></b></u></h3>
+        <ul>
+            <li><i>NgRx is about predictable, traceable state transitions, not just centralized storage</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Non-deterministic</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>same input does not always give the same output</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Obsolete (Definition)</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No longer recommended because a better, modern solution exists</i></li>
+            <li><i>Example:</i></li>
+            <li><i>jQuery-style DOM manipulation is obsolete in Angular</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Predictable flow</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Same Action + Same State = Same Result (always)</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Auditable changes</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Who changed the data?</i></li>
+            <li><i>Which action?</i></li>
+            <li><i>In what order?</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Replayable behavior in NgRx</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Time-travel debugging</i></li>
+            <li><i>Reproduce production bugs</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Cohesive Feature</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>All files belong to the same business domain</i></li>
+            <li><i>Each piece has a single responsibility</i></li>
+            <li><i>Everything changes for the same reason</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Opposite of Cohesion</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Low cohesion = unrelated logic mixed together</i></li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: What is Time-Travel Debugging?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Move backward and forward through dispatched actions</i></li>
+            <li><i>See application state at each step</i></li>
+            <li><i>Replay actions deterministically</i></li>
+            <li><i>This is provided by NgRx Store DevTools</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: How it works</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Every action is logged</i></li>
+            <li><i>Every state snapshot is stored</i></li>
+            <li><i>You can:</i></li>
+            <li><i>Jump to a previous action</i></li>
+            <li><i>Inspect old state</i></li>
+            <li><i>Replay the action sequence</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Why time-travel is possible in NgRx</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Reducers are pure</i></li>
+            <li><i>State is immutable</i></li>
+            <li><i>No side effects inside reducers</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Deterministic behavior</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Same actions + same initial state = same result</i></li>
+        </ul>
+
+        <h3 style="color: blue;"><u><b><i>One-Liner Interview Answers (Rapid-Fire)</i></b></u></h3>
+
+        <ul>
+            <li><b><i>NgRx:</i></b> <i>Centralized, reactive state management for Angular with immutable state</i></li>
+            <li><b><i>Store:</i></b> <i>Single source of truth for application state</i></li>
+            <li><b><i>Action:</i></b> <i>Describes what happened in the application</i></li>
+            <li><b><i>Reducer:</i></b> <i>Pure function that returns new state; no side effects</i></li>
+            <li><b><i>Effect:</i></b> <i>Handles side effects and dispatches new actions</i></li>
+            <li><b><i>Selector:</i></b> <i>Memoized, read-only state query</i></li>
+            <li><b><i>Immutability:</i></b> <i>State is never modified; new references are returned</i></li>
+            <li><b><i>State mutation:</i></b> <i>Directly changing existing state (forbidden)</i></li>
+            <li><b><i>Memoization:</i></b> <i>Cache selector result until input reference changes</i></li>
+            <li><b><i>createFeatureSelector:</i></b> <i>Extracts a feature slice from global state</i></li>
+            <li><b><i>NgRx Entity:</i></b> <i>Normalized collection management using ids and entities</i></li>
+            <li><b><i>Side effect:</i></b> <i>Any operation outside state calculation (API, router, storage)</i></li>
+            <li><b><i>Unidirectional flow:</i></b> <i>Action → Reducer → Store → Selector → View</i></li>
+            <li><b><i>DevTools:</i></b> <i>Enables action inspection and time-travel debugging</i></li>
+            <li><b><i>OnPush + NgRx:</i></b> <i>Works because of immutable state references</i></li>
+            <li><b><i>Async in NgRx:</i></b> <i>Always handled in Effects</i></li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: What is Adapter?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Entity Adapter is a helper provided by &#64;ngrx/entity to manage normalized collections (CRUD) in
+                    the store</i></li>
+            <li><i>const adapter = createEntityAdapter&lt;User&gt;();</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: SignalStore (New NgRx + Signals)</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Bridge between Signals and NgRx architecture</i></li>
+            <li><i>SignalStore brings NgRx patterns to Signal-based state</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Action Groups & Creators (Modern NgRx)</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>createActionGroup(&#123;</i></li>
+            <li><i>&nbsp;&nbsp;source: 'User',</i></li>
+            <li><i>&nbsp;&nbsp;events: &#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;'Load': emptyProps(),</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;'Load Success': props&lt;&#123; users: User[] &#125;&gt;()</i></li>
+            <li><i>&nbsp;&nbsp;&#125;</i></li>
+            <li><i>&#125;);</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Diff between Adapter, createSelector, Entity, Module,
+                        Feature?</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer: Adapter</i></b>
+                <ul>
+                    <li><i>What it is:</i></li>
+                    <li><i>A helper from &#64;ngrx/entity to manage normalized collections</i></li>
+                    <li><i>Purpose:</i></li>
+                    <li><i>Provides immutable CRUD operations and base selectors</i></li>
+                    <li><i>Example:</i></li>
+                    <li><i>createEntityAdapter&lt;User&gt;()</i></li>
+                    <li><i>Think of it as:</i></li>
+                    <li><i>DAO / Repository layer for store entities</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: createSelector</i></b>
+                <ul>
+                    <li><i>What it is:</i></li>
+                    <li><i>A function to create memoized selectors</i></li>
+                    <li><i>Purpose:</i></li>
+                    <li><i>Derives, combines, and computes data from store state</i></li>
+                    <li><i>Example:</i></li>
+                    <li><i>createSelector(selectUsers, selectOrders, (u, o) =&gt; ...)</i></li>
+                    <li><i>Think of it as:</i></li>
+                    <li><i>Query layer (like SQL views)</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Entity</i></b>
+                <ul>
+                    <li><i>What it is:</i></li>
+                    <li><i>A domain model stored in normalized form (ids + entities)</i></li>
+                    <li><i>Purpose:</i></li>
+                    <li><i>Represents business objects (User, Order, Product)</i></li>
+                    <li><i>Example:</i></li>
+                    <li><i>EntityState&lt;User&gt;</i></li>
+                    <li><i>Think of it as:</i></li>
+                    <li><i>Database table row</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Module</i></b>
+                <ul>
+                    <li><i>What it is:</i></li>
+                    <li><i>Angular NgModule or standalone feature that groups functionality</i></li>
+                    <li><i>Purpose:</i></li>
+                    <li><i>Wires Store, Effects, Components, Services</i></li>
+                    <li><i>Example:</i></li>
+                    <li><i>StoreModule.forRoot()</i></li>
+                    <li><i>Think of it as:</i></li>
+                    <li><i>Application boundary / deployment unit</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Feature</i></b>
+                <ul>
+                    <li><i>What it is:</i></li>
+                    <li><i>A slice of application state with its own reducer, selectors, effects</i></li>
+                    <li><i>Purpose:</i></li>
+                    <li><i>Logical domain separation (Auth, Orders, Users)</i></li>
+                    <li><i>Example:</i></li>
+                    <li><i>StoreModule.forFeature('users', usersReducer)</i></li>
+                    <li><i>Think of it as:</i></li>
+                    <li><i>Bounded context in DDD</i></li>
+                </ul>
+            </li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: Typical Feature Structure</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>users/</i></li>
+            <li><i>&nbsp;&nbsp;├── users.state.ts (State + EntityState)</i></li>
+            <li><i>&nbsp;&nbsp;├── users.actions.ts (Actions)</i></li>
+            <li><i>&nbsp;&nbsp;├── users.reducer.ts (Reducer + Adapter)</i></li>
+            <li><i>&nbsp;&nbsp;├── users.selectors.ts (createFeatureSelector + createSelector)</i></li>
+            <li><i>&nbsp;&nbsp;├── users.effects.ts (API side effects)</i></li>
+            <li><i>&nbsp;&nbsp;└── users.module.ts (forFeature registration)</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Diff between Adapter and Effects</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Effects → Handle async and side effects</i></li>
+            <li><i>Adapter → Manages entity CRUD immutably</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Core Adapter Methods (Interview Must-Know)</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer: Add</i></b>
+                <ul>
+                    <li><i>addOne(entity, state)</i></li>
+                    <li><i>addMany(entities, state)</i></li>
+                    <li><i>setAll(entities, state)</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Update</i></b>
+                <ul>
+                    <li><i>updateOne(&#123; id, changes &#125;, state)</i></li>
+                    <li><i>updateMany(updates, state)</i></li>
+                    <li><i>upsertOne(entity, state)</i></li>
+                    <li><i>upsertMany(entities, state)</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Delete</i></b>
+                <ul>
+                    <li><i>removeOne(id, state)</i></li>
+                    <li><i>removeMany(ids, state)</i></li>
+                    <li><i>removeAll(state)</i></li>
+                </ul>
+            </li>
+
+            <li><b><i>Answer: Selectors</i></b>
+                <ul>
+                    <li><i>adapter.getSelectors()</i></li>
+                    <li><i>selectAll → converts to array using ids</i></li>
+                    <li><i>selectEntities → Returns full array of entities</i></li>
+                    <li><i>selectIds → Returns only IDs → [1, 2, 3]</i></li>
+                    <li><i>selectTotal → Return number of total entities</i></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: createFeatureSelector</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Selects a feature slice from the global store</i></li>
+            <li><i>export const adapter = createEntityAdapter&lt;User&gt;();</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: What is Entity State Normalization?</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>&#123;</i></li>
+            <li><i>&nbsp;&nbsp;ids: [1, 2],</i></li>
+            <li><i>&nbsp;&nbsp;entities: &#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;1: &#123; id: 1, name: 'A' &#125;,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;2: &#123; id: 2, name: 'B' &#125;</i></li>
+            <li><i>&nbsp;&nbsp;&#125;</i></li>
+            <li><i>&#125;</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Benefits</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>O(1) lookup by ID</i></li>
+            <li><i>Easy CRUD operations</i></li>
+            <li><i>Less boilerplate</i></li>
+            <li><i>Mutation-safe</i></li>
+        </ul>
+        <h3 style="color: red;"><u><b><i>Question: CRUD with Entity Adapter</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>export const adapter = createEntityAdapter&lt;User&gt;();</i></li>
+
+            <li><i>on(addUserSuccess, (state, &#123; user &#125;) =&gt;</i></li>
+            <li><i>&nbsp;&nbsp;adapter.addOne(user, state)</i></li>
+            <li><i>);</i></li>
+
+            <li><i>on(deleteUserSuccess, (state, &#123; id &#125;) =&gt;</i></li>
+            <li><i>&nbsp;&nbsp;adapter.removeOne(id, state)</i></li>
+            <li><i>);</i></li>
+
+            <li><i>const &#123;</i></li>
+            <li><i>&nbsp;&nbsp;selectAll,</i></li>
+            <li><i>&nbsp;&nbsp;selectEntities,</i></li>
+            <li><i>&nbsp;&nbsp;selectIds,</i></li>
+            <li><i>&nbsp;&nbsp;selectTotal</i></li>
+            <li><i>&#125; = adapter.getSelectors(selectUserState);</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Can we use multiple adapters and combine data for select?</i></b></u>
+        </h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+
+            <li><i>const selectUsers = userAdapter.getSelectors(selectUserState).selectAll;</i></li>
+            <li><i>const selectOrders = orderAdapter.getSelectors(selectOrderState).selectAll;</i></li>
+
+            <li><i>export const selectUsersWithOrders = createSelector(</i></li>
+            <li><i>&nbsp;&nbsp;selectUsers,</i></li>
+            <li><i>&nbsp;&nbsp;selectOrders,</i></li>
+            <li><i>&nbsp;&nbsp;(users, orders) =&gt; &#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;return users.map(user =&gt; (&#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...user,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;orders: orders.filter(o =&gt; o.userId === user.id)</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&#125;));</i></li>
+            <li><i>&nbsp;&nbsp;&#125;</i></li>
+            <li><i>);</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Can one adapter manage two entity types?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>No. One adapter = one entity type</i></li>
+            <li><i>Relationships are handled via selectors</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Custom select adapter for aggregate the data?</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>The adapter gives you basic building blocks</i></li>
+            <li><i>selectAll</i></li>
+            <li><i>selectEntities</i></li>
+            <li><i>selectIds</i></li>
+            <li><i>selectTotal</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Aggregate: Count per Entity</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+
+            <li><i>const userSelectors = userAdapter.getSelectors(selectUserState);</i></li>
+            <li><i>const orderSelectors = orderAdapter.getSelectors(selectOrderState);</i></li>
+
+            <li><i>export const selectOrderCountPerUser = createSelector(</i></li>
+            <li><i>&nbsp;&nbsp;userSelectors.selectIds,</i></li>
+            <li><i>&nbsp;&nbsp;orderSelectors.selectAll,</i></li>
+            <li><i>&nbsp;&nbsp;(userIds, orders) =&gt;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;userIds.map(id =&gt; (&#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;userId: id,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count: orders.filter(o =&gt; o.userId === id).length</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&#125;))</i></li>
+            <li><i>);</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Cross-Entity Join (Normalized Relation)</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+
+            <li><i>export const selectOrderDetails = (orderId: number) =&gt;</i></li>
+            <li><i>&nbsp;&nbsp;createSelector(</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;orderSelectors.selectEntities,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;userSelectors.selectEntities,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;(orders, users) =&gt; &#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const order = orders[orderId];</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return &#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...order,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;userName: users[order.userId].name</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#125;;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&#125;</i></li>
+            <li><i>&nbsp;&nbsp;);</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Question: Aggregate: Total Order Amount per User</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+
+            <li><i>export const selectUsersWithTotalAmount = createSelector(</i></li>
+            <li><i>&nbsp;&nbsp;userSelectors.selectAll,</i></li>
+            <li><i>&nbsp;&nbsp;orderSelectors.selectAll,</i></li>
+            <li><i>&nbsp;&nbsp;(users, orders) =&gt;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;users.map(user =&gt; (&#123;</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...user,</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;totalAmount: orders</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.filter(o =&gt; o.userId === user.id)</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.reduce((sum, o) =&gt; sum + o.amount, 0)</i></li>
+            <li><i>&nbsp;&nbsp;&nbsp;&nbsp;&#125;))</i></li>
+            <li><i>);</i></li>
+        </ul>
+
+        <h3 style="color: blue;"><u><b><i>Question: How This Covers All NgRx Concepts</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Adapter → CRUD operations</i></li>
+            <li><i>Selectors → Data transformation and aggregation</i></li>
+            <li><i>Normalization → Efficient lookups</i></li>
+            <li><i>Memoization → Performance optimization</i></li>
+            <li><i>Unidirectional flow → Predictable state updates</i></li>
+        </ul>
+        <h3 style="color: blue;"><u><b><i>Question: How This Covers All NgRx Concepts</i></b></u></h3>
+
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+
+            <li><i>Concept → Where Covered</i></li>
+
+            <li><i>Store → forFeature</i></li>
+            <li><i>Actions → CRUD actions</i></li>
+            <li><i>Reducer → Pure + immutable</i></li>
+            <li><i>Effects → API calls</i></li>
+            <li><i>Selectors → createSelector + memoization</i></li>
+            <li><i>Entity → Normalized ids + entities</i></li>
+            <li><i>Adapter → CRUD helpers</i></li>
+            <li><i>Feature → users slice</i></li>
+            <li><i>forRoot / forFeature → Module setup</i></li>
+            <li><i>OnPush → Works via immutability</i></li>
+            <li><i>Time-Travel → Reducers pure</i></li>
+            <li><i>Traceability → Action log</i></li>
+            <li><i>No Mutation → Adapter enforces</i></li>
+            <li><i>No Signals → Pure RxJS NgRx</i></li>
+        </ul>
+
+        <h3 style="color: red;"><u><b><i>Reference</i></b></u></h3>
+        <ul>
+            <li><b><i>Answer:</i></b></li>
+            <li><i>Check the example in following link in page bottom</i></li>
+            <li><i>https://chatgpt.com/g/g-p-694404a5da1481919a0513e1131c014f-angular/c/695dd426-1290-8320-8498-35b78a9de83e</i>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content" [class.active]="activeTab === 'security'"></div>
+    <div class="content" [class.active]="activeTab === 'performance'"></div>
+
+    <div class="content" [class.active]="activeTab === 'newfeature'"></div>
+    <div class="content" [class.active]="activeTab === 'scalability'"></div>
+    <div class="content" [class.active]="activeTab === 'folder'"></div>
+    <div class="content" [class.active]="activeTab === 'exception'"></div>
+    <div class="content" [class.active]="activeTab === 'saml'"></div>
+    <div class="content" [class.active]="activeTab === 'logger'"></div>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+        function openTab(tabId, element) {
+            console.log("22222222222223333333333333", tabId)
+            // remove active from all tabs
+            document.querySelectorAll('.tab')
+                .forEach(t => t.classList.remove('active'));
+
+            // remove active from all content
+            document.querySelectorAll('.content')
+                .forEach(c => c.classList.remove('active'));
+
+            // activate selected
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>
