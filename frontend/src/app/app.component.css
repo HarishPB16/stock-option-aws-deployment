@@ -161,6 +161,63 @@
     background-color: rgba(0, 0, 0, 0.05);
 }
 
+/* Nested Menu Styles */
+.menu-item-with-children {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-text {
+    flex: 1;
+}
+
+.chevron {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-left: 2px solid var(--accent-put);
+    margin-left: 1.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0 0 0 8px;
+    gap: 0.25rem;
+}
+
+[data-theme="light"] .submenu {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.sub-item {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    border-left: none !important;
+}
+
+.sub-item:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: var(--accent-put) !important;
+}
+
+[data-theme="light"] .sub-item:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.sub-item.active {
+    background-color: transparent !important;
+    color: var(--accent-put) !important;
+    font-weight: 600;
+}
+
 /* Main Content Wrapper */
 .main-wrapper {
     flex: 1;

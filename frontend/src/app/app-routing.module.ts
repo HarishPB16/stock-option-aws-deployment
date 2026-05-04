@@ -6,6 +6,7 @@ const routes: Routes = [
     { path: 'home', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
     { path: 'search-options', loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule) },
     { path: 'history', loadChildren: () => import('./features/history/history.module').then(m => m.HistoryModule) },
+    { path: 'admin/interview', loadChildren: () => import('./interview-study/interview-study.module').then(m => m.InterviewStudyModule) },
     { path: 'admin', loadChildren: () => import('./features/prompts/prompts.module').then(m => m.PromptsModule) },
     { path: 'top-picks', loadChildren: () => import('./features/top-picks/top-picks.module').then(m => m.TopPicksModule) },
     { path: 'youtube', loadChildren: () => import('./features/youtube/youtube.module').then(m => m.YoutubeModule) },

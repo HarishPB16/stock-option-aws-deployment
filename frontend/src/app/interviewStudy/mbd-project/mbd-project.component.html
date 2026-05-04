@@ -1,0 +1,827 @@
+<div class="container">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button (click)="setTab('project')">Project Explain</button>
+    <button (click)="setTab('architecture')">Architecture</button>
+    <button (click)="setTab('p-folder')">pFolder Structure</button>
+    <button (click)="setTab('p-s-folder')">pFolder Structure</button>
+    <button (click)="setTab('a-folder')">sFolder Structure</button>
+    <button (click)="setTab('database')">Database Design</button>
+    <button (click)="setTab('s-cicd')">Short-CI/CD</button>
+    <button (click)="setTab('d-cicd')">Deep-CI/CD</button>
+    <button (click)="setTab('auth-angular')">A-Authen</button>
+    <button (click)="setTab('auth-python')">P-Authen</button>
+    <button (click)="setTab('challenges')">Project Challenges</button>
+    <button (click)="setTab('process')">Process Scrum</button>
+  </div>
+
+
+
+  <!-- Project Explain -->
+  <div *ngIf="activeTab === 'project'" class="content">
+    <h2 class="blue">📌 <u>MBD Project Explanation</u></h2>
+
+    <p>
+      <b>MBD (Major Breakdown)</b> is a system used in <i>car manufacturing</i> to manage critical production issues.
+    </p>
+
+    <h3 class="blue">Business Context</h3>
+    <ul>
+      <li>Manufacturing has dependent units: Assembly, Paint Shop, Body Shop</li>
+      <li>If one unit fails → entire production line is impacted</li>
+      <li><b>Issue &gt; 10 mins → classified as <span class="red">Major Breakdown</span></b></li>
+    </ul>
+
+    <h3 class="blue">Objective</h3>
+    <p>
+      Build a system to coordinate multiple teams and resolve breakdowns quickly, minimizing production downtime.
+    </p>
+
+    <h3 class="blue">Roles & Responsibilities</h3>
+    <ul>
+      <li><b>Job Coordinator:</b> Creates MBD, assigns tasks, closes ticket</li>
+      <li><b>Engineer:</b> Identifies root cause and fixes issue</li>
+      <li><b>Safety Team:</b> Performs safety validation</li>
+      <li><b>Shop Coordinator:</b> Confirms system is operational</li>
+    </ul>
+
+    <h3 class="blue">Workflow</h3>
+    <ul>
+      <li>Issue occurs</li>
+      <li>Engineer fixes the issue</li>
+      <li>Safety team validates</li>
+      <li>Shop coordinator confirms operations</li>
+      <li>Job coordinator closes the MBD</li>
+    </ul>
+
+    <h3 class="blue">System Capabilities</h3>
+    <ul>
+      <li>Role-based UI screens</li>
+      <li>End-to-end lifecycle tracking</li>
+      <li>Real-time coordination between teams</li>
+    </ul>
+
+    <p class="highlight">
+      👉 <b>Goal: Reduce downtime and ensure faster resolution of production breakdowns</b>
+    </p>
+
+    <h3 class="blue">Technical Overview</h3>
+    <ul>
+      <li><b>Frontend:</b> Angular (SPA)</li>
+      <li><b>Backend:</b> AWS (Lambda / ECS based)</li>
+      <li><b>Storage:</b> S3 + Aurora PostgreSQL</li>
+      <li><b>Delivery:</b> CloudFront</li>
+    </ul>
+  </div>
+
+  <!-- Architecture -->
+  <div *ngIf="activeTab === 'architecture'" class="content">
+    <h2 class="blue">📌 <u>Architecture (End-to-End Flow)</u></h2>
+
+    <!-- 1 -->
+    <h3 class="blue">1. User Access Layer</h3>
+    <ul>
+      <li><b>User:</b> TMNA internal user</li>
+      <li><b>Access:</b> Zscaler Private Access (ZPA)</li>
+      <li><b>Auth:</b> Azure AD (SSO)</li>
+      <li><b>Client:</b> Web Browser</li>
+    </ul>
+    <p class="highlight">👉 Secure access + Single Sign-On (SSO)</p>
+
+    <!-- 2 -->
+    <h3 class="blue">2. Entry Point (Internet → AWS)</h3>
+    <ul>
+      <li>HTTPS (Port 443)</li>
+      <li>Route 53 (DNS resolution)</li>
+    </ul>
+    <p class="highlight">👉 Route 53 = Domain routing layer</p>
+
+    <!-- 3 -->
+    <h3 class="blue">3. CDN + Security</h3>
+    <ul>
+      <li>CloudFront (CDN)</li>
+      <li>WAF (Firewall)</li>
+      <li>SSL via Certificate Manager</li>
+      <li>S3 (Logs storage)</li>
+    </ul>
+    <p class="highlight">👉 Fast + Secure delivery</p>
+
+    <!-- 4 -->
+    <h3 class="blue">4. Frontend Hosting</h3>
+    <ul>
+      <li>S3 (Angular SPA)</li>
+      <li>Served via CloudFront</li>
+    </ul>
+    <p class="highlight">👉 Serverless frontend</p>
+
+    <!-- 5 -->
+    <h3 class="blue">5. API Layer</h3>
+    <ul>
+      <li>API Gateway</li>
+      <li>Routing + Security + Rate limiting</li>
+    </ul>
+
+    <!-- 6 -->
+    <h3 class="blue">6. Backend</h3>
+    <ul>
+      <li>Lambda (Business logic)</li>
+      <li>Runs on demand (event-based)</li>
+    </ul>
+    <p class="highlight">👉 Auto scaling, no servers</p>
+
+    <!-- 7 -->
+    <h3 class="blue">7. Database</h3>
+    <ul>
+      <li>Aurora PostgreSQL Serverless</li>
+      <li>Private subnet (not public)</li>
+    </ul>
+
+    <!-- 8 -->
+    <h3 class="blue">8. File Storage</h3>
+    <ul>
+      <li>S3 (Images, reports, attachments)</li>
+    </ul>
+
+    <!-- 9 -->
+    <h3 class="blue">9. Monitoring & Security</h3>
+    <ul>
+      <li>CloudWatch (logs)</li>
+      <li>Datadog (monitoring)</li>
+      <li>Secrets Manager (credentials)</li>
+    </ul>
+
+    <!-- 10 -->
+    <h3 class="blue">10. Network Design</h3>
+    <ul>
+      <li>VPC + Private Subnets</li>
+      <li>Backend & DB are NOT public</li>
+      <li>Only API Gateway exposed</li>
+    </ul>
+
+    <!-- 11 -->
+    <h3 class="blue">11. Why Serverless</h3>
+    <ul>
+      <li>Cost efficient (scale to zero)</li>
+      <li>No infra management</li>
+      <li>High scalability</li>
+    </ul>
+
+    <!-- 12 -->
+    <h3 class="blue">12. Integration</h3>
+    <ul>
+      <li>Maximo (work orders)</li>
+      <li>Future: EDC, Nexus Broker</li>
+    </ul>
+
+    <!-- 13 -->
+    <h3 class="blue">13. End-to-End Flow</h3>
+    <ul>
+      <li>User login (Azure AD)</li>
+      <li>Route 53 → CloudFront</li>
+      <li>Angular UI loads</li>
+      <li>API Gateway → Lambda</li>
+      <li>Lambda → Aurora + S3</li>
+      <li>Logs → CloudWatch</li>
+    </ul>
+
+    <p class="highlight">
+      👉 <b>Cloud-Native + Serverless + Secure + Cost-Optimized</b>
+    </p>
+  </div>
+
+  <!-- Folder Structure -->
+  <div *ngIf="activeTab === 'p-folder'" class="content">
+    <h2 class="blue">📌 <u>Folder Structure (Backend - Lambda Service)</u></h2>
+
+    <h3 class="blue">Project Structure</h3>
+
+    <pre>
+mbd-lambda-service/
+│
+├── src/
+│   ├── handlers/
+│   ├── services/
+│   ├── repositories/
+│   ├── models/
+│   ├── utils/
+│   ├── middlewares/
+│   └── config/
+│
+├── tests/
+├── serverless.yml
+├── requirements.txt
+└── README.md
+  </pre>
+
+    <h3 class="blue">Layered Flow</h3>
+    <p class="highlight">
+      👉 API Gateway → Handler → Service → Repository → Database
+    </p>
+
+    <h3 class="blue">Layer Responsibilities</h3>
+    <ul>
+      <li><b>Handlers:</b> Entry point (no business logic)</li>
+      <li><b>Services:</b> Business logic & orchestration</li>
+      <li><b>Repositories:</b> Database interaction</li>
+      <li><b>Models:</b> Data schemas</li>
+      <li><b>Utils:</b> Logger, helpers, constants</li>
+      <li><b>Middlewares:</b> Auth, validation, error handling</li>
+      <li><b>Config:</b> Environment & settings</li>
+    </ul>
+
+    <h3 class="blue">Design Principles</h3>
+    <ul>
+      <li>Separation of concerns</li>
+      <li>Thin handlers (delegation only)</li>
+      <li>Testable architecture (mock repositories)</li>
+      <li>Scalable for microservices</li>
+    </ul>
+
+    <h3 class="blue">Key Benefits</h3>
+    <ul>
+      <li>Clean code structure</li>
+      <li>Easy maintenance & extension</li>
+      <li>Supports CI/CD and Serverless deployment</li>
+    </ul>
+  </div>
+
+
+  <!-- Folder Structure -->
+  <div *ngIf="activeTab === 'p-s-folder'" class="content">
+    <pre class="folder-structure">
+mbd-lambda-service/
+│
+├── src/
+│   ├── handlers/
+│   │   ├── jc_recovery_handler.py
+│   │   ├── mbd_status_handler.py
+│   │   └── health_handler.py
+│   │
+│   ├── services/
+│   │   ├── jc_recovery_service.py
+│   │   ├── mbd_service.py
+│   │   └── notification_service.py
+│   │
+│   ├── repositories/
+│   │   ├── jc_repository.py
+│   │   ├── mbd_repository.py
+│   │   └── base_repository.py
+│   │
+│   ├── models/
+│   │   ├── jc_model.py
+│   │   ├── mbd_model.py
+│   │   └── response_model.py
+│   │
+│   ├── utils/
+│   │   ├── logger.py
+│   │   ├── response.py
+│   │   ├── constants.py
+│   │   └── helpers.py
+│   │
+│   ├── middlewares/
+│   │   ├── auth_middleware.py
+│   │   ├── error_handler.py
+│   │   └── validator.py
+│   │
+│   └── config/
+│       ├── settings.py
+│       └── env.py
+│
+├── tests/
+│   ├── unit/
+│   └── integration/
+│
+├── requirements.txt
+├── requirements-dev.txt
+├── serverless.yml
+├── package.json
+├── .env
+├── .env.example
+│
+├── docker/
+│   └── Dockerfile
+│
+├── scripts/
+│   ├── deploy.sh
+│   └── cleanup.sh
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+│
+└── README.md
+  </pre>
+
+    <div class="flow">
+      <strong>Flow:</strong> API Gateway → Handler → Service → Repository → DB
+      <br />
+      <span>↓ Utils / Models</span>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'a-folder'" class="content">
+    <pre class="folder-structure">
+src/
+├── app/
+│   ├── core/
+│   │   ├── services/
+│   │   │   ├── api.service.ts
+│   │   │   ├── auth.service.ts
+│   │   │   └── logger.service.ts
+│   │   │
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts
+│   │   │
+│   │   ├── interceptors/
+│   │   │   └── http.interceptor.ts
+│   │   │
+│   │   └── config/
+│   │       └── app.config.ts
+│   │
+│   ├── shared/
+│   │   ├── components/
+│   │   │   ├── button/
+│   │   │   │   ├── button.component.ts
+│   │   │   │   ├── button.component.html
+│   │   │   │   └── button.component.scss
+│   │   │   │
+│   │   │   └── loader/
+│   │   │
+│   │   ├── directives/
+│   │   ├── pipes/
+│   │   └── utils/
+│   │
+│   ├── features/
+│   │   ├── mbd/
+│   │   │   ├── pages/
+│   │   │   │   └── mbd-dashboard/
+│   │   │   │       ├── mbd-dashboard.component.ts
+│   │   │   │       ├── mbd-dashboard.component.html
+│   │   │   │       └── mbd-dashboard.component.scss
+│   │   │   │
+│   │   │   ├── components/
+│   │   │   │   └── mbd-card/
+│   │   │   │
+│   │   │   ├── store/
+│   │   │   │   ├── mbd.store.ts
+│   │   │   │   ├── mbd.effects.ts
+│   │   │   │   └── mbd.selectors.ts
+│   │   │   │
+│   │   │   ├── services/
+│   │   │   │   └── mbd.service.ts
+│   │   │   │
+│   │   │   └── models/
+│   │   │       └── mbd.model.ts
+│   │   │
+│   │   └── auth/
+│   │       ├── pages/
+│   │       ├── store/
+│   │       └── services/
+│   │
+│   ├── layout/
+│   │   ├── header/
+│   │   ├── sidebar/
+│   │   └── main-layout.component.ts
+│   │
+│   ├── app.routes.ts
+│   ├── app.component.ts
+│   └── app.config.ts
+│
+├── assets/
+├── environments/
+│   ├── environment.ts
+│   └── environment.prod.ts
+│
+└── main.ts
+  </pre>
+
+    <div class="flow">
+      <strong>Architecture:</strong> Feature-based + Standalone Components
+      <br />
+      <strong>Flow:</strong> Component → Service → API → Backend
+    </div>
+  </div>
+
+
+  <!-- Challenges -->
+  <div *ngIf="activeTab === 'challenges'" class="content">
+    <h2 class="blue">📌 <u>Key Challenges</u></h2>
+
+    <!-- Challenge 1 -->
+    <h3 class="blue">1. Complex Data Aggregation</h3>
+    <ul>
+      <li>Built a summary page combining data from multiple database tables</li>
+      <li>Handled large dataset and complex field mapping between backend and UI</li>
+      <li>Identified entities and relationships before designing query</li>
+      <li>Used AI to generate initial SQL draft for faster development</li>
+      <li>Manually refined joins, filters, and mappings</li>
+      <li>Resolved duplicate and missing data issues</li>
+      <li>Optimized query for performance</li>
+      <li>Integrated with Lambda and validated in Angular UI</li>
+    </ul>
+
+    <!-- Challenge 2 -->
+    <h3 class="blue">2. Local Lambda Testing (Flask Adapter)</h3>
+    <ul>
+      <li>Built a Flask-based wrapper to simulate API Gateway locally</li>
+      <li>Exposed REST endpoints matching Lambda routes</li>
+      <li>Captured HTTP requests and transformed into Lambda event format</li>
+      <li>Invoked Lambda handler directly with constructed event</li>
+      <li>Converted Lambda response into HTTP response</li>
+      <li>Integrated Angular frontend with local server</li>
+      <li>Enabled full end-to-end testing without AWS deployment</li>
+    </ul>
+
+    <p class="highlight">
+      👉 Improved development speed, debugging efficiency, and system reliability
+    </p>
+  </div>
+
+
+  <!-- Scrum Process -->
+  <div *ngIf="activeTab === 'process'" class="content">
+    <h2 class="blue">📌 <u>Agile Scrum Process</u></h2>
+
+    <ul class="flow">
+      <li><b>Product Backlog</b> – Ordered by Product Owner</li>
+      <li class="arrow"> ↓</li>
+
+      <li><b>Backlog Refinement</b> – Clarify, split stories, estimate, add acceptance criteria</li>
+      <li class="arrow">↓</li>
+
+      <li><b>Sprint Planning</b> – Select stories, define Sprint Goal, capacity planning</li>
+      <li class="arrow">↓</li>
+
+      <li><b>Sprint Execution</b> – Development, testing, integration, CI/CD</li>
+      <li class="arrow">↓</li>
+
+      <li><b>Daily Scrum</b> – 15 min sync (progress, plan, blockers)</li>
+      <li class="arrow">↓</li>
+
+      <li><b>Sprint Review</b> – Demo increment, stakeholder feedback</li>
+      <li class="arrow">↓</li>
+
+      <li><b>Sprint Retrospective</b> – Improvements, action items</li>
+      <li class="arrow">↓</li>
+
+      <li><b>Next Sprint</b> – Continuous iteration</li>
+    </ul>
+
+    <p class="highlight">
+      👉 Continuous delivery cycle with feedback and improvement
+    </p>
+  </div>
+
+  <div *ngIf="activeTab === 'auth-angular'" class="content">
+
+    <h3>Authentication Flow (Azure AD + MSAL)</h3>
+
+    <!-- Steps -->
+    <ol>
+      <li>Install MSAL packages</li>
+      <li>Configure MSAL</li>
+      <li>Provide MSAL</li>
+      <li>Login</li>
+      <li>Get Token</li>
+      <li>Attach Token</li>
+      <li>Logout</li>
+      <li>Backend validates token</li>
+    </ol>
+
+    <!-- Install -->
+    <h4>1. Install</h4>
+    <pre ngNonBindable>
+npm install &#64;azure/msal-browser &#64;azure/msal-angular
+  </pre>
+
+    <!-- Config -->
+    <h4>2. MSAL Config</h4>
+    <pre ngNonBindable>
+const msalInstance = new PublicClientApplication(&#123;
+  auth: &#123;
+    clientId: 'CLIENT_ID',
+    authority: 'https://login.microsoftonline.com/TENANT_ID',
+    redirectUri: 'http://localhost:4200'
+  &#125;
+&#125;);
+  </pre>
+
+    <!-- Provide -->
+    <h4>3. Provide MSAL</h4>
+    <pre ngNonBindable>
+providers: [
+  provideMsal(msalInstance)
+]
+  </pre>
+
+    <!-- Login -->
+    <h4>4. Login</h4>
+    <pre ngNonBindable>
+this.msal.loginPopup(&#123; scopes: ['user.read'] &#125;)
+  </pre>
+
+    <!-- Get Token -->
+    <h4>5. Get Token</h4>
+    <pre ngNonBindable>
+this.msal.acquireTokenSilent(&#123; scopes: ['user.read'] &#125;)
+  </pre>
+
+    <!-- Attach Token -->
+    <h4>6. Attach Token</h4>
+    <pre ngNonBindable>
+Authorization: Bearer $&#123;token&#125;
+  </pre>
+
+    <!-- Logout -->
+    <h4>7. Logout</h4>
+    <pre ngNonBindable>
+this.msal.logoutPopup()
+  </pre>
+
+    <!-- Backend -->
+    <h4>8. Backend Validation</h4>
+    <pre ngNonBindable>
+jwt.decode(token, key, algorithms=["RS256"])
+  </pre>
+
+  </div>
+
+  <div *ngIf="activeTab === 'auth-python'" class="content">
+
+    <h3>Lambda Authorization Approaches</h3>
+
+    <!-- Option 1 -->
+    <h4>✅ Option 1: Separate Lambda Authorizer (Recommended)</h4>
+    <pre>
+Client → API Gateway → Authorizer → Business Lambda
+  </pre>
+
+    <ul>
+      <li>Centralized authentication logic</li>
+      <li>Reusable across APIs</li>
+      <li>Clean separation of concerns</li>
+      <li>Easy to maintain</li>
+    </ul>
+
+    <h5>Authorizer Example</h5>
+    <pre ngNonBindable>
+token = event["authorizationToken"]
+
+if token == "allow":
+  return &#123;
+    "principalId": "user123",
+    "context": &#123;"role": "admin"&#125;
+  &#125;
+else:
+  raise Exception("Unauthorized")
+  </pre>
+
+    <h5>Business Lambda</h5>
+    <pre ngNonBindable>
+role = event["requestContext"]["authorizer"]["role"]
+
+if role != "admin":
+  return &#123;"statusCode": 403&#125;
+  </pre>
+
+    <!-- Option 2 -->
+    <h4>⚡ Option 2: Inline Authorization (Same Lambda)</h4>
+    <pre>
+Client → API Gateway → Lambda (auth + logic)
+  </pre>
+
+    <ul>
+      <li>Simple implementation</li>
+      <li>Good for small apps / POC</li>
+    </ul>
+
+    <h5>Example</h5>
+    <pre ngNonBindable>
+token = event["headers"].get("Authorization")
+
+if token != "allow":
+  return &#123;"statusCode": 403&#125;
+
+return &#123;"statusCode": 200&#125;
+  </pre>
+
+    <ul>
+      <li>❌ Duplicate logic</li>
+      <li>❌ Hard to maintain</li>
+      <li>❌ Security risk</li>
+    </ul>
+
+    <!-- Option 3 -->
+    <h4>🧩 Option 3: Shared Layer</h4>
+    <ul>
+      <li>Use Lambda Layer for shared auth code</li>
+      <li>Reusable across Lambdas</li>
+    </ul>
+
+    <!-- Decision -->
+    <h4>Decision Guide</h4>
+    <ul>
+      <li>Small App → Inline Auth</li>
+      <li>Medium App → Shared Layer</li>
+      <li>Production → Separate Authorizer</li>
+    </ul>
+
+    <!-- Key Insight -->
+    <h4>Key Insight</h4>
+    <pre>
+Authorizer runs BEFORE Business Lambda
+If Deny → Lambda is NOT executed
+  </pre>
+
+    <!-- Summary -->
+    <h4>Interview Answer</h4>
+    <pre>
+In production, we use a separate Lambda Authorizer with API Gateway to centralize authentication and ensure consistent security across APIs.
+  </pre>
+
+  </div>
+
+  <!-- ================= DATABASE ================= -->
+  <div *ngIf="activeTab === 'database'" class="content">
+    <h2 class="blue">📌 <u>Database</u></h2>
+
+    <table>
+      <tr>
+        <th>Table</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>MBD</td>
+        <td>Main ticket</td>
+      </tr>
+      <tr>
+        <td>Users</td>
+        <td>Roles</td>
+      </tr>
+      <tr>
+        <td>Tasks</td>
+        <td>Workflow steps</td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="activeTab === 'd-cicd'" class="content">
+
+    <h3>AWS API Gateway + Lambda Authorizer Setup</h3>
+
+    <!-- 0 -->
+    <h4>0. Assumptions</h4>
+    <ul>
+      <li>auth-lambda (authorizer)</li>
+      <li>business-lambda (main API)</li>
+      <li>Same AWS region</li>
+    </ul>
+
+    <!-- 1 -->
+    <h4>1. Create API</h4>
+    <pre ngNonBindable>
+API Gateway → Create API → HTTP API → Build
+Name: my-secure-api
+  </pre>
+
+    <!-- 2 -->
+    <h4>2. Add Integration</h4>
+    <pre ngNonBindable>
+Integration type: Lambda
+Select: business-lambda
+  </pre>
+
+    <!-- 3 -->
+    <h4>3. Define Routes</h4>
+    <pre ngNonBindable>
+GET /users → attach business-lambda
+  </pre>
+
+    <!-- 4 -->
+    <h4>4. Create Stage</h4>
+    <pre ngNonBindable>
+Stage: prod
+Auto-deploy: ON
+  </pre>
+
+    <!-- 5 -->
+    <h4>5. Create Authorizer</h4>
+    <pre ngNonBindable>
+Name: my-lambda-authorizer
+Type: Lambda
+Function: auth-lambda
+Payload: 2.0
+Identity: $request.header.Authorization
+  </pre>
+
+    <!-- 6 -->
+    <h4>6. Attach Authorizer</h4>
+    <pre ngNonBindable>
+Route: GET /users → attach authorizer
+  </pre>
+
+    <!-- 7 -->
+    <h4>7. Permissions</h4>
+    <pre ngNonBindable>
+Principal: apigateway.amazonaws.com
+Action: lambda:InvokeFunction
+  </pre>
+
+    <!-- 8 -->
+    <h4>8. Authorizer Lambda</h4>
+    <pre ngNonBindable>
+def lambda_handler(event, context):
+  token = event["headers"].get("authorization", "")
+  if token != "valid-token":
+    return &#123;"isAuthorized": False&#125;
+
+  return &#123;
+    "isAuthorized": True,
+    "context": &#123;"userId": "123", "role": "admin"&#125;
+  &#125;
+  </pre>
+
+    <!-- 9 -->
+    <h4>9. Business Lambda</h4>
+    <pre ngNonBindable>
+def lambda_handler(event, context):
+  ctx = event["requestContext"]["authorizer"]["lambda"]
+  role = ctx.get("role")
+
+  if role != "admin":
+    return &#123;"statusCode": 403, "body": "Forbidden"&#125;
+
+  return &#123;"statusCode": 200, "body": "Success"&#125;
+  </pre>
+
+    <!-- 10 -->
+    <h4>10. Test</h4>
+    <pre ngNonBindable>
+curl -X GET https://api/prod/users \
+-H "Authorization: valid-token"
+  </pre>
+
+    <!-- 11 -->
+    <h4>11. Flow</h4>
+    <pre>
+Client → API Gateway → Authorizer → Business Lambda
+  </pre>
+
+    <!-- 12 -->
+    <h4>12. Common Mistakes</h4>
+    <ul>
+      <li>Authorizer not attached</li>
+      <li>Wrong header (Authorization)</li>
+      <li>No Lambda permission</li>
+      <li>Wrong response format</li>
+    </ul>
+
+    <!-- 13 -->
+    <h4>13. Production Tips</h4>
+    <ul>
+      <li>Use JWT (RS256)</li>
+      <li>Validate issuer & expiry</li>
+      <li>Pass minimal context</li>
+    </ul>
+
+  </div>
+
+  <!-- ================= CICD ================= -->
+  <div *ngIf="activeTab === 's-cicd'" class="content">
+
+    <h3>AWS Lambda Authorization Flow (Simple Steps)</h3>
+
+    <ol>
+      <li>Create API in AWS API Gateway</li>
+      <li>Define routes (e.g., /users)</li>
+      <li>Attach Business Lambda as integration</li>
+      <li>Create Lambda Authorizer</li>
+      <li>Read Authorization header</li>
+      <li>Validate JWT / Token</li>
+      <li>Allow or Deny request</li>
+      <li>Attach Authorizer to routes</li>
+      <li>Enable authorization for APIs</li>
+      <li>Pass user context to backend</li>
+      <li>Business Lambda runs only if authorized</li>
+    </ol>
+
+    <h4>Flow</h4>
+    <pre>
+Client → API Gateway → Authorizer → Business Lambda
+  </pre>
+
+    <h4>Key Points</h4>
+    <ul>
+      <li>Authorizer validates token</li>
+      <li>User info passed in requestContext</li>
+      <li>Unauthorized requests are blocked</li>
+      <li>Centralized security control</li>
+    </ul>
+
+    <h4>One-line Summary</h4>
+    <pre>
+I configure a Lambda Authorizer in API Gateway to validate tokens and enforce authorization before the request reaches the business Lambda.
+  </pre>
+
+  </div>

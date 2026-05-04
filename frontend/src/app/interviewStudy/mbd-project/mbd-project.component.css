@@ -1,0 +1,14 @@
+.flow {
+  list-style: none;
+  padding: 0;
+}
+
+.flow li {
+  margin: 8px 0;
+}
+
+.arrow {
+  padding-left: 60px;
+  font-size: 18px;
+  color: gray;
+}
