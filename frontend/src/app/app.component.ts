@@ -11,6 +11,11 @@ export class AppComponent implements OnInit {
   isDarkTheme = true;
   isSidebarOpen = window.innerWidth > 1024;
   isAdmin = false;
+  isInterviewMenuOpen = false;
+
+  toggleInterviewMenu() {
+    this.isInterviewMenuOpen = !this.isInterviewMenuOpen;
+  }
 
   constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe(event => {

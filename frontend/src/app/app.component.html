@@ -4,11 +4,11 @@
         <div class="sidebar-header">
             <div class="nav-brand">
                 <span class="logo-icon">📈</span>
-                <span class="logo-text">AI Options Pro</span>
+                <span class="logo-text">Axis Panel</span>
             </div>
             <button class="close-btn mobile-only" (click)="toggleSidebar()">✕</button>
         </div>
-        
+
         <div class="sidebar-menu">
             <div class="menu-group">
                 <div class="menu-label">Main</div>
@@ -37,10 +37,11 @@
                     <span class="nav-icon">🎮</span> Games
                 </a>
             </div>
-            
+
             <div class="menu-group" *ngIf="isAdmin">
                 <div class="menu-label admin-label">Admin Routes</div>
-                <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item admin-item">
+                <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    class="nav-item admin-item">
                     <span class="nav-icon">⚙️</span> Prompts Settings
                 </a>
                 <a routerLink="/admin/youtube" routerLinkActive="active" class="nav-item admin-item">
@@ -55,14 +56,69 @@
                 <a routerLink="/admin/calculator" routerLinkActive="active" class="nav-item admin-item">
                     <span class="nav-icon">🧮</span> Calculator
                 </a>
-                <a (click)="logout()" class="nav-item admin-item logout-btn" style="cursor: pointer; color: var(--accent-put);">
+                <div class="menu-item-with-children">
+                    <a (click)="toggleInterviewMenu()" class="nav-item admin-item" style="cursor: pointer;">
+                        <span class="nav-icon">🎤</span>
+                        <span class="nav-text">Interview</span>
+                        <span class="chevron" [class.rotated]="isInterviewMenuOpen">▼</span>
+                    </a>
+                    <div class="submenu" *ngIf="isInterviewMenuOpen">
+                        <a routerLink="/admin/interview/mbd-project" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🐍</span> MBD project
+                        </a>
+                        <a routerLink="/admin/interview/angular" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🅰️</span> Angular
+                        </a>
+                        <a routerLink="/admin/interview/nodejs" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🟢</span> Node Js
+                        </a>
+                        <a routerLink="/admin/interview/git" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🔀</span> Git
+                        </a>
+                        <a routerLink="/admin/interview/typescript" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">📘</span> TypeScript
+                        </a>
+                        <a routerLink="/admin/interview/mongodb" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🍃</span> Mongo DB
+                        </a>
+                        <a routerLink="/admin/interview/sql" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🗄️</span> SQL
+                        </a>
+                        <a routerLink="/admin/interview/react" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">⚛️</span> React
+                        </a>
+                        <a routerLink="/admin/interview/cicd" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">🔄</span> CICD
+                        </a>
+                        <a routerLink="/admin/interview/prompt" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">💬</span> Prompt
+                        </a>
+                        <a routerLink="/admin/interview/aws" routerLinkActive="active"
+                            class="nav-item admin-item sub-item">
+                            <span class="nav-icon">☁️</span> AWS
+                        </a>
+                    </div>
+                </div>
+                <a (click)="logout()" class="nav-item admin-item logout-btn"
+                    style="cursor: pointer; color: var(--accent-put);">
                     <span class="nav-icon">🚪</span> Logout
                 </a>
             </div>
         </div>
 
         <div class="sidebar-footer">
-            <button class="theme-toggle-btn" (click)="toggleTheme()" [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'">
+            <button class="theme-toggle-btn" (click)="toggleTheme()"
+                [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'">
                 <span class="theme-text">{{ isDarkTheme ? 'Light Mode' : 'Dark Mode' }}</span>
                 <span class="theme-icon">{{ isDarkTheme ? '☀️' : '🌙' }}</span>
             </button>
@@ -75,11 +131,11 @@
             <button class="menu-btn" (click)="toggleSidebar()">☰</button>
             <div class="nav-brand">
                 <span class="logo-icon">📈</span>
-                <span class="logo-text">AI Options Pro</span>
+                <span class="logo-text">Axis Panel</span>
             </div>
             <div style="width: 32px;"></div>
         </header>
-        
+
         <main class="main-content">
             <router-outlet></router-outlet>
         </main>
