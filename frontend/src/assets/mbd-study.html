@@ -1,0 +1,3692 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MBD Project</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #f1f1f1;
+            padding: 10px;
+        }
+
+        .tab {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            color: blue;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: white;
+            color: red;
+            font-weight: bold;
+        }
+
+        .content {
+            display: none;
+            padding: 15px;
+            border-top: 1px solid #ccc;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .highlight {
+            background: yellow;
+            padding: 5px;
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            .tab {
+                flex: 1 1 45%;
+                text-align: center;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Tabs -->
+    <div class="tabs">
+
+        <div class="tab active" onclick="openTab('project', this)">Project Explain</div>
+        <div class="tab" onclick="openTab('architecture', this)">Architecture</div>
+        <div class="tab" onclick="openTab('p-folder', this)">P Folder Structure</div>
+        <div class="tab" onclick="openTab('p-s-folder', this)">P Folder Structure</div>
+        <div class="tab" onclick="openTab('a-folder', this)">A Folder Structure</div>
+        <div class="tab" onclick="openTab('database', this)">Database Design</div>
+        <div class="tab" onclick="openTab('s-cicd', this)">Short-CI/CD-Serverless</div>
+        <div class="tab" onclick="openTab('d-cicd', this)">Deep-CI/CD-Serverless</div>
+        <div class="tab" onclick="openTab('cicd-IQ', this)">CI/CD-IQ</div>
+        <div class="tab" onclick="openTab('s-cicd-SAM', this)">Short-CI/CD-SAM</div>
+
+        <div class="tab" onclick="openTab('d-cicd-SAM', this)">Deep-CI/CD-SAM</div>
+        <div class="tab" onclick="openTab('multi-env-cicd', this)">Multi-env CI/CD 1</div>
+        <div class="tab" onclick="openTab('multiple-workflows', this)">Multi-env CI/CD 2</div>
+        <div class="tab" onclick="openTab('auth-angular', this)">A-Authen</div>
+        <div class="tab" onclick="openTab('auth-python', this)">P-Authen</div>
+        <div class="tab" onclick="openTab('challenges', this)">Project Challenges</div>
+        <div class="tab" onclick="openTab('process', this)">Process Scrum</div>
+
+    </div>
+
+    <!-- Project Explain -->
+    <div id="project" class="content active">
+
+        <h2 class="blue">📌 <u>MBD Project Explanation</u></h2>
+
+        <p>
+            <b>MBD (Major Breakdown)</b> is a system used in
+            <i>car manufacturing</i> to manage critical production issues.
+        </p>
+
+        <h3 class="blue">Business Context</h3>
+
+        <ul>
+            <li>Manufacturing has dependent units: Assembly, Paint Shop, Body Shop</li>
+            <li>If one unit fails → entire production line is impacted</li>
+            <li><b>Issue &gt; 10 mins → classified as
+                    <span class="red">Major Breakdown</span></b></li>
+        </ul>
+
+        <h3 class="blue">Objective</h3>
+
+        <p>
+            Build a system to coordinate multiple teams and resolve breakdowns quickly,
+            minimizing production downtime.
+        </p>
+
+        <h3 class="blue">Roles & Responsibilities</h3>
+
+        <ul>
+            <li><b>Job Coordinator:</b> Creates MBD, assigns tasks, closes ticket</li>
+            <li><b>Engineer:</b> Identifies root cause and fixes issue</li>
+            <li><b>Safety Team:</b> Performs safety validation</li>
+            <li><b>Shop Coordinator:</b> Confirms system is operational</li>
+        </ul>
+
+        <h3 class="blue">Workflow</h3>
+
+        <ul>
+            <li>Issue occurs</li>
+            <li>Engineer fixes the issue</li>
+            <li>Safety team validates</li>
+            <li>Shop coordinator confirms operations</li>
+            <li>Job coordinator closes the MBD</li>
+        </ul>
+
+        <h3 class="blue">System Capabilities</h3>
+
+        <ul>
+            <li>Role-based UI screens</li>
+            <li>End-to-end lifecycle tracking</li>
+            <li>Real-time coordination between teams</li>
+        </ul>
+
+        <p class="highlight">
+            👉 <b>Goal: Reduce downtime and ensure faster resolution of production breakdowns</b>
+        </p>
+
+        <h3 class="blue">Technical Overview</h3>
+
+        <ul>
+            <li><b>Frontend:</b> Angular (SPA)</li>
+            <li><b>Backend:</b> AWS (Lambda / ECS based)</li>
+            <li><b>Storage:</b> S3 + Aurora PostgreSQL</li>
+            <li><b>Delivery:</b> CloudFront</li>
+        </ul>
+
+    </div>
+
+    <!-- Architecture -->
+    <div id="architecture" class="content">
+
+        <h2 class="blue">📌 <u>Architecture (End-to-End Flow)</u></h2>
+
+        <!-- 1 -->
+        <h3 class="blue">1. User Access Layer</h3>
+
+        <ul>
+            <li><b>User:</b> TMNA internal user</li>
+            <li><b>Access:</b> Zscaler Private Access (ZPA)</li>
+            <li><b>Auth:</b> Azure AD (SSO)</li>
+            <li><b>Client:</b> Web Browser</li>
+        </ul>
+
+        <p class="highlight">
+            👉 Secure access + Single Sign-On (SSO)
+        </p>
+
+        <!-- 2 -->
+        <h3 class="blue">2. Entry Point (Internet → AWS)</h3>
+
+        <ul>
+            <li>HTTPS (Port 443)</li>
+            <li>Route 53 (DNS resolution)</li>
+        </ul>
+
+        <p class="highlight">
+            👉 Route 53 = Domain routing layer
+        </p>
+
+        <!-- 3 -->
+        <h3 class="blue">3. CDN + Security</h3>
+
+        <ul>
+            <li>CloudFront (CDN)</li>
+            <li>WAF (Firewall)</li>
+            <li>SSL via Certificate Manager</li>
+            <li>S3 (Logs storage)</li>
+        </ul>
+
+        <p class="highlight">
+            👉 Fast + Secure delivery
+        </p>
+
+        <!-- 4 -->
+        <h3 class="blue">4. Frontend Hosting</h3>
+
+        <ul>
+            <li>S3 (Angular SPA)</li>
+            <li>Served via CloudFront</li>
+        </ul>
+
+        <p class="highlight">
+            👉 Serverless frontend
+        </p>
+
+        <!-- 5 -->
+        <h3 class="blue">5. API Layer</h3>
+
+        <ul>
+            <li>API Gateway</li>
+            <li>Routing + Security + Rate limiting</li>
+        </ul>
+
+        <!-- 6 -->
+        <h3 class="blue">6. Backend</h3>
+
+        <ul>
+            <li>Lambda (Business logic)</li>
+            <li>Runs on demand (event-based)</li>
+        </ul>
+
+        <p class="highlight">
+            👉 Auto scaling, no servers
+        </p>
+
+        <!-- 7 -->
+        <h3 class="blue">7. Database</h3>
+
+        <ul>
+            <li>Aurora PostgreSQL Serverless</li>
+            <li>Private subnet (not public)</li>
+        </ul>
+
+        <!-- 8 -->
+        <h3 class="blue">8. File Storage</h3>
+
+        <ul>
+            <li>S3 (Images, reports, attachments)</li>
+        </ul>
+
+        <!-- 9 -->
+        <h3 class="blue">9. Monitoring & Security</h3>
+
+        <ul>
+            <li>CloudWatch (logs)</li>
+            <li>Datadog (monitoring)</li>
+            <li>Secrets Manager (credentials)</li>
+        </ul>
+
+        <!-- 10 -->
+        <h3 class="blue">10. Network Design</h3>
+
+        <ul>
+            <li>VPC + Private Subnets</li>
+            <li>Backend & DB are NOT public</li>
+            <li>Only API Gateway exposed</li>
+        </ul>
+
+        <!-- 11 -->
+        <h3 class="blue">11. Why Serverless</h3>
+
+        <ul>
+            <li>Cost efficient (scale to zero)</li>
+            <li>No infra management</li>
+            <li>High scalability</li>
+        </ul>
+
+        <!-- 12 -->
+        <h3 class="blue">12. Integration</h3>
+
+        <ul>
+            <li>Maximo (work orders)</li>
+            <li>Future: EDC, Nexus Broker</li>
+        </ul>
+
+        <!-- 13 -->
+        <h3 class="blue">13. End-to-End Flow</h3>
+
+        <ul>
+            <li>User login (Azure AD)</li>
+            <li>Route 53 → CloudFront</li>
+            <li>Angular UI loads</li>
+            <li>API Gateway → Lambda</li>
+            <li>Lambda → Aurora + S3</li>
+            <li>Logs → CloudWatch</li>
+        </ul>
+
+        <p class="highlight">
+            👉 <b>Cloud-Native + Serverless + Secure + Cost-Optimized</b>
+        </p>
+
+    </div>
+
+
+    <!-- Folder Structure -->
+    <div id="p-folder" class="content">
+
+        <h2 class="blue">📌 <u>Folder Structure (Backend - Lambda Service)</u></h2>
+
+        <h3 class="blue">Project Structure</h3>
+
+        <pre>
+mbd-lambda-service/
+│
+├── src/
+│   ├── handlers/
+│   ├── services/
+│   ├── repositories/
+│   ├── models/
+│   ├── utils/
+│   ├── middlewares/
+│   └── config/
+│
+├── tests/
+├── serverless.yml
+├── requirements.txt
+└── README.md
+    </pre>
+
+        <h3 class="blue">Layered Flow</h3>
+
+        <p class="highlight">
+            👉 API Gateway → Handler → Service → Repository → Database
+        </p>
+
+        <h3 class="blue">Layer Responsibilities</h3>
+
+        <ul>
+            <li><b>Handlers:</b> Entry point (no business logic)</li>
+            <li><b>Services:</b> Business logic & orchestration</li>
+            <li><b>Repositories:</b> Database interaction</li>
+            <li><b>Models:</b> Data schemas</li>
+            <li><b>Utils:</b> Logger, helpers, constants</li>
+            <li><b>Middlewares:</b> Auth, validation, error handling</li>
+            <li><b>Config:</b> Environment & settings</li>
+        </ul>
+
+        <h3 class="blue">Design Principles</h3>
+
+        <ul>
+            <li>Separation of concerns</li>
+            <li>Thin handlers (delegation only)</li>
+            <li>Testable architecture (mock repositories)</li>
+            <li>Scalable for microservices</li>
+        </ul>
+
+        <h3 class="blue">Key Benefits</h3>
+
+        <ul>
+            <li>Clean code structure</li>
+            <li>Easy maintenance & extension</li>
+            <li>Supports CI/CD and Serverless deployment</li>
+        </ul>
+
+    </div>
+
+
+    <!-- Folder Structure -->
+    <div id="p-s-folder" class="content">
+
+        <pre class="folder-structure">
+mbd-lambda-service/
+│
+├── src/
+│   ├── handlers/
+│   │   ├── jc_recovery_handler.py
+│   │   ├── mbd_status_handler.py
+│   │   └── health_handler.py
+│   │
+│   ├── services/
+│   │   ├── jc_recovery_service.py
+│   │   ├── mbd_service.py
+│   │   └── notification_service.py
+│   │
+│   ├── repositories/
+│   │   ├── jc_repository.py
+│   │   ├── mbd_repository.py
+│   │   └── base_repository.py
+│   │
+│   ├── models/
+│   │   ├── jc_model.py
+│   │   ├── mbd_model.py
+│   │   └── response_model.py
+│   │
+│   ├── utils/
+│   │   ├── logger.py
+│   │   ├── response.py
+│   │   ├── constants.py
+│   │   └── helpers.py
+│   │
+│   ├── middlewares/
+│   │   ├── auth_middleware.py
+│   │   ├── error_handler.py
+│   │   └── validator.py
+│   │
+│   └── config/
+│       ├── settings.py
+│       └── env.py
+│
+├── tests/
+│   ├── unit/
+│   └── integration/
+│
+├── requirements.txt
+├── requirements-dev.txt
+├── serverless.yml
+├── package.json
+├── .env
+├── .env.example
+│
+├── docker/
+│   └── Dockerfile
+│
+├── scripts/
+│   ├── deploy.sh
+│   └── cleanup.sh
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+│
+└── README.md
+    </pre>
+
+        <div class="flow">
+
+            <strong>Flow:</strong>
+
+            API Gateway → Handler → Service → Repository → DB
+
+            <br />
+
+            <span>↓ Utils / Models</span>
+
+        </div>
+
+    </div>
+
+    <!-- Angular Folder Structure -->
+    <div id="a-folder" class="content">
+
+        <pre class="folder-structure">
+src/
+├── app/
+│   ├── core/
+│   │   ├── services/
+│   │   │   ├── api.service.ts
+│   │   │   ├── auth.service.ts
+│   │   │   └── logger.service.ts
+│   │   │
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts
+│   │   │
+│   │   ├── interceptors/
+│   │   │   └── http.interceptor.ts
+│   │   │
+│   │   └── config/
+│   │       └── app.config.ts
+│   │
+│   ├── shared/
+│   │   ├── components/
+│   │   │   ├── button/
+│   │   │   │   ├── button.component.ts
+│   │   │   │   ├── button.component.html
+│   │   │   │   └── button.component.scss
+│   │   │   │
+│   │   │   └── loader/
+│   │   │
+│   │   ├── directives/
+│   │   ├── pipes/
+│   │   └── utils/
+│   │
+│   ├── features/
+│   │   ├── mbd/
+│   │   │   ├── pages/
+│   │   │   │   └── mbd-dashboard/
+│   │   │   │       ├── mbd-dashboard.component.ts
+│   │   │   │       ├── mbd-dashboard.component.html
+│   │   │   │       └── mbd-dashboard.component.scss
+│   │   │   │
+│   │   │   ├── components/
+│   │   │   │   └── mbd-card/
+│   │   │   │
+│   │   │   ├── store/
+│   │   │   │   ├── mbd.store.ts
+│   │   │   │   ├── mbd.effects.ts
+│   │   │   │   └── mbd.selectors.ts
+│   │   │   │
+│   │   │   ├── services/
+│   │   │   │   └── mbd.service.ts
+│   │   │   │
+│   │   │   └── models/
+│   │   │       └── mbd.model.ts
+│   │   │
+│   │   └── auth/
+│   │       ├── pages/
+│   │       ├── store/
+│   │       └── services/
+│   │
+│   ├── layout/
+│   │   ├── header/
+│   │   ├── sidebar/
+│   │   └── main-layout.component.ts
+│   │
+│   ├── app.routes.ts
+│   ├── app.component.ts
+│   └── app.config.ts
+│
+├── assets/
+├── environments/
+│   ├── environment.ts
+│   └── environment.prod.ts
+│
+└── main.ts
+    </pre>
+
+        <div class="flow">
+
+            <strong>Architecture:</strong>
+
+            Feature-based + Standalone Components
+
+            <br />
+
+            <strong>Flow:</strong>
+
+            Component → Service → API → Backend
+
+        </div>
+
+    </div>
+
+
+    <!-- Challenges -->
+    <div id="challenges" class="content">
+
+        <h2 class="blue">📌 <u>Key Challenges</u></h2>
+
+        <!-- Challenge 1 -->
+        <h3 class="blue">1. Complex Data Aggregation</h3>
+
+        <ul>
+            <li>Built a summary page combining data from multiple database tables</li>
+            <li>Handled large dataset and complex field mapping between backend and UI</li>
+            <li>Identified entities and relationships before designing query</li>
+            <li>Used AI to generate initial SQL draft for faster development</li>
+            <li>Manually refined joins, filters, and mappings</li>
+            <li>Resolved duplicate and missing data issues</li>
+            <li>Optimized query for performance</li>
+            <li>Integrated with Lambda and validated in Angular UI</li>
+        </ul>
+
+        <!-- Challenge 2 -->
+        <h3 class="blue">2. Local Lambda Testing (Flask Adapter)</h3>
+
+        <ul>
+            <li>Built a Flask-based wrapper to simulate API Gateway locally</li>
+            <li>Exposed REST endpoints matching Lambda routes</li>
+            <li>Captured HTTP requests and transformed into Lambda event format</li>
+            <li>Invoked Lambda handler directly with constructed event</li>
+            <li>Converted Lambda response into HTTP response</li>
+            <li>Integrated Angular frontend with local server</li>
+            <li>Enabled full end-to-end testing without AWS deployment</li>
+        </ul>
+
+        <p class="highlight">
+            👉 Improved development speed, debugging efficiency, and system reliability
+        </p>
+
+    </div>
+
+
+    <!-- Scrum Process -->
+    <div id="process" class="content">
+
+        <h2 class="blue">📌 <u>Agile Scrum Process</u></h2>
+
+        <ul class="flow">
+
+            <li>
+                <b>Product Backlog</b> – Ordered by Product Owner
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Backlog Refinement</b> – Clarify, split stories, estimate,
+                add acceptance criteria
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Sprint Planning</b> – Select stories, define Sprint Goal,
+                capacity planning
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Sprint Execution</b> – Development, testing, integration,
+                CI/CD
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Daily Scrum</b> – 15 min sync
+                (progress, plan, blockers)
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Sprint Review</b> – Demo increment,
+                stakeholder feedback
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Sprint Retrospective</b> – Improvements,
+                action items
+            </li>
+
+            <li class="arrow">↓</li>
+
+            <li>
+                <b>Next Sprint</b> – Continuous iteration
+            </li>
+
+        </ul>
+
+        <p class="highlight">
+            👉 Continuous delivery cycle with feedback and improvement
+        </p>
+
+    </div>
+
+    <!-- Angular Authentication -->
+    <div id="auth-angular" class="content">
+
+        <h3>Authentication Flow (Azure AD + MSAL)</h3>
+
+        <!-- Steps -->
+        <ol>
+            <li>Install MSAL packages</li>
+            <li>Configure MSAL</li>
+            <li>Provide MSAL</li>
+            <li>Login</li>
+            <li>Get Token</li>
+            <li>Attach Token</li>
+            <li>Logout</li>
+            <li>Backend validates token</li>
+        </ol>
+
+        <!-- Install -->
+        <h4>1. Install</h4>
+
+        <pre>
+npm install @azure/msal-browser @azure/msal-angular
+    </pre>
+
+        <!-- Config -->
+        <h4>2. MSAL Config</h4>
+
+        <pre>
+const msalInstance = new PublicClientApplication({
+  auth: {
+    clientId: 'CLIENT_ID',
+    authority: 'https://login.microsoftonline.com/TENANT_ID',
+    redirectUri: 'http://localhost:4200'
+  }
+});
+    </pre>
+
+        <!-- Provide -->
+        <h4>3. Provide MSAL</h4>
+
+        <pre>
+providers: [
+  provideMsal(msalInstance)
+]
+    </pre>
+
+        <!-- Login -->
+        <h4>4. Login</h4>
+
+        <pre>
+this.msal.loginPopup({ scopes: ['user.read'] })
+    </pre>
+
+        <!-- Get Token -->
+        <h4>5. Get Token</h4>
+
+        <pre>
+this.msal.acquireTokenSilent({ scopes: ['user.read'] })
+    </pre>
+
+        <!-- Attach Token -->
+        <h4>6. Attach Token</h4>
+
+        <pre>
+Authorization: Bearer ${token}
+    </pre>
+
+        <!-- Logout -->
+        <h4>7. Logout</h4>
+
+        <pre>
+this.msal.logoutPopup()
+    </pre>
+
+        <!-- Backend -->
+        <h4>8. Backend Validation</h4>
+
+        <pre>
+jwt.decode(token, key, algorithms=["RS256"])
+    </pre>
+
+    </div>
+
+
+    <!-- Python Authentication -->
+    <div id="auth-python" class="content">
+
+        <h3>Lambda Authorization Approaches</h3>
+
+        <!-- Option 1 -->
+        <h4>✅ Option 1: Separate Lambda Authorizer (Recommended)</h4>
+
+        <pre>
+Client → API Gateway → Authorizer → Business Lambda
+    </pre>
+
+        <ul>
+            <li>Centralized authentication logic</li>
+            <li>Reusable across APIs</li>
+            <li>Clean separation of concerns</li>
+            <li>Easy to maintain</li>
+        </ul>
+
+        <h5>Authorizer Example</h5>
+
+        <pre>
+token = event["authorizationToken"]
+
+if token == "allow":
+  return {
+    "principalId": "user123",
+    "context": {"role": "admin"}
+  }
+else:
+  raise Exception("Unauthorized")
+    </pre>
+
+        <h5>Business Lambda</h5>
+
+        <pre>
+role = event["requestContext"]["authorizer"]["role"]
+
+if role != "admin":
+  return {"statusCode": 403}
+    </pre>
+
+        <!-- Option 2 -->
+        <h4>⚡ Option 2: Inline Authorization (Same Lambda)</h4>
+
+        <pre>
+Client → API Gateway → Lambda (auth + logic)
+    </pre>
+
+        <ul>
+            <li>Simple implementation</li>
+            <li>Good for small apps / POC</li>
+        </ul>
+
+        <h5>Example</h5>
+
+        <pre>
+token = event["headers"].get("Authorization")
+
+if token != "allow":
+  return {"statusCode": 403}
+
+return {"statusCode": 200}
+    </pre>
+
+        <ul>
+            <li>❌ Duplicate logic</li>
+            <li>❌ Hard to maintain</li>
+            <li>❌ Security risk</li>
+        </ul>
+
+        <!-- Option 3 -->
+        <h4>🧩 Option 3: Shared Layer</h4>
+
+        <ul>
+            <li>Use Lambda Layer for shared auth code</li>
+            <li>Reusable across Lambdas</li>
+        </ul>
+
+        <!-- Decision -->
+        <h4>Decision Guide</h4>
+
+        <ul>
+            <li>Small App → Inline Auth</li>
+            <li>Medium App → Shared Layer</li>
+            <li>Production → Separate Authorizer</li>
+        </ul>
+
+        <!-- Key Insight -->
+        <h4>Key Insight</h4>
+
+        <pre>
+Authorizer runs BEFORE Business Lambda
+If Deny → Lambda is NOT executed
+    </pre>
+
+        <!-- Summary -->
+        <h4>Interview Answer</h4>
+
+        <pre>
+In production, we use a separate Lambda Authorizer with API Gateway to centralize authentication and ensure consistent security across APIs.
+    </pre>
+
+    </div>
+
+    <!-- ================= DATABASE ================= -->
+    <div id="database" class="content">
+
+        <h2 class="blue">📌 <u>Database</u></h2>
+
+        <table border="1" cellpadding="10" cellspacing="0">
+
+            <tr>
+                <th>Table</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td>MBD</td>
+                <td>Main ticket</td>
+            </tr>
+
+            <tr>
+                <td>Users</td>
+                <td>Roles</td>
+            </tr>
+
+            <tr>
+                <td>Tasks</td>
+                <td>Workflow steps</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- Deep CI/CD --> <!-- AWS Lambda Deployment Guide -->
+    <div id="d-cicd-SAM" class="content">
+
+        <h2 class="blue">
+            📌 <u>AWS Lambda with API Gateway: Step-by-Step Deployment Guide via GitHub Actions</u>
+        </h2>
+
+        <p>
+            This guide explains how to deploy a Python-based AWS Lambda function
+            integrated with API Gateway using GitHub Actions CI/CD pipeline.
+        </p>
+
+        <!-- PART 1 -->
+        <h3 class="blue">PART 1: PREREQUISITES</h3>
+
+        <ol>
+            <li>AWS Account with IAM access</li>
+            <li>GitHub Repository containing Python code</li>
+            <li>AWS CLI installed locally (optional)</li>
+        </ol>
+
+        <!-- PART 2 -->
+        <h3 class="blue">PART 2: PROJECT STRUCTURE</h3>
+
+        <pre>
+.
+├── src/
+│   └── lambda_function.py
+│
+├── requirements.txt
+├── template.yaml
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml
+    </pre>
+
+        <!-- PART 3 -->
+        <h3 class="blue">PART 3: AWS SAM TEMPLATE (template.yaml)</h3>
+
+        <p>
+            AWS SAM simplifies Lambda + API Gateway infrastructure creation.
+        </p>
+
+        <pre>
+AWSTemplateFormatVersion: '2010-09-09'
+
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+
+  MyApiFunction:
+
+    Type: AWS::Serverless::Function
+
+    Properties:
+
+      Handler: lambda_function.lambda_handler
+
+      Runtime: python3.9
+
+      CodeUri: src/
+
+      Events:
+
+        HelloWorld:
+
+          Type: Api
+
+          Properties:
+
+            Path: /hello
+
+            Method: get
+    </pre>
+
+        <!-- PART 4 -->
+        <h3 class="blue">PART 4: CONFIGURE AWS PERMISSIONS</h3>
+
+        <ol>
+
+            <li>Create IAM User in AWS Console</li>
+
+            <li>
+                Attach permissions:
+                <ul>
+                    <li>AdministratorAccess (easy setup)</li>
+                    <li>OR specific Lambda/API Gateway permissions</li>
+                </ul>
+            </li>
+
+            <li>Generate Access Key ID and Secret Access Key</li>
+
+            <li>
+                Open GitHub Repository:
+                <pre>
+Settings → Secrets and variables → Actions
+            </pre>
+            </li>
+
+            <li>
+                Add GitHub Secrets:
+                <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- PART 5 -->
+        <h3 class="blue">PART 5: GITHUB ACTIONS WORKFLOW</h3>
+
+        <p>
+            File Location:
+        </p>
+
+        <pre>
+.github/workflows/deploy.yml
+    </pre>
+
+        <p>
+            This workflow deploys Lambda automatically whenever code is pushed to the main branch.
+        </p>
+
+        <pre>
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install AWS SAM CLI
+        run: |
+          pip install aws-sam-cli
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: SAM Build
+        run: sam build
+
+      - name: SAM Deploy
+        run: |
+          sam deploy \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --stack-name my-lambda-stack \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM
+    </pre>
+
+        <!-- PART 6 -->
+        <h3 class="blue">PART 6: DEPLOYMENT STEPS SUMMARY</h3>
+
+        <ol>
+
+            <li>
+                Commit and push source code to GitHub
+            </li>
+
+            <li>
+                GitHub Actions workflow automatically starts
+            </li>
+
+            <li>
+                Open GitHub → Actions tab to monitor deployment
+            </li>
+
+            <li>
+                CloudFormation creates stack:
+                <pre>
+my-lambda-stack
+            </pre>
+            </li>
+
+            <li>
+                Open AWS CloudFormation → Outputs tab
+            </li>
+
+            <li>
+                Copy generated API Gateway URL
+            </li>
+
+            <li>
+                Test endpoint:
+            </li>
+
+        </ol>
+
+        <pre>
+https://your-api-id.execute-api.us-east-1.amazonaws.com/Prod/hello
+    </pre>
+
+        <!-- FLOW -->
+        <h3 class="blue">CI/CD Deployment Flow</h3>
+
+        <pre>
+Developer Push
+        ↓
+GitHub Repository
+        ↓
+deploy.yml Triggered
+        ↓
+GitHub Runner (ubuntu-latest)
+        ↓
+Setup Python
+        ↓
+Install AWS SAM CLI
+        ↓
+Configure AWS Credentials
+        ↓
+SAM Build
+        ↓
+SAM Deploy
+        ↓
+CloudFormation Stack
+        ↓
+API Gateway + Lambda Updated
+    </pre>
+
+        <!-- NOTES -->
+        <h3 class="blue">NOTES</h3>
+
+        <ul>
+            <li>Use virtual environment locally</li>
+            <li>Ensure handler name matches template.yaml</li>
+            <li>Use least-privilege IAM policy in production</li>
+            <li>Validate deployment from CloudWatch Logs</li>
+        </ul>
+
+        <!-- INTERVIEW -->
+        <h3 class="blue">One-line Interview Answer</h3>
+
+        <pre>
+We use GitHub Actions with AWS SAM to automatically build and deploy AWS Lambda and API Gateway whenever code is merged into the main branch.
+    </pre>
+
+    </div>
+
+
+    <!-- Deep CI/CD --> <!-- AWS Lambda Deployment Guide -->
+    <div id="d-cicd" class="content">
+
+        <h2 class="blue">
+            📌 <u>AWS Lambda with API Gateway: Step-by-Step Deployment Guide via GitHub Actions</u>
+        </h2>
+
+        <p>
+            This guide explains how to deploy a Python-based AWS Lambda function
+            integrated with API Gateway using GitHub Actions CI/CD pipeline using
+            <b>Serverless Framework</b>.
+        </p>
+
+        <!-- PART 1 -->
+        <h3 class="blue">PART 1: PREREQUISITES</h3>
+
+        <ol>
+            <li>AWS Account with IAM access</li>
+            <li>GitHub Repository containing Python code</li>
+            <li>Node.js installed locally (optional)</li>
+            <li>AWS CLI installed locally (optional)</li>
+        </ol>
+
+        <!-- PART 2 -->
+        <h3 class="blue">PART 2: PROJECT STRUCTURE</h3>
+
+        <pre>
+.
+├── src/
+│   └── lambda_function.py
+│
+├── requirements.txt
+├── serverless.yml
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml
+    </pre>
+
+        <!-- PART 3 -->
+        <h3 class="blue">PART 3: SERVERLESS FRAMEWORK CONFIGURATION (serverless.yml)</h3>
+
+        <p>
+            Serverless Framework simplifies Lambda + API Gateway infrastructure creation.
+        </p>
+
+        <pre>
+service: my-python-lambda
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+
+functions:
+
+  hello:
+
+    handler: src/lambda_function.lambda_handler
+
+    events:
+
+      - http:
+          path: hello
+          method: get
+    </pre>
+
+        <!-- PART 4 -->
+        <h3 class="blue">PART 4: CONFIGURE AWS PERMISSIONS</h3>
+
+        <ol>
+
+            <li>Create IAM User in AWS Console</li>
+
+            <li>
+                Attach permissions:
+                <ul>
+                    <li>AdministratorAccess (easy setup)</li>
+                    <li>OR specific Lambda/API Gateway permissions</li>
+                </ul>
+            </li>
+
+            <li>Generate Access Key ID and Secret Access Key</li>
+
+            <li>
+                Open GitHub Repository:
+                <pre>
+Settings → Secrets and variables → Actions
+            </pre>
+            </li>
+
+            <li>
+                Add GitHub Secrets:
+                <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- PART 5 -->
+        <h3 class="blue">PART 5: GITHUB ACTIONS WORKFLOW</h3>
+
+        <p>
+            File Location:
+        </p>
+
+        <pre>
+.github/workflows/deploy.yml
+    </pre>
+
+        <p>
+            This workflow deploys Lambda automatically whenever code is pushed to the main branch.
+        </p>
+
+        <pre>
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install Serverless Framework
+        run: |
+          npm install -g serverless
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt -t .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to AWS Lambda
+        run: |
+          serverless deploy
+    </pre>
+
+        <!-- PART 6 -->
+        <h3 class="blue">PART 6: DEPLOYMENT STEPS SUMMARY</h3>
+
+        <ol>
+
+            <li>
+                Commit and push source code to GitHub
+            </li>
+
+            <li>
+                GitHub Actions workflow automatically starts
+            </li>
+
+            <li>
+                Open GitHub → Actions tab to monitor deployment
+            </li>
+
+            <li>
+                Serverless Framework generates CloudFormation stack automatically
+            </li>
+
+            <li>
+                CloudFormation creates:
+                <ul>
+                    <li>AWS Lambda</li>
+                    <li>API Gateway</li>
+                    <li>IAM Roles</li>
+                    <li>CloudWatch Logs</li>
+                </ul>
+            </li>
+
+            <li>
+                Open AWS CloudFormation → Outputs tab
+            </li>
+
+            <li>
+                Copy generated API Gateway URL
+            </li>
+
+            <li>
+                Test endpoint:
+            </li>
+
+        </ol>
+
+        <pre>
+https://your-api-id.execute-api.us-east-1.amazonaws.com/dev/hello
+    </pre>
+
+        <!-- FLOW -->
+        <h3 class="blue">CI/CD Deployment Flow</h3>
+
+        <pre>
+Developer Push
+        ↓
+GitHub Repository
+        ↓
+deploy.yml Triggered
+        ↓
+GitHub Runner (ubuntu-latest)
+        ↓
+Setup Node.js + Python
+        ↓
+Install Serverless Framework
+        ↓
+Configure AWS Credentials
+        ↓
+serverless deploy
+        ↓
+CloudFormation Stack
+        ↓
+API Gateway + Lambda Updated
+    </pre>
+
+        <!-- NOTES -->
+        <h3 class="blue">NOTES</h3>
+
+        <ul>
+            <li>Use virtual environment locally</li>
+            <li>Ensure handler name matches serverless.yml</li>
+            <li>Use least-privilege IAM policy in production</li>
+            <li>Validate deployment from CloudWatch Logs</li>
+            <li>Serverless Framework internally uses CloudFormation</li>
+        </ul>
+
+        <!-- INTERVIEW -->
+        <h3 class="blue">One-line Interview Answer</h3>
+
+        <pre>
+We use GitHub Actions with Serverless Framework to automatically build and deploy AWS Lambda and API Gateway whenever code is merged into the main branch.
+    </pre>
+
+    </div>
+
+
+    <!-- CI/CD Deployment Flow -->
+    <div id="s-cicd" class="content">
+
+        <h2 class="blue">📌 <u>GitHub Actions → AWS Lambda Deployment Flow</u></h2>
+
+        <ol>
+
+            <li>
+                Login to AWS
+            </li>
+
+            <li>
+                Create an IAM user for GitHub access
+                (AdministratorAccess or specific Lambda/API Gateway permissions)
+            </li>
+
+            <li>
+                Generate AWS Access Key and Secret Access Key
+            </li>
+
+            <li>
+                Add AWS Access Key and Secret Access Key into GitHub Secrets
+            </li>
+
+            <li>
+                Configure GitHub repository with:
+                <pre>
+Settings → Secrets and variables → Actions
+            </pre>
+            </li>
+
+            <li>
+                Add:
+                <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+            </pre>
+            </li>
+
+            <li>
+                When code is merged into the <b>main</b> branch,
+                GitHub Actions workflow starts automatically
+            </li>
+
+            <li>
+                Workflow file location:
+                <pre>
+.github/workflows/deploy.yml
+            </pre>
+            </li>
+
+            <li>
+                This workflow deploys the application to AWS Lambda
+                using <b>Serverless Framework</b>
+            </li>
+
+        </ol>
+
+        <h3 class="blue">GitHub Actions Workflow Steps</h3>
+
+        <ul>
+            <li>Use <b>ubuntu-latest (VM)</b> runner</li>
+            <li>Checkout source code</li>
+            <li>Set up Node.js environment</li>
+            <li>Set up Python environment</li>
+            <li>Install Serverless Framework</li>
+            <li>Install Python dependencies</li>
+            <li>Configure AWS credentials</li>
+            <li>Run <b>serverless deploy</b></li>
+        </ul>
+
+        <h3 class="blue">Deployment Flow</h3>
+
+        <pre>
+Developer Push
+        ↓
+GitHub Repository
+        ↓
+deploy.yml Triggered
+        ↓
+GitHub Runner (ubuntu-latest)
+        ↓
+Setup Node.js + Python
+        ↓
+Install Serverless Framework
+        ↓
+Configure AWS Credentials
+        ↓
+serverless deploy
+        ↓
+CloudFormation Stack
+        ↓
+AWS Lambda + API Gateway Updated
+    </pre>
+
+        <h3 class="blue">One-line Interview Answer</h3>
+
+        <pre>
+We use GitHub Actions with Serverless Framework to automate CI/CD deployment for AWS Lambda and API Gateway whenever code is merged into the main branch.
+    </pre>
+
+    </div>
+
+    <!-- CI/CD Deployment Flow -->
+    <div id="s-cicd-SAM" class="content">
+
+        <h2 class="blue">📌 <u>GitHub Actions → AWS Lambda Deployment Flow</u></h2>
+
+        <ol>
+
+            <li>
+                Login to AWS
+            </li>
+
+            <li>
+                Create an IAM user for GitHub access
+                (AdministratorAccess or specific Lambda permissions)
+            </li>
+
+            <li>
+                Generate AWS Access Key and Secret Access Key
+            </li>
+
+            <li>
+                Add AWS Access Key and Secret Access Key into GitHub Secrets
+            </li>
+
+            <li>
+                Configure GitHub repository with:
+                <pre>
+Settings → Secrets and variables → Actions
+            </pre>
+            </li>
+
+            <li>
+                Add:
+                <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+            </pre>
+            </li>
+
+            <li>
+                When code is merged into the <b>main</b> branch,
+                GitHub Actions workflow starts automatically
+            </li>
+
+            <li>
+                Workflow file location:
+                <pre>
+.github/workflows/deploy.yml
+            </pre>
+            </li>
+
+            <li>
+                This workflow deploys the application to AWS Lambda
+            </li>
+
+        </ol>
+
+        <h3 class="blue">GitHub Actions Workflow Steps</h3>
+
+        <ul>
+            <li>Use <b>ubuntu-latest (VM)</b> runner</li>
+            <li>Checkout code</li>
+            <li>Checkout source code</li>
+            <li>Set up Python environment</li>
+            <li>Install AWS SAM CLI</li>
+            <li>Configure AWS credentials</li>
+            <li>Run SAM Build</li>
+            <li>Run SAM Deploy</li>
+        </ul>
+
+        <h3 class="blue">Deployment Flow</h3>
+
+        <pre>
+Developer Push
+        ↓
+GitHub Repository
+        ↓
+deploy.yml Triggered
+        ↓
+GitHub Runner (ubuntu-latest)
+        ↓
+Setup Python + SAM
+        ↓
+Configure AWS Credentials
+        ↓
+SAM Build
+        ↓
+SAM Deploy
+        ↓
+AWS Lambda Updated
+    </pre>
+
+        <h3 class="blue">One-line Interview Answer</h3>
+
+        <pre>
+We use GitHub Actions with AWS SAM to automate CI/CD deployment for Lambda whenever code is merged into the main branch.
+    </pre>
+
+    </div>
+
+    <!-- Multi Environment GitHub Actions Workflow -->
+    <div id="multi-env-cicd" class="content">
+
+        <h2 class="blue">
+            📌 <u>PART 5: GitHub Actions Workflow (.github/workflows/deploy.yml)</u>
+        </h2>
+
+        <h3 class="blue">Multi Environment Deployment</h3>
+
+        <ul>
+            <li><b>develop</b> → dev environment</li>
+            <li><b>staging</b> → stage environment</li>
+            <li><b>main</b> → production environment</li>
+        </ul>
+
+        <h3 class="blue">Workflow File</h3>
+
+        <pre>
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      - main
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install AWS SAM CLI
+        run: |
+          pip install aws-sam-cli
+
+      - name: Set Environment Variables
+        run: |
+
+          if [ "${GITHUB_REF##*/}" = "develop" ]; then
+
+            echo "STACK_NAME=my-lambda-dev" >> $GITHUB_ENV
+
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.DEV_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+          elif [ "${GITHUB_REF##*/}" = "staging" ]; then
+
+            echo "STACK_NAME=my-lambda-stage" >> $GITHUB_ENV
+
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.STAGE_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.STAGE_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+          elif [ "${GITHUB_REF##*/}" = "main" ]; then
+
+            echo "STACK_NAME=my-lambda-prod" >> $GITHUB_ENV
+
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.PROD_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: SAM Build
+        run: sam build
+
+      - name: SAM Deploy
+        run: |
+          sam deploy \
+            --stack-name $STACK_NAME \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM
+    </pre>
+
+        <h3 class="blue">Branch Deployment Flow</h3>
+
+        <pre>
+develop branch
+      ↓
+Deploy to DEV environment
+
+staging branch
+      ↓
+Deploy to STAGE environment
+
+main branch
+      ↓
+Deploy to PROD environment
+    </pre>
+
+        <h3 class="blue">Key Concept</h3>
+
+        <pre>
+${GITHUB_REF##*/}
+    </pre>
+
+        <p>
+            Extracts current branch name from GitHub reference.
+        </p>
+
+        <pre>
+refs/heads/develop → develop
+refs/heads/staging → staging
+refs/heads/main → main
+    </pre>
+
+        <h3 class="blue">Environment Secrets</h3>
+
+        <ul>
+            <li>DEV_AWS_ACCESS_KEY_ID</li>
+            <li>DEV_AWS_SECRET_ACCESS_KEY</li>
+            <li>STAGE_AWS_ACCESS_KEY_ID</li>
+            <li>STAGE_AWS_SECRET_ACCESS_KEY</li>
+            <li>PROD_AWS_ACCESS_KEY_ID</li>
+            <li>PROD_AWS_SECRET_ACCESS_KEY</li>
+        </ul>
+
+        <h3 class="blue">CI/CD Flow</h3>
+
+        <pre>
+Git Push
+    ↓
+GitHub Actions Triggered
+    ↓
+Detect Branch Name
+    ↓
+Load Environment Variables
+    ↓
+Configure AWS Credentials
+    ↓
+SAM Build
+    ↓
+SAM Deploy
+    ↓
+Deploy to Correct Environment
+    </pre>
+
+        <!-- GITHUB_REF Explanation -->
+        <div>
+
+            <h2 class="blue">
+                📌 <u>What is ${GITHUB_REF##*/} ?</u>
+            </h2>
+
+            <p>
+                It is a <b>Bash parameter expansion expression</b>.
+            </p>
+
+            <h3 class="blue">Purpose</h3>
+
+            <p>
+                Extract only the branch or tag name from the full Git reference.
+            </p>
+
+            <h3 class="blue">Example</h3>
+
+            <p>
+                GitHub automatically provides:
+            </p>
+
+            <pre>
+GITHUB_REF=refs/heads/main
+    </pre>
+
+            <p>
+                Expression:
+            </p>
+
+            <pre>
+${GITHUB_REF##*/}
+    </pre>
+
+            <p>
+                Output:
+            </p>
+
+            <pre>
+main
+    </pre>
+
+            <h3 class="blue">How It Works</h3>
+
+            <pre>
+##*/ 
+    </pre>
+
+            <ul>
+                <li><b>##</b> → remove longest matching pattern from beginning</li>
+                <li><b>*/</b> → match everything until last "/"</li>
+            </ul>
+
+            <p>
+                Remaining value:
+            </p>
+
+            <pre>
+main
+    </pre>
+
+            <h3 class="blue">Examples Table</h3>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>GITHUB_REF</th>
+                    <th>Result</th>
+                </tr>
+
+                <tr>
+                    <td>refs/heads/develop</td>
+                    <td>develop</td>
+                </tr>
+
+                <tr>
+                    <td>refs/heads/staging</td>
+                    <td>staging</td>
+                </tr>
+
+                <tr>
+                    <td>refs/heads/main</td>
+                    <td>main</td>
+                </tr>
+
+                <tr>
+                    <td>refs/tags/v1.0</td>
+                    <td>v1.0</td>
+                </tr>
+
+            </table>
+
+            <h3 class="blue">Real Usage in GitHub Actions</h3>
+
+            <pre>
+if [ "${GITHUB_REF##*/}" = "main" ]; then
+  echo "Production Deployment"
+fi
+    </pre>
+
+            <h3 class="blue">CI/CD Flow</h3>
+
+            <pre>
+Git Push
+    ↓
+GitHub sets GITHUB_REF
+    ↓
+Workflow reads branch name
+    ↓
+Environment selected
+    ↓
+Deployment starts
+    </pre>
+
+            <h3 class="blue">One-line Interview Answer</h3>
+
+            <pre>
+${GITHUB_REF##*/} extracts the branch or tag name from the full Git reference inside GitHub Actions workflows.
+    </pre>
+
+        </div>
+
+
+
+        <!-- Additional GITHUB_REF Explanation -->
+        <div>
+
+            <h3 class="blue">Visual Explanation</h3>
+
+            <pre>
+refs/heads/main
+^^^^^^^^^^^^ remove
+             result = main
+    </pre>
+
+            <h3 class="blue">Modern GitHub Alternative</h3>
+
+            <p>
+                GitHub now provides a cleaner built-in variable:
+            </p>
+
+            <pre>
+github.ref_name
+    </pre>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>
+${{ github.ref_name }}
+    </pre>
+
+            <p>
+                This directly returns:
+            </p>
+
+            <pre>
+main
+develop
+staging
+    </pre>
+
+            <h3 class="blue">Why Enterprises Prefer Single Workflow</h3>
+
+            <!-- 1 -->
+            <h4>1. Centralized Logic</h4>
+
+            <ul>
+                <li>All deployment logic in one place</li>
+                <li>Easy maintenance</li>
+            </ul>
+
+            <!-- 2 -->
+            <h4>2. Avoid Duplicate YAML</h4>
+
+            <p>
+                Without single workflow:
+            </p>
+
+            <pre>
+deploy-dev.yml
+deploy-stage.yml
+deploy-prod.yml
+    </pre>
+
+            <p>
+                Causes duplicated code and maintenance overhead.
+            </p>
+
+            <!-- 3 -->
+            <h4>3. Easier Standardization</h4>
+
+            <p>
+                Same process for all environments:
+            </p>
+
+            <ul>
+                <li>Build steps</li>
+                <li>Security checks</li>
+                <li>Deployment process</li>
+            </ul>
+
+            <!-- 4 -->
+            <h4>4. Easier Updates</h4>
+
+            <p>
+                Example: Python version upgrade
+            </p>
+
+            <pre>
+Single workflow:
+    Change once
+
+Multiple workflows:
+    Change in many files
+    </pre>
+
+            <!-- 5 -->
+            <h4>5. Better Enterprise Governance</h4>
+
+            <p>
+                Security and DevOps teams prefer:
+            </p>
+
+            <ul>
+                <li>Centralized pipelines</li>
+                <li>Centralized approvals</li>
+                <li>Centralized audit logs</li>
+            </ul>
+
+            <h3 class="blue">Enterprise CI/CD Flow</h3>
+
+            <pre>
+Git Push
+    ↓
+Single GitHub Workflow
+    ↓
+Detect Branch
+    ↓
+Load Environment Config
+    ↓
+Standardized Build
+    ↓
+Security Validation
+    ↓
+Deployment
+    ↓
+Audit Logging
+    </pre>
+
+        </div>
+
+        <h3 class="blue">One-line Interview Answer</h3>
+
+        <pre>
+We use branch-based GitHub Actions workflows to automatically deploy Lambda functions into different AWS environments such as dev, stage, and production.
+    </pre>
+
+    </div>
+
+
+    <!-- Multiple Workflow Files -->
+    <div id="multiple-workflows" class="content">
+
+        <h2 class="blue">
+            📌 <u>Approach 2 — Multiple Workflow Files</u>
+        </h2>
+
+        <h3 class="blue">Example</h3>
+
+        <pre>
+deploy-dev.yml
+deploy-stage.yml
+deploy-prod.yml
+    </pre>
+
+        <p>
+            Each workflow file handles one specific environment.
+        </p>
+
+        <h3 class="blue">Advantages of Multiple Workflows</h3>
+
+        <table border="1" cellpadding="10" cellspacing="0">
+
+            <tr>
+                <th>Benefit</th>
+                <th>Explanation</th>
+            </tr>
+
+            <tr>
+                <td>Simple logic</td>
+                <td>Easier for beginners</td>
+            </tr>
+
+            <tr>
+                <td>Fully isolated</td>
+                <td>One environment cannot affect another</td>
+            </tr>
+
+            <tr>
+                <td>Separate permissions</td>
+                <td>Different deployment rules and approvals</td>
+            </tr>
+
+        </table>
+
+        <h3 class="blue">Disadvantages</h3>
+
+        <table border="1" cellpadding="10" cellspacing="0">
+
+            <tr>
+                <th>Problem</th>
+                <th>Explanation</th>
+            </tr>
+
+            <tr>
+                <td>Duplicate code</td>
+                <td>Hard maintenance</td>
+            </tr>
+
+            <tr>
+                <td>Drift issues</td>
+                <td>Workflows become inconsistent over time</td>
+            </tr>
+
+            <tr>
+                <td>More files</td>
+                <td>Harder management</td>
+            </tr>
+
+        </table>
+
+        <h3 class="blue">How GitHub Detects Multiple Workflow Files</h3>
+
+        <p>
+            GitHub automatically scans:
+        </p>
+
+        <pre>
+.github/workflows/
+    </pre>
+
+        <p>
+            Every valid:
+        </p>
+
+        <pre>
+.yml
+or
+.yaml
+    </pre>
+
+        <p>
+            file becomes an independent GitHub Actions workflow.
+        </p>
+
+        <h3 class="blue">Example Structure</h3>
+
+        <pre>
+.github/
+   └── workflows/
+       ├── deploy-dev.yml
+       ├── deploy-stage.yml
+       └── deploy-prod.yml
+    </pre>
+
+        <h3 class="blue">GitHub Registers</h3>
+
+        <pre>
+Deploy Dev Workflow
+Deploy Stage Workflow
+Deploy Prod Workflow
+    </pre>
+
+        <h3 class="blue">Execution Flow</h3>
+
+        <pre>
+Git Push
+    ↓
+GitHub scans .github/workflows/
+    ↓
+Matching workflow detected
+    ↓
+Selected workflow starts
+    ↓
+Deployment executed
+    </pre>
+
+        <h3 class="blue">Enterprise Recommendation</h3>
+
+        <pre>
+Small projects:
+    Multiple workflows acceptable
+
+Large enterprise systems:
+    Prefer single centralized workflow
+    </pre>
+
+    </div>
+
+    <!-- Lambda + CloudFormation + OIDC -->
+    <div id="cicd-IQ" class="content">
+
+        <h2 class="blue">
+            📌 <u>Does Lambda Require a Server?</u>
+        </h2>
+
+        <h3 class="blue">YES — But AWS Manages It</h3>
+
+        <p>
+            When you use:
+        </p>
+
+        <pre>
+runs-on: ubuntu-latest
+    </pre>
+
+        <p>
+            That is:
+        </p>
+
+        <ul>
+            <li>Temporary GitHub Actions VM</li>
+            <li>Used only for CI/CD execution</li>
+            <li>NOT the Lambda runtime server</li>
+        </ul>
+
+        <h3 class="blue">Two Different Servers Exist</h3>
+
+        <table border="1" cellpadding="10" cellspacing="0">
+
+            <tr>
+                <th>Server</th>
+                <th>Managed By</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>GitHub Runner VM</td>
+                <td>GitHub</td>
+                <td>Build & Deploy Code</td>
+            </tr>
+
+            <tr>
+                <td>Lambda Runtime Server</td>
+                <td>AWS</td>
+                <td>Execute Lambda Function</td>
+            </tr>
+
+        </table>
+
+        <h3 class="blue">What “Serverless” Actually Means</h3>
+
+        <p>
+            Serverless does NOT mean:
+        </p>
+
+        <pre>
+No servers exist
+    </pre>
+
+        <p>
+            It means:
+        </p>
+
+        <pre>
+You do not manage servers
+    </pre>
+
+        <p>
+            AWS internally manages:
+        </p>
+
+        <ul>
+            <li>EC2 infrastructure</li>
+            <li>Scaling</li>
+            <li>Patching</li>
+            <li>Networking</li>
+            <li>Runtime management</li>
+        </ul>
+
+        <h3 class="blue">Actual Deployment Flow</h3>
+
+        <pre>
+GitHub Runner VM
+      ↓
+sam deploy
+      ↓
+AWS Lambda Infrastructure
+      ↓
+AWS executes function on managed servers
+    </pre>
+
+        <!-- CloudFormation -->
+        <h2 class="blue">
+            📌 <u>What is AWS CloudFormation?</u>
+        </h2>
+
+        <p>
+            AWS CloudFormation is AWS Infrastructure-as-Code (IaC) engine.
+        </p>
+
+        <p>
+            It creates AWS infrastructure using:
+        </p>
+
+        <pre>
+YAML
+or
+JSON templates
+    </pre>
+
+        <h3 class="blue">Example</h3>
+
+        <pre>
+Resources:
+
+  MyBucket:
+
+    Type: AWS::S3::Bucket
+    </pre>
+
+        <p>
+            CloudFormation can create:
+        </p>
+
+        <ul>
+            <li>S3 Buckets</li>
+            <li>Lambda Functions</li>
+            <li>API Gateway</li>
+            <li>IAM Roles</li>
+            <li>VPC</li>
+            <li>DynamoDB</li>
+        </ul>
+
+        <!-- Create Update -->
+        <h2 class="blue">
+            📌 <u>Does CloudFormation Create or Update?</u>
+        </h2>
+
+        <p>
+            YES.
+        </p>
+
+        <p>
+            When you run:
+        </p>
+
+        <pre>
+sam deploy
+    </pre>
+
+        <p>
+            AWS SAM converts:
+        </p>
+
+        <pre>
+template.yaml
+    </pre>
+
+        <p>
+            into CloudFormation template.
+        </p>
+
+        <p>
+            Then CloudFormation:
+        </p>
+
+        <ul>
+            <li>Creates infrastructure (first deployment)</li>
+            <li>Updates infrastructure (next deployments)</li>
+        </ul>
+
+        <h3 class="blue">Example</h3>
+
+        <pre>
+First deployment:
+    CREATE stack
+
+Second deployment:
+    UPDATE existing stack
+    </pre>
+
+        <p>
+            CloudFormation automatically compares infrastructure changes.
+        </p>
+
+        <!-- OIDC -->
+        <h2 class="blue">
+            📌 <u>What is AWS OIDC Role?</u>
+        </h2>
+
+        <p>
+            OIDC = OpenID Connect
+        </p>
+
+        <p>
+            Modern secure authentication mechanism for CI/CD systems.
+        </p>
+
+        <p>
+            Instead of using:
+        </p>
+
+        <pre>
+AWS Access Key
+AWS Secret Key
+    </pre>
+
+        <p>
+            GitHub dynamically requests temporary AWS credentials.
+        </p>
+
+        <h3 class="blue">GitHub OIDC Flow</h3>
+
+        <pre>
+GitHub Actions
+      ↓
+GitHub OIDC Token
+      ↓
+AWS IAM AssumeRole
+      ↓
+Temporary AWS Credentials
+      ↓
+Deploy AWS Resources
+    </pre>
+
+        <h3 class="blue">Why OIDC Is Better</h3>
+
+        <table border="1" cellpadding="10" cellspacing="0">
+
+            <tr>
+                <th>Access Keys</th>
+                <th>OIDC</th>
+            </tr>
+
+            <tr>
+                <td>Long-lived secrets</td>
+                <td>Temporary credentials</td>
+            </tr>
+
+            <tr>
+                <td>Can leak</td>
+                <td>More secure</td>
+            </tr>
+
+            <tr>
+                <td>Manual rotation</td>
+                <td>Auto-generated</td>
+            </tr>
+
+            <tr>
+                <td>Stored in GitHub</td>
+                <td>No secrets stored</td>
+            </tr>
+
+        </table>
+
+        <h3 class="blue">Enterprise Standard Today</h3>
+
+        <p>
+            Most enterprises now use:
+        </p>
+
+        <pre>
+GitHub OIDC
++
+IAM AssumeRole
+    </pre>
+
+        <p>
+            instead of static AWS access keys.
+        </p>
+
+        <h3 class="blue">Modern Enterprise Deployment Flow</h3>
+
+        <pre>
+Git Push
+    ↓
+GitHub Actions Triggered
+    ↓
+OIDC Token Generated
+    ↓
+AWS IAM Role Assumed
+    ↓
+Temporary Credentials Issued
+    ↓
+SAM Deploy
+    ↓
+CloudFormation Update
+    ↓
+Lambda + API Gateway Updated
+    </pre>
+
+        <h3 class="blue">One-line Interview Answer</h3>
+
+        <pre>
+AWS Lambda is serverless because AWS manages the infrastructure, while CloudFormation and GitHub Actions automate deployment using Infrastructure-as-Code and secure OIDC-based authentication.
+    </pre>
+
+        <!-- Artifacts + S3 + SAM + Serverless -->
+        <div>
+
+            <h2 class="blue">
+                📌 <u>What Are Artifacts?</u>
+            </h2>
+
+            <p>
+                Artifacts are generated files stored during CI/CD pipelines.
+            </p>
+
+            <h3 class="blue">Examples</h3>
+
+            <ul>
+                <li>ZIP packages</li>
+                <li>Build outputs</li>
+                <li>Test reports</li>
+                <li>Coverage reports</li>
+                <li>Docker images</li>
+            </ul>
+
+            <h3 class="blue">Lambda Artifact Example</h3>
+
+            <pre>
+lambda.zip
+    </pre>
+
+            <p>
+                Contains:
+            </p>
+
+            <ul>
+                <li>Python source code</li>
+                <li>Dependencies</li>
+                <li>Libraries</li>
+            </ul>
+
+            <h3 class="blue">CI/CD Artifact Flow</h3>
+
+            <pre>
+Source Code
+    ↓
+Build
+    ↓
+Artifact Generated
+    ↓
+Deploy Artifact
+    </pre>
+
+            <!-- SAM S3 -->
+            <h2 class="blue">
+                📌 <u>Does sam deploy Need S3 Bucket?</u>
+            </h2>
+
+            <p>
+                YES — internally.
+            </p>
+
+            <p>
+                When you run:
+            </p>
+
+            <pre>
+sam deploy --resolve-s3
+    </pre>
+
+            <p>
+                AWS SAM:
+            </p>
+
+            <ul>
+                <li>Creates managed S3 bucket automatically (if not exists)</li>
+                <li>Uploads Lambda ZIP artifact</li>
+                <li>CloudFormation references uploaded ZIP</li>
+            </ul>
+
+            <h3 class="blue">Important</h3>
+
+            <p>
+                Usually you do NOT manually create S3 bucket when using:
+            </p>
+
+            <pre>
+--resolve-s3
+    </pre>
+
+            <p>
+                SAM automatically manages it.
+            </p>
+
+            <h3 class="blue">Deployment Flow</h3>
+
+            <pre>
+sam build
+    ↓
+Creates ZIP artifact
+    ↓
+sam deploy
+    ↓
+Uploads ZIP to S3
+    ↓
+CloudFormation references ZIP
+    ↓
+Lambda updated
+    </pre>
+
+            <!-- Why S3 -->
+            <h2 class="blue">
+                📌 <u>Why S3 Is Needed?</u>
+            </h2>
+
+            <p>
+                CloudFormation cannot directly upload local files.
+            </p>
+
+            <p>
+                So deployment package must first exist in:
+            </p>
+
+            <pre>
+Amazon S3
+    </pre>
+
+            <p>
+                Then Lambda downloads package from S3.
+            </p>
+
+            <h3 class="blue">Enterprise Deployment Flow</h3>
+
+            <pre>
+GitHub Actions
+      ↓
+Build Artifact
+      ↓
+Store Artifact in S3
+      ↓
+CloudFormation
+      ↓
+Lambda Deployment
+    </pre>
+
+            <h3 class="blue">Important Interview Concept</h3>
+
+            <p>
+                Lambda deployment package contains:
+            </p>
+
+            <ul>
+                <li>Source code</li>
+                <li>Dependencies</li>
+                <li>Libraries</li>
+                <li>Runtime files</li>
+            </ul>
+
+            <p>
+                Usually packaged as:
+            </p>
+
+            <pre>
+ZIP artifact
+    </pre>
+
+            <p>
+                Uploaded into:
+            </p>
+
+            <ul>
+                <li>S3 (ZIP deployment)</li>
+                <li>ECR (Container Lambda deployment)</li>
+            </ul>
+
+            <!-- template.yaml -->
+            <h2 class="blue">
+                📌 <u>Is template.yaml Same as serverless.yml?</u>
+            </h2>
+
+            <p>
+                Conceptually:
+            </p>
+
+            <pre>
+YES
+    </pre>
+
+            <p>
+                But they belong to different frameworks.
+            </p>
+
+            <h3 class="blue">AWS SAM</h3>
+
+            <p>
+                Uses:
+            </p>
+
+            <pre>
+template.yaml
+    </pre>
+
+            <h3 class="blue">Serverless Framework</h3>
+
+            <p>
+                Uses:
+            </p>
+
+            <pre>
+serverless.yml
+    </pre>
+
+            <h3 class="blue">Both Define Infrastructure as Code</h3>
+
+            <p>
+                Both define:
+            </p>
+
+            <ul>
+                <li>Lambda Functions</li>
+                <li>API Gateway</li>
+                <li>IAM Roles</li>
+                <li>Events</li>
+            </ul>
+
+            <h3 class="blue">Difference</h3>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>SAM</th>
+                    <th>Serverless Framework</th>
+                </tr>
+
+                <tr>
+                    <td>AWS-native</td>
+                    <td>Third-party framework</td>
+                </tr>
+
+                <tr>
+                    <td>CloudFormation-based</td>
+                    <td>Multi-provider support</td>
+                </tr>
+
+                <tr>
+                    <td>template.yaml</td>
+                    <td>serverless.yml</td>
+                </tr>
+
+                <tr>
+                    <td>AWS-focused</td>
+                    <td>AWS / Azure / GCP</td>
+                </tr>
+
+            </table>
+
+            <h3 class="blue">Modern Lambda Deployment Flow</h3>
+
+            <pre>
+Source Code
+    ↓
+sam build
+    ↓
+ZIP Artifact Created
+    ↓
+Artifact Uploaded to S3
+    ↓
+CloudFormation Deployment
+    ↓
+Lambda Updated
+    </pre>
+
+            <h3 class="blue">One-line Interview Answer</h3>
+
+            <pre>
+Artifacts are deployment-ready build packages, typically uploaded to S3 before CloudFormation deploys Lambda infrastructure using AWS SAM or Serverless Framework.
+    </pre>
+
+        </div>
+
+        <!-- GitHub Runner + SAM Deployment -->
+        <div>
+
+            <h2 class="blue">
+                📌 <u>Does Everything in deploy.yml Happen Inside GitHub Runner?</u>
+            </h2>
+
+            <p>
+                YES.
+            </p>
+
+            <p>
+                Entire workflow execution happens inside:
+            </p>
+
+            <pre>
+GitHub Runner VM
+    </pre>
+
+            <p>
+                Whether deployment:
+            </p>
+
+            <ul>
+                <li>Succeeds</li>
+                <li>Fails</li>
+            </ul>
+
+            <p>
+                GitHub automatically:
+            </p>
+
+            <ul>
+                <li>Terminates runner</li>
+                <li>Deletes temporary VM</li>
+                <li>Cleans filesystem</li>
+            </ul>
+
+            <h3 class="blue">Runner Lifecycle</h3>
+
+            <pre>
+Workflow Triggered
+      ↓
+GitHub Creates Temporary VM
+      ↓
+Runs deploy.yml
+      ↓
+Build + Deploy
+      ↓
+VM Destroyed Automatically
+    </pre>
+
+            <!-- IAM -->
+            <h2 class="blue">
+                📌 <u>What IAM Access Is Needed for GitHub?</u>
+            </h2>
+
+            <p>
+                Give only required permissions.
+            </p>
+
+            <h3 class="blue">Common Permissions</h3>
+
+            <pre>
+AWSLambdaFullAccess
+IAMFullAccess
+AmazonS3FullAccess
+CloudFormationFullAccess
+    </pre>
+
+            <p>
+                Because AWS SAM internally uses:
+            </p>
+
+            <ul>
+                <li>Lambda</li>
+                <li>CloudFormation</li>
+                <li>S3</li>
+                <li>IAM</li>
+            </ul>
+
+            <h3 class="blue">Enterprise Best Practice</h3>
+
+            <pre>
+Least Privilege Access
+    </pre>
+
+            <p>
+                Avoid AdministratorAccess in production.
+            </p>
+
+            <!-- Access Key -->
+            <h2 class="blue">
+                📌 <u>Generate Access Key & Secret Key</u>
+            </h2>
+
+            <p>
+                Inside IAM User:
+            </p>
+
+            <pre>
+Security Credentials
+      ↓
+Create Access Key
+    </pre>
+
+            <!-- GitHub Secrets -->
+            <h2 class="blue">
+                📌 <u>Add Credentials in GitHub Secrets</u>
+            </h2>
+
+            <p>
+                Open GitHub Repository:
+            </p>
+
+            <pre>
+Settings
+    ↓
+Secrets and variables
+    ↓
+Actions
+    </pre>
+
+            <p>
+                Add:
+            </p>
+
+            <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+    </pre>
+
+            <!-- SAM -->
+            <h2 class="blue">
+                📌 <u>What is SAM?</u>
+            </h2>
+
+            <p>
+                SAM = Serverless Application Model
+            </p>
+
+            <p>
+                AWS Infrastructure-as-Code framework for:
+            </p>
+
+            <ul>
+                <li>Lambda</li>
+                <li>API Gateway</li>
+                <li>DynamoDB</li>
+                <li>EventBridge</li>
+                <li>SQS</li>
+            </ul>
+
+            <p>
+                Built on top of:
+            </p>
+
+            <pre>
+AWS CloudFormation
+    </pre>
+
+            <h3 class="blue">Why Use SAM?</h3>
+
+            <p>
+                Simplifies serverless deployment and infrastructure management.
+            </p>
+
+            <!-- ubuntu -->
+            <h2 class="blue">
+                📌 <u>Why ubuntu-latest?</u>
+            </h2>
+
+            <p>
+                GitHub provides temporary Linux VM runner:
+            </p>
+
+            <pre>
+ubuntu-latest
+    </pre>
+
+            <p>
+                Used for:
+            </p>
+
+            <ul>
+                <li>Build</li>
+                <li>Test</li>
+                <li>Deployment</li>
+            </ul>
+
+            <!-- sam build -->
+            <h2 class="blue">
+                📌 <u>What Does sam build Do?</u>
+            </h2>
+
+            <ul>
+                <li>Installs dependencies</li>
+                <li>Packages Lambda code</li>
+                <li>Creates deployment artifacts</li>
+            </ul>
+
+            <h3 class="blue">Build Flow</h3>
+
+            <pre>
+Source Code
+    ↓
+sam build
+    ↓
+Dependencies Installed
+    ↓
+ZIP Artifact Created
+    </pre>
+
+            <!-- sam deploy -->
+            <h2 class="blue">
+                📌 <u>What Does sam deploy Do?</u>
+            </h2>
+
+            <ul>
+                <li>Uploads artifact to S3</li>
+                <li>Creates CloudFormation stack</li>
+                <li>Deploys Lambda infrastructure</li>
+            </ul>
+
+            <h3 class="blue">Deploy Flow</h3>
+
+            <pre>
+sam deploy
+    ↓
+Upload ZIP to S3
+    ↓
+CloudFormation Stack
+    ↓
+Lambda Deployment
+    </pre>
+
+            <!-- manual lambda -->
+            <h2 class="blue">
+                📌 <u>Do We Need to Create Lambda Manually?</u>
+            </h2>
+
+            <p>
+                Usually:
+            </p>
+
+            <pre>
+NO
+    </pre>
+
+            <p>
+                In AWS SAM architecture, you normally do NOT manually create:
+            </p>
+
+            <ul>
+                <li>Lambda Functions</li>
+                <li>API Gateway</li>
+                <li>IAM Roles</li>
+                <li>CloudWatch Log Groups</li>
+            </ul>
+
+            <p>
+                These are automatically created by:
+            </p>
+
+            <pre>
+AWS SAM
+      ↓
+CloudFormation
+    </pre>
+
+            <h3 class="blue">Complete Deployment Flow</h3>
+
+            <pre>
+Git Push
+    ↓
+GitHub Actions Triggered
+    ↓
+Temporary GitHub Runner Created
+    ↓
+sam build
+    ↓
+Artifact Created
+    ↓
+sam deploy
+    ↓
+Upload Artifact to S3
+    ↓
+CloudFormation Create/Update Stack
+    ↓
+AWS Creates Lambda + API Gateway
+    ↓
+Runner Destroyed
+    </pre>
+
+            <h3 class="blue">One-line Interview Answer</h3>
+
+            <pre>
+GitHub Actions executes the entire CI/CD pipeline inside a temporary runner VM, while AWS SAM and CloudFormation automatically create and deploy Lambda infrastructure without manual AWS resource creation.
+    </pre>
+
+        </div>
+
+        <!-- SAM + CloudFormation Deep Concepts -->
+        <div>
+
+            <h2 class="blue">
+                📌 <u>Who Creates What?</u>
+            </h2>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>Component</th>
+                    <th>Created By</th>
+                </tr>
+
+                <tr>
+                    <td>Lambda Function</td>
+                    <td>SAM + CloudFormation</td>
+                </tr>
+
+                <tr>
+                    <td>API Gateway</td>
+                    <td>SAM + CloudFormation</td>
+                </tr>
+
+                <tr>
+                    <td>IAM Role</td>
+                    <td>SAM + CloudFormation</td>
+                </tr>
+
+                <tr>
+                    <td>CloudWatch Logs</td>
+                    <td>AWS automatically</td>
+                </tr>
+
+                <tr>
+                    <td>S3 Deployment Bucket</td>
+                    <td>SAM</td>
+                </tr>
+
+                <tr>
+                    <td>Permissions</td>
+                    <td>CloudFormation</td>
+                </tr>
+
+            </table>
+
+            <!-- API Gateway -->
+            <h2 class="blue">
+                📌 <u>How API Gateway Gets Created</u>
+            </h2>
+
+            <p>
+                Inside:
+            </p>
+
+            <pre>
+template.yaml
+    </pre>
+
+            <p>
+                You define API event:
+            </p>
+
+            <pre>
+Events:
+
+  MyApi:
+
+    Type: Api
+
+    Properties:
+
+      Path: /hello
+
+      Method: get
+    </pre>
+
+            <!-- Internal Flow -->
+            <h2 class="blue">
+                📌 <u>What Happens Internally During sam deploy?</u>
+            </h2>
+
+            <p>
+                SAM converts template into CloudFormation.
+            </p>
+
+            <p>
+                Then CloudFormation creates:
+            </p>
+
+            <pre>
+API Gateway
+    ↓
+Lambda Trigger
+    ↓
+Lambda Function
+    </pre>
+
+            <p>
+                Automatically.
+            </p>
+
+            <!-- Real Flow -->
+            <h2 class="blue">
+                📌 <u>Real Deployment Flow</u>
+            </h2>
+
+            <pre>
+Developer
+    ↓
+Git Push
+    ↓
+GitHub Actions
+    ↓
+SAM Deploy
+    ↓
+CloudFormation
+    ↓
+Infrastructure Created Automatically
+    </pre>
+
+            <!-- Benefits -->
+            <h2 class="blue">
+                📌 <u>Benefits</u>
+            </h2>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>Benefit</th>
+                    <th>Explanation</th>
+                </tr>
+
+                <tr>
+                    <td>Automation</td>
+                    <td>No manual setup</td>
+                </tr>
+
+                <tr>
+                    <td>Version Control</td>
+                    <td>Git tracks infrastructure changes</td>
+                </tr>
+
+                <tr>
+                    <td>Repeatability</td>
+                    <td>Same infrastructure every time</td>
+                </tr>
+
+                <tr>
+                    <td>Scalability</td>
+                    <td>Easy multi-environment deployment</td>
+                </tr>
+
+                <tr>
+                    <td>Disaster Recovery</td>
+                    <td>Recreate infrastructure quickly</td>
+                </tr>
+
+                <tr>
+                    <td>CI/CD Friendly</td>
+                    <td>Fully automated deployments</td>
+                </tr>
+
+            </table>
+
+            <!-- SAM CLI -->
+            <h2 class="blue">
+                📌 <u>What is AWS SAM CLI?</u>
+            </h2>
+
+            <p>
+                AWS SAM CLI is a command-line tool for serverless applications.
+            </p>
+
+            <p>
+                It helps developers:
+            </p>
+
+            <ul>
+                <li>Build Lambda applications</li>
+                <li>Test locally</li>
+                <li>Package dependencies</li>
+                <li>Deploy serverless applications</li>
+            </ul>
+
+            <!-- SAM Commands -->
+            <h2 class="blue">
+                📌 <u>Main SAM CLI Commands</u>
+            </h2>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>Command</th>
+                    <th>Purpose</th>
+                </tr>
+
+                <tr>
+                    <td>sam init</td>
+                    <td>Create SAM project</td>
+                </tr>
+
+                <tr>
+                    <td>sam build</td>
+                    <td>Build application</td>
+                </tr>
+
+                <tr>
+                    <td>sam local start-api</td>
+                    <td>Run locally</td>
+                </tr>
+
+                <tr>
+                    <td>sam validate</td>
+                    <td>Validate template</td>
+                </tr>
+
+                <tr>
+                    <td>sam deploy</td>
+                    <td>Deploy to AWS</td>
+                </tr>
+
+                <tr>
+                    <td>sam logs</td>
+                    <td>View Lambda logs</td>
+                </tr>
+
+            </table>
+
+            <!-- Manual Lambda -->
+            <h2 class="blue">
+                📌 <u>Do We Create Lambda Manually?</u>
+            </h2>
+
+            <p>
+                Usually:
+            </p>
+
+            <pre>
+NO in enterprise CI/CD projects
+YES only for quick testing/demo
+    </pre>
+
+            <p>
+                Production companies use:
+            </p>
+
+            <pre>
+Infrastructure as Code (IaC)
+    </pre>
+
+            <p>
+                Examples:
+            </p>
+
+            <ul>
+                <li>AWS SAM</li>
+                <li>Terraform</li>
+                <li>CloudFormation</li>
+                <li>AWS CDK</li>
+            </ul>
+
+            <p>
+                Because IaC provides:
+            </p>
+
+            <ul>
+                <li>Version control</li>
+                <li>Repeatability</li>
+                <li>Automation</li>
+                <li>Easy rollback</li>
+                <li>Multi-environment support</li>
+            </ul>
+
+            <!-- sam deploy -->
+            <h2 class="blue">
+                📌 <u>What sam deploy Actually Does</u>
+            </h2>
+
+            <p>
+                When you execute:
+            </p>
+
+            <pre>
+sam deploy
+    </pre>
+
+            <p>
+                SAM:
+            </p>
+
+            <ul>
+                <li>Packages Lambda code</li>
+                <li>Uploads ZIP to S3</li>
+                <li>Converts SAM → CloudFormation</li>
+                <li>Creates/updates stack</li>
+                <li>Creates AWS resources</li>
+            </ul>
+
+            <h3 class="blue">Architecture Flow</h3>
+
+            <pre>
+Developer Pushes Code
+        ↓
+GitHub Actions
+        ↓
+AWS SAM CLI
+        ↓
+CloudFormation
+        ↓
+AWS Resources Created
+        ├── Lambda
+        ├── API Gateway
+        ├── IAM Role
+        ├── Log Groups
+        └── Permissions
+    </pre>
+
+            <!-- Important Concept -->
+            <h2 class="blue">
+                📌 <u>Who Actually Creates Resources?</u>
+            </h2>
+
+            <p>
+                Important Concept:
+            </p>
+
+            <pre>
+SAM itself does NOT directly create resources
+    </pre>
+
+            <p>
+                Actual flow:
+            </p>
+
+            <pre>
+SAM CLI
+   ↓
+Generate CloudFormation Template
+   ↓
+CloudFormation Creates Resources
+    </pre>
+
+            <p>
+                CloudFormation is the real AWS infrastructure engine.
+            </p>
+
+            <!-- SAM vs CloudFormation -->
+            <h2 class="blue">
+                📌 <u>Difference Between SAM and CloudFormation</u>
+            </h2>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>SAM</th>
+                    <th>CloudFormation</th>
+                </tr>
+
+                <tr>
+                    <td>Simplified syntax</td>
+                    <td>Verbose syntax</td>
+                </tr>
+
+                <tr>
+                    <td>Serverless focused</td>
+                    <td>Generic AWS IaC</td>
+                </tr>
+
+                <tr>
+                    <td>Easier for Lambda</td>
+                    <td>Supports all AWS resources</td>
+                </tr>
+
+                <tr>
+                    <td>Converts to CF internally</td>
+                    <td>Actual deployment engine</td>
+                </tr>
+
+            </table>
+
+            <h3 class="blue">Complete Enterprise Flow</h3>
+
+            <pre>
+Developer Push
+    ↓
+GitHub Actions
+    ↓
+SAM CLI
+    ↓
+Build + Package Artifact
+    ↓
+Upload Artifact to S3
+    ↓
+Generate CloudFormation
+    ↓
+CloudFormation Deploys Infrastructure
+    ↓
+Lambda + API Gateway Live
+    </pre>
+
+            <h3 class="blue">One-line Interview Answer</h3>
+
+            <pre>
+AWS SAM simplifies serverless Infrastructure-as-Code, while CloudFormation is the actual AWS engine that creates and updates infrastructure resources during deployment.
+    </pre>
+
+        </div>
+
+        <!-- Infrastructure as Code -->
+        <div>
+
+            <h2 class="blue">
+                📌 <u>What is Infrastructure as Code (IaC)?</u>
+            </h2>
+
+            <p>
+                Infrastructure is defined using:
+            </p>
+
+            <ul>
+                <li>Code</li>
+                <li>YAML</li>
+                <li>JSON</li>
+                <li>Configuration files</li>
+            </ul>
+
+            <p>
+                Example:
+            </p>
+
+            <pre>
+template.yaml
+    </pre>
+
+            <p>
+                Instead of manually creating AWS resources from the AWS Console.
+            </p>
+
+            <p>
+                AWS automatically creates infrastructure from configuration files.
+            </p>
+
+            <!-- IaC Tools -->
+            <h2 class="blue">
+                📌 <u>Examples of IaC Tools</u>
+            </h2>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>Tool</th>
+                    <th>Company</th>
+                </tr>
+
+                <tr>
+                    <td>AWS SAM</td>
+                    <td>AWS</td>
+                </tr>
+
+                <tr>
+                    <td>CloudFormation</td>
+                    <td>AWS</td>
+                </tr>
+
+                <tr>
+                    <td>CDK</td>
+                    <td>AWS</td>
+                </tr>
+
+                <tr>
+                    <td>Terraform</td>
+                    <td>
+                        <a href="https://developer.hashicorp.com/terraform?utm_source=chatgpt.com">
+                            HashiCorp Terraform
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Ansible</td>
+                    <td>
+                        <a href="https://www.ansible.com/?utm_source=chatgpt.com">
+                            Ansible
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Pulumi</td>
+                    <td>
+                        <a href="https://www.pulumi.com/?utm_source=chatgpt.com">
+                            Pulumi
+                        </a>
+                    </td>
+                </tr>
+
+            </table>
+
+            <!-- Terraform -->
+            <h2 class="blue">
+                📌 <u>What is Terraform?</u>
+            </h2>
+
+            <p>
+                Terraform is Infrastructure as Code tool by
+                <b>HashiCorp</b>.
+            </p>
+
+            <p>
+                Used to create:
+            </p>
+
+            <ul>
+                <li>AWS</li>
+                <li>Azure</li>
+                <li>GCP</li>
+                <li>Kubernetes</li>
+                <li>Databases</li>
+                <li>Networking</li>
+            </ul>
+
+            <p>
+                using code.
+            </p>
+
+            <!-- Terraform Example -->
+            <h3 class="blue">Terraform Example</h3>
+
+            <pre>
+resource "aws_s3_bucket" "demo" {
+
+  bucket = "my-demo-bucket"
+
+}
+    </pre>
+
+            <!-- Terraform vs CF -->
+            <h2 class="blue">
+                📌 <u>Terraform vs CloudFormation</u>
+            </h2>
+
+            <table border="1" cellpadding="10" cellspacing="0">
+
+                <tr>
+                    <th>Terraform</th>
+                    <th>CloudFormation</th>
+                </tr>
+
+                <tr>
+                    <td>Multi-cloud</td>
+                    <td>AWS only</td>
+                </tr>
+
+                <tr>
+                    <td>HCL syntax</td>
+                    <td>YAML / JSON</td>
+                </tr>
+
+                <tr>
+                    <td>Very popular</td>
+                    <td>Native AWS</td>
+                </tr>
+
+                <tr>
+                    <td>Provider-based</td>
+                    <td>AWS-native</td>
+                </tr>
+
+                <tr>
+                    <td>Enterprise favorite</td>
+                    <td>AWS ecosystem favorite</td>
+                </tr>
+
+            </table>
+
+            <!-- Why IaC -->
+            <h2 class="blue">
+                📌 <u>Why Companies Use IaC?</u>
+            </h2>
+
+            <ul>
+                <li>Automation</li>
+                <li>Version control</li>
+                <li>Repeatable deployments</li>
+                <li>Disaster recovery</li>
+                <li>Multi-environment setup</li>
+                <li>CI/CD integration</li>
+            </ul>
+
+            <!-- IaC Flow -->
+            <h2 class="blue">
+                📌 <u>Infrastructure as Code Flow</u>
+            </h2>
+
+            <pre>
+Developer Writes YAML/Code
+        ↓
+Git Push
+        ↓
+CI/CD Pipeline
+        ↓
+IaC Tool Executes
+        ↓
+Cloud Infrastructure Created
+        ↓
+Application Deployment
+    </pre>
+
+            <!-- Interview -->
+            <h2 class="blue">
+                📌 <u>One-line Interview Answer</u>
+            </h2>
+
+            <pre>
+Infrastructure as Code (IaC) allows infrastructure to be provisioned and managed using configuration files instead of manual cloud console operations.
+    </pre>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        function openTab(tabId, element) {
+
+            let contents = document.getElementsByClassName('content');
+
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+
+            let tabs = document.getElementsByClassName('tab');
+
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+
+            document.getElementById(tabId).classList.add('active');
+
+            element.classList.add('active');
+        }
+
+    </script>
+
+</body>
+
+</html>

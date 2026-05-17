@@ -1,0 +1,8127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MBD Project</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #f1f1f1;
+            padding: 10px;
+        }
+
+        .tab {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            color: blue;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: white;
+            color: red;
+            font-weight: bold;
+        }
+
+        .content {
+            display: none;
+            padding: 15px;
+            border-top: 1px solid #ccc;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .highlight {
+            background: yellow;
+            padding: 5px;
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            .tab {
+                flex: 1 1 45%;
+                text-align: center;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="openTab('core', this)">Core</div>
+        <div class="tab" onclick="openTab('iq', this)">IQ</div>
+        <div class="tab" onclick="openTab('OPs', this)">OPs</div>
+        <div class="tab" onclick="openTab('examples', this)">Examples</div>
+        <div class="tab" onclick="openTab('gil', this)">GIL</div>
+        <div class="tab" onclick="openTab('types', this)">Types</div>
+        <div class="tab" onclick="openTab('compare', this)">Compare</div>
+        <div class="tab" onclick="openTab('present', this)">Present</div>
+        <div class="tab" onclick="openTab('framework', this)">Frameworks</div>
+    </div>
+
+    <div class="content active" id="core">
+
+        <h2 class="blue">
+            📌 <u>Python Basics & Data Types</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Python is Case-Sensitive
+        </h3>
+
+        <p>
+            Variable names with different letter casing are treated as different variables.
+        </p>
+
+        <pre>
+name = "Harish"
+Name = "Bansode"
+
+print(name)  # Harish
+print(Name)  # Bansode
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Python Keywords
+        </h3>
+
+        <p>
+            Keywords are reserved words in Python and cannot be used as variable names.
+        </p>
+
+        <pre>
+False     await     else       import     pass
+None      break     except     in         raise
+True      class     finally    is         return
+and       continue  for        lambda     try
+as        def       from       nonlocal   while
+assert    del       global     not        with
+async     elif      if         or         yield
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Numeric Types
+        </h3>
+
+        <pre>
+a = 10        # int
+b = 10.5      # float
+c = 2 + 3j    # complex
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Python type() Examples
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Expression</th>
+                <th>Type</th>
+                <th>Output</th>
+            </tr>
+
+            <tr>
+                <td>type(10)</td>
+                <td>&lt;class 'int'&gt;</td>
+                <td>int</td>
+            </tr>
+
+            <tr>
+                <td>type(10.5)</td>
+                <td>&lt;class 'float'&gt;</td>
+                <td>float</td>
+            </tr>
+
+            <tr>
+                <td>type("hi")</td>
+                <td>&lt;class 'str'&gt;</td>
+                <td>string</td>
+            </tr>
+
+            <tr>
+                <td>type([1,2])</td>
+                <td>&lt;class 'list'&gt;</td>
+                <td>list</td>
+            </tr>
+
+            <tr>
+                <td>type((1,2))</td>
+                <td>&lt;class 'tuple'&gt;</td>
+                <td>tuple</td>
+            </tr>
+
+            <tr>
+                <td>type({1,2})</td>
+                <td>&lt;class 'set'&gt;</td>
+                <td>set</td>
+            </tr>
+
+            <tr>
+                <td>type({"a":1})</td>
+                <td>&lt;class 'dict'&gt;</td>
+                <td>dict</td>
+            </tr>
+
+            <tr>
+                <td>type(True)</td>
+                <td>&lt;class 'bool'&gt;</td>
+                <td>boolean</td>
+            </tr>
+
+            <tr>
+                <td>type(None)</td>
+                <td>&lt;class 'NoneType'&gt;</td>
+                <td>NoneType</td>
+            </tr>
+
+            <tr>
+                <td>type(lambda x: x)</td>
+                <td>&lt;class 'function'&gt;</td>
+                <td>function</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Sequence Types
+        </h3>
+
+        <h4>list (Mutable)</h4>
+
+        <pre>
+lst = [1, 2, 3]
+lst.append(4)
+</pre>
+
+        <h4>tuple (Immutable)</h4>
+
+        <pre>
+t = (1, 2, 3)
+print(t[0])   # 1
+</pre>
+
+        <h4>str (Immutable)</h4>
+
+        <pre>
+s = "hello"
+
+print(s[0])       # h
+print(s.upper())  # HELLO
+print(s[1:4])     # ell
+print(len(s))     # 5
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Mapping Type
+        </h3>
+
+        <h4>dict (Mutable)</h4>
+
+        <p>
+            Dictionary stores key-value pairs.
+        </p>
+
+        <pre>
+user = {
+    "name": "Harish",
+    "age": 30
+}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Set Types
+        </h3>
+
+        <p>
+            Set properties:
+        </p>
+
+        <ul>
+
+            <li>Unordered</li>
+            <li>Unique elements only</li>
+            <li>No duplicates</li>
+            <li>No indexing</li>
+
+        </ul>
+
+        <pre>
+s = {1, 2, 3}
+
+s.add(4)
+
+s.add(3)
+
+s.update([4, 5])
+</pre>
+
+        <p>
+            Tuple modification error:
+        </p>
+
+        <pre>
+t[0] = 10   # Error
+</pre>
+
+        <p>
+            Set operations:
+        </p>
+
+        <pre>
+a = {1, 2, 3}
+b = {3, 4, 5}
+
+print(a & b)  # intersection → {3}
+
+print(a | b)  # union → {1,2,3,4,5}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. frozenset (Immutable Set)
+        </h3>
+
+        <pre>
+fs = frozenset([1, 2, 3])
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>Python Advanced Basics & String Operations</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Boolean Type - bool
+        </h3>
+
+        <pre>
+is_valid = True
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Tuple vs Set vs String Comparison
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Tuple (tuple)</th>
+                <th>Set (set)</th>
+                <th>String (str)</th>
+            </tr>
+
+            <tr>
+                <td>Definition</td>
+                <td>Ordered, immutable collection</td>
+                <td>Unordered, mutable, unique elements</td>
+                <td>Ordered, immutable sequence of characters</td>
+            </tr>
+
+            <tr>
+                <td>Example</td>
+                <td>(1, 2, 3)</td>
+                <td>{1, 2, 3}</td>
+                <td>"hello"</td>
+            </tr>
+
+            <tr>
+                <td>Single Element</td>
+                <td>(5,) ✅</td>
+                <td>❌ Not applicable</td>
+                <td>"a"</td>
+            </tr>
+
+            <tr>
+                <td>Mutable?</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Ordered?</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>Indexing?</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>Duplicates?</td>
+                <td>✅ Allowed</td>
+                <td>❌ Not allowed</td>
+                <td>✅ Allowed</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Tuple vs Set vs String Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Category</th>
+                <th>Tuple</th>
+                <th>Set</th>
+                <th>String</th>
+            </tr>
+
+            <tr>
+                <td>Basic Methods</td>
+                <td>count(), index()</td>
+                <td>add(), update()</td>
+                <td>upper(), lower()</td>
+            </tr>
+
+            <tr>
+                <td>Add Elements</td>
+                <td>❌ Not allowed</td>
+                <td>add(x), update()</td>
+                <td>❌ Not allowed</td>
+            </tr>
+
+            <tr>
+                <td>Remove Elements</td>
+                <td>❌ Not allowed</td>
+                <td>remove(), discard(), pop(), clear()</td>
+                <td>❌ Not allowed</td>
+            </tr>
+
+            <tr>
+                <td>Search</td>
+                <td>index(x)</td>
+                <td>❌ Not applicable</td>
+                <td>find(), index()</td>
+            </tr>
+
+            <tr>
+                <td>Set Operations</td>
+                <td>❌</td>
+                <td>union(), intersection(), difference()</td>
+                <td>❌</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Add / Insert / Remove in Tuple
+        </h3>
+
+        <p>
+            Add in tuple:
+        </p>
+
+        <pre>
+t = (1, 2, 3)
+
+t = t + (4,)
+
+print(t)
+
+# (1, 2, 3, 4)
+</pre>
+
+        <p>
+            Insert at position:
+        </p>
+
+        <pre>
+t = (1, 2, 4)
+
+t = t[:2] + (3,) + t[2:]
+
+print(t)
+
+# (1, 2, 3, 4)
+</pre>
+
+        <p>
+            Remove at position:
+        </p>
+
+        <pre>
+t = (11, 22, 33, 44)
+
+t = t[:1] + t[3:]
+
+print(t)
+
+# (11, 44)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. String Concatenation
+        </h3>
+
+        <pre>
+"Hello" + " " + "World"
+</pre>
+
+        <p>
+            Using join():
+        </p>
+
+        <pre>
+parts = ["Hello", "World"]
+
+s = " ".join(parts)
+
+print(s)
+
+# Hello World
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Python Variables & Dynamic Typing
+        </h3>
+
+        <p>
+            Python variables are references to objects in memory.
+        </p>
+
+        <p>
+            Python is dynamically typed.
+        </p>
+
+        <pre>
+x = 10
+
+x = "hello"
+
+x = [1, 2, 3]
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. List vs Dict Comprehension
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>List Comprehension</th>
+                <th>Dict Comprehension</th>
+            </tr>
+
+            <tr>
+                <td>Purpose</td>
+                <td>Create list</td>
+                <td>Create dictionary</td>
+            </tr>
+
+            <tr>
+                <td>Syntax</td>
+                <td>[expr for item in iterable]</td>
+                <td>{key:value for item in iterable}</td>
+            </tr>
+
+            <tr>
+                <td>Output</td>
+                <td>list</td>
+                <td>dict</td>
+            </tr>
+
+            <tr>
+                <td>Condition Support</td>
+                <td>Yes</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Duplicates</td>
+                <td>Allowed</td>
+                <td>Keys must be unique</td>
+            </tr>
+
+        </table>
+
+        <p>
+            Examples:
+        </p>
+
+        <pre>
+nums = [1, 2, 3]
+
+[x*x for x in nums]
+
+{x: x*x for x in nums}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. String Operations
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Operation</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Output</th>
+            </tr>
+
+            <tr>
+                <td>len()</td>
+                <td>Length</td>
+                <td>len("hello")</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>+</td>
+                <td>Concatenation</td>
+                <td>"hi" + " all"</td>
+                <td>"hi all"</td>
+            </tr>
+
+            <tr>
+                <td>*</td>
+                <td>Repetition</td>
+                <td>"hi" * 3</td>
+                <td>"hihihi"</td>
+            </tr>
+
+            <tr>
+                <td>s[i]</td>
+                <td>Indexing</td>
+                <td>"hello"[1]</td>
+                <td>"e"</td>
+            </tr>
+
+            <tr>
+                <td>s[start:end]</td>
+                <td>Slicing</td>
+                <td>"hello"[1:4]</td>
+                <td>"ell"</td>
+            </tr>
+
+        </table>
+
+
+
+
+        <h2 class="blue">
+            📌 <u>Python String Operations & Methods</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Basic String Operations
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Category</th>
+                <th>Operation / Method</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Output</th>
+            </tr>
+
+            <tr>
+                <td><b>Basic</b></td>
+                <td><code>len(s)</code></td>
+                <td>Length of string</td>
+                <td><code>len("hello")</code></td>
+                <td><code>5</code></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><code>+</code></td>
+                <td>Concatenation</td>
+                <td><code>"hi" + " all"</code></td>
+                <td><code>"hi all"</code></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><code>*</code></td>
+                <td>Repetition</td>
+                <td><code>"hi" * 3</code></td>
+                <td><code>"hihihi"</code></td>
+            </tr>
+
+            <tr>
+                <td><b>Indexing</b></td>
+                <td><code>s[i]</code></td>
+                <td>Access character</td>
+                <td><code>"hello"[1]</code></td>
+                <td><code>"e"</code></td>
+            </tr>
+
+            <tr>
+                <td><b>Slicing</b></td>
+                <td><code>s[start:end]</code></td>
+                <td>Substring</td>
+                <td><code>"hello"[1:4]</code></td>
+                <td><code>"ell"</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Case Conversion Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Output</th>
+            </tr>
+
+            <tr>
+                <td><code>upper()</code></td>
+                <td>Uppercase</td>
+                <td><code>"hi".upper()</code></td>
+                <td><code>"HI"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>lower()</code></td>
+                <td>Lowercase</td>
+                <td><code>"HI".lower()</code></td>
+                <td><code>"hi"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>capitalize()</code></td>
+                <td>First letter capital</td>
+                <td><code>"hello".capitalize()</code></td>
+                <td><code>"Hello"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>title()</code></td>
+                <td>Each word capital</td>
+                <td><code>"hello world".title()</code></td>
+                <td><code>"Hello World"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>swapcase()</code></td>
+                <td>Toggle case</td>
+                <td><code>"Hi".swapcase()</code></td>
+                <td><code>"hI"</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Replace, Split, Join & Strip Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+                <th>Example</th>
+                <th>Output</th>
+            </tr>
+
+            <tr>
+                <td><code>replace()</code></td>
+                <td>Replace substring</td>
+                <td><code>"hello".replace("h","H")</code></td>
+                <td><code>"Hello"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>split()</code></td>
+                <td>Split string</td>
+                <td><code>"a,b".split(",")</code></td>
+                <td><code>['a','b']</code></td>
+            </tr>
+
+            <tr>
+                <td><code>join()</code></td>
+                <td>Join list into string</td>
+                <td><code>" ".join(["a","b"])</code></td>
+                <td><code>"a b"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>strip()</code></td>
+                <td>Remove spaces</td>
+                <td><code>" hi ".strip()</code></td>
+                <td><code>"hi"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>lstrip()</code></td>
+                <td>Left trim</td>
+                <td><code>" hi".lstrip()</code></td>
+                <td><code>"hi"</code></td>
+            </tr>
+
+            <tr>
+                <td><code>rstrip()</code></td>
+                <td>Right trim</td>
+                <td><code>"hi ".rstrip()</code></td>
+                <td><code>"hi"</code></td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Python Functions, Lambda, Loops & Conditionals</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Python Functions — *args and **kwargs
+        </h3>
+
+        <h4>*args</h4>
+
+        <p>
+            Collects multiple positional arguments into a tuple.
+        </p>
+
+        <pre>
+def add(*args):
+    return sum(args)
+
+print(add(1, 2, 3))
+
+# 6
+</pre>
+
+        <hr />
+
+        <h4>**kwargs</h4>
+
+        <p>
+            Full form:
+        </p>
+
+        <pre>
+kw   = keyword
+args = arguments
+</pre>
+
+        <p>
+            Collects multiple named arguments into a dictionary.
+        </p>
+
+        <pre>
+def user_info(**kwargs):
+    print(kwargs)
+
+user_info(name="Harish", age=30)
+
+# {'name': 'Harish', 'age': 30}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Order Rule (Very Important)
+        </h3>
+
+        <pre>
+def func(a, b, *args, **kwargs):
+    pass
+</pre>
+
+        <p>
+            Order must be:
+        </p>
+
+        <ol>
+
+            <li>Normal parameters</li>
+            <li>*args</li>
+            <li>**kwargs</li>
+
+        </ol>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Unpacking (Reverse of Packing)
+        </h3>
+
+        <h4>Tuple Unpacking</h4>
+
+        <pre>
+def add(a, b, c):
+    return a + b + c
+
+nums = (1, 2, 3)
+
+print(add(*nums))
+
+# 6
+</pre>
+
+        <h4>Dictionary Unpacking</h4>
+
+        <pre>
+def user(name, age):
+    print(name, age)
+
+data = {
+    "name": "Harish",
+    "age": 30
+}
+
+user(**data)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. What is a Lambda Function?
+        </h3>
+
+        <p>
+            Lambda function is a small anonymous (unnamed) function.
+        </p>
+
+        <p>
+            Rules:
+        </p>
+
+        <ul>
+
+            <li>Only one expression</li>
+            <li>No statements allowed</li>
+            <li>Useful for short operations</li>
+
+        </ul>
+
+        <pre>
+add = lambda a, b: a + b
+
+print(add(2, 3))
+
+# 5
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Lambda with map()
+        </h3>
+
+        <pre>
+nums = [1, 2, 3]
+
+result = list(map(lambda x: x * 2, nums))
+
+# [2, 4, 6]
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Lambda with filter()
+        </h3>
+
+        <pre>
+nums = [1, 2, 3]
+
+even = list(filter(lambda x: x % 2 == 0, nums))
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Lambda with sorted()
+        </h3>
+
+        <pre>
+data = [(1, 3), (2, 1), (4, 2)]
+
+sorted_data = sorted(data, key=lambda x: x[1])
+
+# [(2,1), (4,2), (1,3)]
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Lambda Returning Set
+        </h3>
+
+        <pre>
+f = lambda x: {x, x + 1}
+
+print(f(3))
+
+# {3, 4}
+</pre>
+
+        <pre>
+print((lambda x: {x, x})(5))
+
+# {5}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Lambda Returning Dictionary
+        </h3>
+
+        <pre>
+g = lambda x: {"value": x * 2}
+
+print(g(3))
+
+# {'value': 6}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Python Loops & Conditionals
+        </h3>
+
+        <h4>Does Python have do...while?</h4>
+
+        <p>
+            ❌ No — Python does NOT support do...while loop.
+        </p>
+
+        <hr />
+
+        <h4>if / elif / else</h4>
+
+        <pre>
+x = 10
+
+if x > 5:
+    print("Greater")
+
+elif x == 5:
+    print("Equal")
+
+else:
+    print("Smaller")
+</pre>
+
+        <hr />
+
+        <h4>for Loop</h4>
+
+        <pre>
+for i in [1, 2, 3]:
+    print(i)
+</pre>
+
+        <pre>
+for i in range(1, 5):
+    print(i)
+
+# 1 to 4
+</pre>
+
+        <hr />
+
+        <h4>while Loop</h4>
+
+        <pre>
+i = 0
+
+while i < 3:
+    print(i)
+    i += 1
+</pre>
+
+        <hr />
+
+        <h4>else with Loop (Very Important)</h4>
+
+        <p>
+            else runs when loop completes normally without break.
+        </p>
+
+        <pre>
+for i in range(3):
+    print(i)
+
+else:
+    print("Done")
+</pre>
+
+        <hr />
+
+        <h4>Ternary (One-line if-else)</h4>
+
+        <pre>
+x = 10
+
+result = "Even" if x % 2 == 0 else "Odd"
+
+# Even
+</pre>
+
+        <hr />
+
+        <h4>What is pass?</h4>
+
+        <p>
+            pass means: do nothing.
+        </p>
+
+        <p>
+            Used when block requires a statement but logic is not written yet.
+        </p>
+
+        <pre>
+for i in range(3):
+    pass
+</pre>
+
+        <pre>
+if x > 10:
+    pass
+</pre>
+
+        <hr />
+
+        <h4>What is enumerate()?</h4>
+
+        <pre>
+names = ["a", "b", "c"]
+
+for i, val in enumerate(names):
+    print(i, val)
+
+# Output
+# 0 a
+# 1 b
+# 2 c
+</pre>
+
+        <p>
+            Without enumerate():
+        </p>
+
+        <pre>
+for i in range(len(names)):
+    print(i, names[i])
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>Python Exception Handling & Variable Scope</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Python Exception Handling
+        </h3>
+
+        <p>
+            <b>else Block</b> →
+            Runs only if no exception occurs.
+        </p>
+
+        <p>
+            <b>finally Block</b> →
+            Always executes whether error occurs or not.
+        </p>
+
+        <pre>
+try:
+    x = int("abc")
+    y = 10 / 0
+
+except ValueError:
+    print("Value error")
+
+except ZeroDivisionError as e:
+    print(e)
+
+else:
+    print("Success", y)
+
+finally:
+    print("Done")
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Raise Custom Exception
+        </h3>
+
+        <pre>
+x = -1
+
+if x < 0:
+    raise ValueError("Negative not allowed")
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Catching All Exceptions Blindly (Bad Practice)
+        </h3>
+
+        <pre>
+except:
+    pass
+</pre>
+
+        <p class="highlight">
+            ❌ Bad practice because it hides real errors and debugging becomes difficult.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Python vs JavaScript Exception Handling
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td>Try block</td>
+                <td><code>try</code></td>
+                <td><code>try</code></td>
+            </tr>
+
+            <tr>
+                <td>Catch</td>
+                <td><code>except</code></td>
+                <td><code>catch</code></td>
+            </tr>
+
+            <tr>
+                <td>Finally</td>
+                <td><code>finally</code></td>
+                <td><code>finally</code></td>
+            </tr>
+
+            <tr>
+                <td>Custom error</td>
+                <td><code>raise</code></td>
+                <td><code>throw</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Difference Between else and finally
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>else</th>
+                <th>finally</th>
+            </tr>
+
+            <tr>
+                <td>When it runs</td>
+                <td>Only if no exception occurs</td>
+                <td>Always runs</td>
+            </tr>
+
+            <tr>
+                <td>Purpose</td>
+                <td>Success logic</td>
+                <td>Cleanup operations</td>
+            </tr>
+
+            <tr>
+                <td>Skipped on error?</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Optional?</td>
+                <td>Yes</td>
+                <td>Yes</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Python Variable Scope (LEGB Rule)
+        </h3>
+
+        <p>
+            Python resolves variables in this order:
+        </p>
+
+        <pre>
+Local (L)
+→ inside current function
+
+Enclosing (E)
+→ inside outer function
+
+Global (G)
+→ module-level variables
+
+Built-in (B)
+→ predefined names like len(), print()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Global and Local Scope Example
+        </h3>
+
+        <pre>
+x = 20   # global
+
+def func():
+    y = 33   # local
+    print(x)
+
+func()
+
+print(y)   # Error
+</pre>
+
+        <p>
+            Local variables cannot be accessed outside the function.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Modifying Global Variable
+        </h3>
+
+        <pre>
+x = 20
+
+def func():
+    global x
+    x = 50
+
+func()
+
+print(x)
+
+# 50
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Modifying Enclosing Variable using nonlocal
+        </h3>
+
+        <pre>
+def outer():
+
+    x = 10
+
+    def inner():
+
+        nonlocal x
+
+        x = 20
+
+    inner()
+
+    print(x)
+
+outer()
+
+# 20
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>Python File Handling</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Opening a File
+        </h3>
+
+        <pre>
+f = open("file.txt", "r")
+</pre>
+
+        <p>
+            After opening the file:
+        </p>
+
+        <pre>
+f.read()
+f.readline()
+f.readlines()
+f.write()
+f.close()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. File Modes
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Mode</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td><code>"r"</code></td>
+                <td>Read (default)</td>
+            </tr>
+
+            <tr>
+                <td><code>"w"</code></td>
+                <td>Write (overwrite)</td>
+            </tr>
+
+            <tr>
+                <td><code>"a"</code></td>
+                <td>Append</td>
+            </tr>
+
+            <tr>
+                <td><code>"x"</code></td>
+                <td>Create (error if exists)</td>
+            </tr>
+
+            <tr>
+                <td><code>"b"</code></td>
+                <td>Binary mode</td>
+            </tr>
+
+            <tr>
+                <td><code>"t"</code></td>
+                <td>Text mode (default)</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Common File Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td><code>read()</code></td>
+                <td>Read full file</td>
+            </tr>
+
+            <tr>
+                <td><code>readline()</code></td>
+                <td>Read one line</td>
+            </tr>
+
+            <tr>
+                <td><code>readlines()</code></td>
+                <td>Read all lines as list</td>
+            </tr>
+
+            <tr>
+                <td><code>write()</code></td>
+                <td>Write content</td>
+            </tr>
+
+            <tr>
+                <td><code>close()</code></td>
+                <td>Close file</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. File Read Example
+        </h3>
+
+        <pre>
+f = open("file.txt", "r")
+
+data = f.read()
+
+print(data)
+
+f.close()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. File Write Example
+        </h3>
+
+        <pre>
+f = open("file.txt", "w")
+
+f.write("Hello World")
+
+f.close()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Using with Statement (Recommended)
+        </h3>
+
+        <p>
+            Automatically closes the file.
+        </p>
+
+        <pre>
+with open("file.txt", "r") as f:
+    data = f.read()
+
+print(data)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Python vs JavaScript File Handling
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Python</th>
+                <th>JavaScript (Node.js)</th>
+            </tr>
+
+            <tr>
+                <td>Read file</td>
+                <td><code>open().read()</code></td>
+                <td><code>fs.readFileSync()</code></td>
+            </tr>
+
+            <tr>
+                <td>Write file</td>
+                <td><code>write()</code></td>
+                <td><code>fs.writeFileSync()</code></td>
+            </tr>
+
+            <tr>
+                <td>Auto close</td>
+                <td><code>with</code></td>
+                <td>manual or streams</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Common Mistakes
+        </h3>
+
+        <ul>
+
+            <li>
+                ❌ Forgetting to close file
+            </li>
+
+            <li>
+                ❌ Using <code>"w"</code> unintentionally
+                (causes data overwrite/loss)
+            </li>
+
+            <li>
+                ❌ Not handling file not found exception
+            </li>
+
+        </ul>
+
+
+        <h2 class="blue">
+            📌 <u>Python Getter & Setter (Controlled Access)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What are Getters and Setters?
+        </h3>
+
+        <p>
+            Getters and setters provide controlled access to private variables.
+        </p>
+
+        <ul>
+
+            <li>
+                <b>Getter</b>
+                →
+                Reads private data
+            </li>
+
+            <li>
+                <b>Setter</b>
+                →
+                Updates private data with validation
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Getter & Setter Example
+        </h3>
+
+        <pre>
+class Person:
+
+    def __init__(self, age):
+
+        self.__age = age
+
+
+    def get_age(self):
+
+        return self.__age
+
+
+    def set_age(self, age):
+
+        if age > 0:
+
+            self.__age = age
+</pre>
+
+        <p>
+            Usage:
+        </p>
+
+        <pre>
+p = Person(30)
+
+print(p.get_age())
+
+p.set_age(40)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Using @property (Modern Python Way)
+        </h3>
+
+        <pre>
+class Person:
+
+    def __init__(self, age):
+
+        self.__age = age
+
+
+    @property
+    def age(self):
+
+        return self.__age
+
+
+    @age.setter
+    def age(self, value):
+
+        if value > 0:
+
+            self.__age = value
+
+
+p = Person(30)
+
+print(p.age)
+
+# getter
+
+p.age = 40
+
+# setter
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. How @property Works
+        </h3>
+
+        <ul>
+
+            <li>
+                <code>@property</code>
+                converts method into getter property
+            </li>
+
+            <li>
+                <code>@age.setter</code>
+                creates setter for same property
+            </li>
+
+            <li>
+                Allows method access like normal variable
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Benefits of Getter & Setter
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Benefit</th>
+                <th>Explanation</th>
+            </tr>
+
+            <tr>
+                <td>Data protection</td>
+                <td>Prevent invalid modifications</td>
+            </tr>
+
+            <tr>
+                <td>Validation</td>
+                <td>Control allowed input values</td>
+            </tr>
+
+            <tr>
+                <td>Maintainability</td>
+                <td>Internal implementation remains hidden</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="content" id="OPs">
+
+        <h2 class="blue">
+            📌 <u>Python Classes & Objects</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is a Class?
+        </h3>
+
+        <p>
+            A class is a blueprint or template used to create objects.
+        </p>
+
+        <pre>
+class Person:
+    pass
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. What is an Object?
+        </h3>
+
+        <p>
+            An object is an instance of a class.
+        </p>
+
+        <pre>
+p1 = Person()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Object Creation Flow
+        </h3>
+
+        <pre>
+obj = cls(data)
+</pre>
+
+        <p>
+            Creates a new instance of the class referenced by:
+        </p>
+
+        <pre>
+cls
+</pre>
+
+        <p>
+            Internal flow:
+        </p>
+
+        <pre>
+__new__()
+    ↓
+__init__()
+</pre>
+
+        <ul>
+
+            <li>
+                <code>__new__()</code>
+                → Creates/allocates object memory
+            </li>
+
+            <li>
+                <code>__init__()</code>
+                → Initializes object data
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            4. What is __new__()?
+        </h3>
+
+        <p>
+            <code>__new__()</code> creates the actual object instance.
+        </p>
+
+        <p>
+            Runs before:
+        </p>
+
+        <pre>
+__init__()
+</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+class Single:
+
+    _instance = None
+
+    def __new__(cls):
+
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+
+        return cls._instance
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Basic Class Example
+        </h3>
+
+        <pre>
+class Person:
+
+    # __init__ runs automatically
+    # self refers to current object
+
+    def __init__(self, name, age):
+
+        self.name = name
+        self.age = age
+
+    def greet(self):
+
+        return f"Hi, I'm {self.name}"
+
+
+p1 = Person("Harish", 30)
+
+print(p1.name)
+
+# Harish
+
+print(p1.greet())
+
+# Hi, I'm Harish
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Important Concepts
+        </h3>
+
+        <ul>
+
+            <li>
+                <b>__init__()</b>
+                →
+                Runs automatically when object is created
+            </li>
+
+            <li>
+                <b>self</b>
+                →
+                Refers to current object instance
+            </li>
+
+            <li>
+                <b>Instance Variables</b>
+                →
+                Created using self.variable
+            </li>
+
+            <li>
+                <b>Class Variables</b>
+                →
+                Shared across all objects
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Common Mistakes
+        </h3>
+
+        <pre>
+def show():
+</pre>
+
+        <p>
+            ❌ Error
+        </p>
+
+        <pre>
+def show(self):
+</pre>
+
+        <p>
+            ✅ Correct
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. @classmethod vs @staticmethod
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>@classmethod</th>
+                <th>@staticmethod</th>
+            </tr>
+
+            <tr>
+                <td>First parameter</td>
+                <td>cls</td>
+                <td>No default parameter</td>
+            </tr>
+
+            <tr>
+                <td>Access class data</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Access instance data</td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Bound to</td>
+                <td>Class</td>
+                <td>Nothing</td>
+            </tr>
+
+            <tr>
+                <td>Use case</td>
+                <td>Factory methods</td>
+                <td>Utility/helper methods</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            9. @classmethod Example
+        </h3>
+
+        <pre>
+class Person:
+
+    species = "Human"
+
+    @classmethod
+    def get_species(cls):
+
+        return cls.species
+
+
+print(Person.get_species())
+
+# Human
+</pre>
+
+        <p>
+            Features:
+        </p>
+
+        <ul>
+
+            <li>Python automatically passes cls</li>
+
+            <li>Can access class variables</li>
+
+            <li>Can modify class-level data</li>
+
+            <li>Often used for alternative constructors</li>
+
+        </ul>
+
+        <p>
+            Common Issues:
+        </p>
+
+        <pre>
+Missing cls parameter  ❌
+
+Using self inside classmethod ❌
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            10. @staticmethod Example
+        </h3>
+
+        <pre>
+class Person:
+
+    @staticmethod
+    def add(a, b):
+
+        return a + b
+
+
+print(Person.add(2, 3))
+
+# 5
+</pre>
+
+        <p>
+            Features:
+        </p>
+
+        <ul>
+
+            <li>No self</li>
+
+            <li>No cls</li>
+
+            <li>No access to class or instance data</li>
+
+            <li>Behaves like normal function</li>
+
+            <li>Used for helper/utility functions</li>
+
+        </ul>
+
+        <p class="highlight">
+            👉 self becomes available only after object creation.
+        </p>
+
+
+        <h2 class="blue">
+            📌 <u>Python self, cls, @classmethod & @staticmethod</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Python vs JavaScript Mapping
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td><code>@classmethod</code></td>
+                <td>static method (with class reference manually used)</td>
+            </tr>
+
+            <tr>
+                <td><code>@staticmethod</code></td>
+                <td>static method</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Creating Object inside @classmethod
+        </h3>
+
+        <p>
+            If you want to set attributes, you must first create the object.
+        </p>
+
+        <pre>
+@classmethod
+def from_string(cls, data):
+
+    obj = cls(data)
+
+    obj.a = 10
+
+    return obj
+</pre>
+
+        <p>
+            Here:
+        </p>
+
+        <ul>
+
+            <li>
+                <code>cls(data)</code>
+                creates a new object
+            </li>
+
+            <li>
+                <code>obj.a = 10</code>
+                adds instance attribute
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Meaning of cls and self
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td><code>cls</code></td>
+                <td>Class reference</td>
+            </tr>
+
+            <tr>
+                <td><code>self</code></td>
+                <td>Instance/Object reference</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Difference Between self and cls
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>self</th>
+                <th>cls</th>
+            </tr>
+
+            <tr>
+                <td>Refers to</td>
+                <td>Object (instance)</td>
+                <td>Class</td>
+            </tr>
+
+            <tr>
+                <td>Used in</td>
+                <td>Instance methods</td>
+                <td>Class methods</td>
+            </tr>
+
+            <tr>
+                <td>Access instance variables</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Access class variables</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>Automatically passed?</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>Access by class name</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. When to Use self, cls and @staticmethod
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Use Case</th>
+                <th>Use</th>
+            </tr>
+
+            <tr>
+                <td>Work with object data</td>
+                <td><code>self</code> (instance method)</td>
+            </tr>
+
+            <tr>
+                <td>Work with class data</td>
+                <td><code>cls</code> (<code>@classmethod</code>)</td>
+            </tr>
+
+            <tr>
+                <td>Utility function (no object/class needed)</td>
+                <td><code>@staticmethod</code></td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Python Inheritance</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is Inheritance?
+        </h3>
+
+        <p>
+            Inheritance allows a child class (subclass) to reuse
+            properties and methods of another class called the parent class (superclass).
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Types of Inheritance
+        </h3>
+
+        <ul>
+
+            <li>Single Inheritance</li>
+
+            <li>Multiple Inheritance</li>
+
+            <li>Multilevel Inheritance</li>
+
+            <li>Hierarchical Inheritance</li>
+
+            <li>Method Overriding</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Single Inheritance Example
+        </h3>
+
+        <pre>
+class Animal:
+
+    def sound(self):
+        print("Animal Sound")
+
+
+class Dog(Animal):
+
+    def bark(self):
+        print("Dog Bark")
+
+
+d = Dog()
+
+d.sound()
+
+d.bark()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. super() (Very Important)
+        </h3>
+
+        <p>
+            <code>super()</code> is used to call parent class constructor or methods.
+        </p>
+
+        <pre>
+class Animal:
+
+    def __init__(self):
+
+        print("Animal Constructor")
+
+
+class Dog(Animal):
+
+    def __init__(self):
+
+        super().__init__()
+
+        print("Dog Constructor")
+
+
+d = Dog()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. isinstance() and issubclass()
+        </h3>
+
+        <pre>
+class Animal:
+    pass
+
+
+class Dog(Animal):
+    pass
+
+
+d = Dog()
+
+print(isinstance(d, Dog))
+
+# True
+
+print(isinstance(d, Animal))
+
+# True
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Python vs JavaScript Inheritance
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td>Inheritance</td>
+                <td>Class-based</td>
+                <td>Prototype-based</td>
+            </tr>
+
+            <tr>
+                <td>Syntax</td>
+                <td><code>class B(A)</code></td>
+                <td><code>class B extends A</code></td>
+            </tr>
+
+            <tr>
+                <td>Super</td>
+                <td><code>super()</code></td>
+                <td><code>super()</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Method Overriding vs Overloading
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Overriding</th>
+                <th>Overloading</th>
+            </tr>
+
+            <tr>
+                <td>Where</td>
+                <td>Parent → Child</td>
+                <td>Same class</td>
+            </tr>
+
+            <tr>
+                <td>Python support</td>
+                <td>✅ Yes</td>
+                <td>❌ Not directly</td>
+            </tr>
+
+            <tr>
+                <td>Method name</td>
+                <td>Same</td>
+                <td>Same</td>
+            </tr>
+
+            <tr>
+                <td>Parameters</td>
+                <td>Usually same</td>
+                <td>Different</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Override Comparison (Python vs JavaScript)
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td>Override</td>
+                <td>Same method in subclass</td>
+                <td>Same method in subclass</td>
+            </tr>
+
+            <tr>
+                <td>Super call</td>
+                <td><code>super()</code></td>
+                <td><code>super.method()</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Method Resolution Order (MRO)
+        </h3>
+
+        <p>
+            MRO defines the order in which Python searches classes
+            when calling methods or accessing attributes.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            10. C3 Linearization (Simple Idea)
+        </h3>
+
+        <p>
+            Rules:
+        </p>
+
+        <ul>
+
+            <li>Left-to-right priority</li>
+
+            <li>Child before parent</li>
+
+            <li>Maintain hierarchy order</li>
+
+        </ul>
+
+        <pre>
+class A:
+
+    def show(self):
+        print("A")
+
+
+class B(A):
+
+    def show(self):
+        print("B")
+        super().show()
+
+
+class C(A):
+
+    def show(self):
+        print("C")
+        super().show()
+
+
+class D(B, C):
+
+    def show(self):
+        print("D")
+        super().show()
+
+
+d = D()
+
+d.show()
+</pre>
+
+        <p>
+            Output:
+        </p>
+
+        <pre>
+D
+B
+C
+A
+</pre>
+
+        <p>
+            Above example uses:
+        </p>
+
+        <pre>
+super()
+</pre>
+
+        <p>
+            Without <code>super()</code>:
+        </p>
+
+        <pre>
+Output:
+D
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>Python Polymorphism & Encapsulation</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Types of Polymorphism in Python
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Datatype Different?</th>
+                <th>Parameters Different?</th>
+                <th>Inheritance Required?</th>
+            </tr>
+
+            <tr>
+                <td><b>Overriding</b></td>
+                <td>Same method in subclass</td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td><b>Duck typing</b></td>
+                <td>Behavior-based</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td><b>Operator overloading</b></td>
+                <td>Same operator, different behavior</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td><b>Function polymorphism</b></td>
+                <td>Same function, different types</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td><b>Function overloading (Python way)</b></td>
+                <td>Same function with optional/default parameters</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Operator Overloading
+        </h3>
+
+        <p>
+            Same operator can behave differently depending on datatype.
+        </p>
+
+        <pre>
+print(2 + 3)
+
+# 5
+
+print("a" + "b")
+
+# ab
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Duck Typing (Very Important)
+        </h3>
+
+        <p>
+            Python cares about behavior, not actual datatype.
+        </p>
+
+        <pre>
+def make_sound(obj):
+
+    return obj.speak()
+
+
+print(make_sound(Dog()))
+
+print(make_sound(Cat()))
+</pre>
+
+        <p>
+            If object contains:
+        </p>
+
+        <pre>
+speak()
+</pre>
+
+        <p>
+            method, Python accepts it.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. What is Encapsulation?
+        </h3>
+
+        <p>
+            Encapsulation means:
+        </p>
+
+        <ul>
+
+            <li>Wrapping variables and methods together</li>
+
+            <li>Restricting direct access to object data</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Access Types in Python
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Access Type</th>
+                <th>Syntax</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>Public</td>
+                <td><code>self.name</code></td>
+                <td>Accessible everywhere</td>
+            </tr>
+
+            <tr>
+                <td>Protected</td>
+                <td><code>self._name</code></td>
+                <td>Internal use (convention)</td>
+            </tr>
+
+            <tr>
+                <td>Private</td>
+                <td><code>self.__name</code></td>
+                <td>Name mangled (restricted access)</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Encapsulation Example
+        </h3>
+
+        <pre>
+class Person:
+
+    def __init__(self, name, age):
+
+        self.name = name          # public
+
+        self._salary = 50000      # protected
+
+        self.__age = age          # private
+
+
+p = Person("Harish", 30)
+
+print(p.name)
+
+# ✅ OK
+
+print(p._salary)
+
+# ⚠️ allowed but not recommended
+
+# print(p.__age)
+
+# ❌ Error
+
+print(p._Person__age)
+
+# ✅ works
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Accessing Private Variables
+        </h3>
+
+        <p>
+            Python internally performs:
+        </p>
+
+        <pre>
+__age  →  _Person__age
+</pre>
+
+        <p>
+            This process is called:
+        </p>
+
+        <pre>
+Name Mangling
+</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+print(p._Person__age)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Important Notes About Public, Protected & Private
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Statement</th>
+                <th>Correct?</th>
+                <th>Explanation</th>
+            </tr>
+
+            <tr>
+                <td><code>_</code> means protected</td>
+                <td>⚠️ Partially</td>
+                <td>Only a naming convention</td>
+            </tr>
+
+            <tr>
+                <td><code>__</code> means private</td>
+                <td>⚠️ Partially</td>
+                <td>Name mangled, not truly private</td>
+            </tr>
+
+            <tr>
+                <td>Protected only in inheritance</td>
+                <td>❌ No</td>
+                <td>Accessible everywhere, just discouraged</td>
+            </tr>
+
+            <tr>
+                <td>Private only inside class</td>
+                <td>❌ No</td>
+                <td>Can still access using <code>_ClassName__var</code></td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Abstraction in Python</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is Abstraction?
+        </h3>
+
+        <p>
+            Abstraction is not only about missing method definition.
+        </p>
+
+        <p>
+            It is about:
+        </p>
+
+        <ul>
+
+            <li>Hiding implementation details</li>
+
+            <li>Defining a contract/structure</li>
+
+            <li>Forcing child classes to implement required methods</li>
+
+        </ul>
+
+        <p>
+            Abstraction means defining methods without implementation
+            inside parent abstract class.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Abstract Class Example
+        </h3>
+
+        <pre>
+from abc import ABC, abstractmethod
+
+
+class Animal(ABC):
+
+    @abstractmethod
+    def speak(self):
+
+        pass
+
+
+class Dog(Animal):
+
+    def speak(self):
+
+        return "Bark"
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Important Concepts
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>Abstract method</td>
+                <td>Declared but not implemented</td>
+            </tr>
+
+            <tr>
+                <td>Child class</td>
+                <td>Must implement abstract method</td>
+            </tr>
+
+            <tr>
+                <td>Purpose</td>
+                <td>Enforce common structure</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Abstraction vs Interface vs Encapsulation
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Abstraction</th>
+                <th>Interface</th>
+                <th>Encapsulation</th>
+            </tr>
+
+            <tr>
+                <td>Purpose</td>
+                <td>Hide implementation + define contract</td>
+                <td>Define only contract</td>
+                <td>Hide data & control access</td>
+            </tr>
+
+            <tr>
+                <td>Focus</td>
+                <td>What to do</td>
+                <td>What to implement</td>
+                <td>Data protection</td>
+            </tr>
+
+            <tr>
+                <td>Implementation</td>
+                <td>ABC + @abstractmethod</td>
+                <td>Usually simulated via abstract class/protocol</td>
+                <td>Private/protected variables</td>
+            </tr>
+
+            <tr>
+                <td>Method Definition</td>
+                <td>Abstract + concrete methods allowed</td>
+                <td>Only method signatures</td>
+                <td>Normal methods</td>
+            </tr>
+
+            <tr>
+                <td>Data Members</td>
+                <td>Can contain variables</td>
+                <td>Usually no state</td>
+                <td>Contains private/protected data</td>
+            </tr>
+
+            <tr>
+                <td>Inheritance Required</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Access Control</td>
+                <td>Not main goal</td>
+                <td>Not main goal</td>
+                <td>✅ Main goal</td>
+            </tr>
+
+            <tr>
+                <td>Enforcement</td>
+                <td>Forces child implementation</td>
+                <td>Forces full implementation</td>
+                <td>Restricts direct access</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Key Differences (Short)
+        </h3>
+
+        <ul>
+
+            <li>
+                <b>Abstraction</b>
+                →
+                Hide logic + enforce structure
+            </li>
+
+            <li>
+                <b>Interface</b>
+                →
+                Only enforce structure
+            </li>
+
+            <li>
+                <b>Encapsulation</b>
+                →
+                Hide data + control access
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Quick Memory Trick
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Memory Trick</th>
+            </tr>
+
+            <tr>
+                <td>Abstraction</td>
+                <td>Blueprint</td>
+            </tr>
+
+            <tr>
+                <td>Interface</td>
+                <td>Strict blueprint</td>
+            </tr>
+
+            <tr>
+                <td>Encapsulation</td>
+                <td>Data protection</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Incorrect Syntax
+        </h3>
+
+        <pre>
+@abstractclass
+
+class Payment(ABC):
+</pre>
+
+        <p>
+            ❌ Wrong because:
+        </p>
+
+        <pre>
+@abstractclass
+</pre>
+
+        <p>
+            does not exist in Python.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Correct Syntax
+        </h3>
+
+        <pre>
+from abc import ABC, abstractmethod
+
+
+class Payment(ABC):
+
+    @abstractmethod
+    def pay(self):
+
+        pass
+</pre>
+
+    </div>
+
+    <div class="content" id="iq">
+
+        <h2 class="blue">
+            📌 <u>Dunder (Magic) Methods & Mutable vs Immutable Types</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What are Dunder Methods?
+        </h3>
+
+        <p>
+            Dunder methods are special methods surrounded by double underscores.
+        </p>
+
+        <p>
+            Also called:
+        </p>
+
+        <pre>
+Magic Methods
+</pre>
+
+        <p>
+            Examples:
+        </p>
+
+        <pre>
+__init__
+__str__
+__len__
+__add__
+</pre>
+
+        <p>
+            These methods are automatically called by Python in specific situations.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. __init__ (Constructor)
+        </h3>
+
+        <p>
+            Runs automatically when object is created.
+        </p>
+
+        <pre>
+class Person:
+
+    def __init__(self, name):
+
+        self.name = name
+
+
+p = Person("Alice")
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. __str__ (String Representation)
+        </h3>
+
+        <p>
+            Controls what:
+        </p>
+
+        <pre>
+print()
+</pre>
+
+        <p>
+            displays.
+        </p>
+
+        <pre>
+class Person:
+
+    def __init__(self, name):
+
+        self.name = name
+
+
+    def __str__(self):
+
+        return f"Person: {self.name}"
+
+
+print(Person("Alice"))
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. __repr__ (Developer-Friendly Representation)
+        </h3>
+
+        <p>
+            Mainly used for debugging.
+        </p>
+
+        <pre>
+class Person:
+
+    def __repr__(self):
+
+        return f"Person('{self.name}')"
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. __len__
+        </h3>
+
+        <p>
+            Used by:
+        </p>
+
+        <pre>
+len()
+</pre>
+
+        <pre>
+class MyList:
+
+    def __init__(self, items):
+
+        self.items = items
+
+
+    def __len__(self):
+
+        return len(self.items)
+
+
+print(len(MyList([1, 2, 3])))
+
+# 3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. __add__ (Operator Overloading)
+        </h3>
+
+        <p>
+            Defines behavior for operators like:
+        </p>
+
+        <pre>
++
+-
+*
+</pre>
+
+        <pre>
+class Vector:
+
+    def __init__(self, x, y):
+
+        self.x = x
+        self.y = y
+
+
+    def __add__(self, other):
+
+        return Vector(
+            self.x + other.x,
+            self.y + other.y
+        )
+
+
+v1 = Vector(1, 2)
+
+v2 = Vector(3, 4)
+
+v3 = v1 + v2
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. __getitem__ (Indexing)
+        </h3>
+
+        <p>
+            Enables object indexing using:
+        </p>
+
+        <pre>
+obj[index]
+</pre>
+
+        <pre>
+class MyList:
+
+    def __init__(self, items):
+
+        self.items = items
+
+
+    def __getitem__(self, index):
+
+        return self.items[index]
+
+
+obj = MyList([10, 20, 30])
+
+print(obj[1])
+
+# 20
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Immutable Types
+        </h3>
+
+        <p>
+            Immutable objects cannot be modified after creation.
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Type</th>
+                <th>Example</th>
+            </tr>
+
+            <tr>
+                <td>int</td>
+                <td><code>10</code></td>
+            </tr>
+
+            <tr>
+                <td>float</td>
+                <td><code>3.14</code></td>
+            </tr>
+
+            <tr>
+                <td>bool</td>
+                <td><code>True</code></td>
+            </tr>
+
+            <tr>
+                <td>str</td>
+                <td><code>"hello"</code></td>
+            </tr>
+
+            <tr>
+                <td>tuple</td>
+                <td><code>(1, 2)</code></td>
+            </tr>
+
+            <tr>
+                <td>frozenset</td>
+                <td><code>frozenset([1,2])</code></td>
+            </tr>
+
+            <tr>
+                <td>bytes</td>
+                <td><code>b"abc"</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Mutable Types
+        </h3>
+
+        <p>
+            Mutable objects can be modified after creation.
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Type</th>
+                <th>Example</th>
+            </tr>
+
+            <tr>
+                <td>list</td>
+                <td><code>[1,2,3]</code></td>
+            </tr>
+
+            <tr>
+                <td>dict</td>
+                <td><code>{"a":1}</code></td>
+            </tr>
+
+            <tr>
+                <td>set</td>
+                <td><code>{1,2}</code></td>
+            </tr>
+
+            <tr>
+                <td>bytearray</td>
+                <td><code>bytearray(b"abc")</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Mutable vs Immutable Comparison
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Mutable</th>
+                <th>Immutable</th>
+            </tr>
+
+            <tr>
+                <td>Can change after creation</td>
+                <td>Yes</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Memory reused</td>
+                <td>Yes</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Hashable</td>
+                <td>Usually No</td>
+                <td>Usually Yes</td>
+            </tr>
+
+            <tr>
+                <td>Faster updates</td>
+                <td>Yes</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Safe for dict keys</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Examples</td>
+                <td>list, dict, set</td>
+                <td>int, str, tuple</td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Python Deep Copy vs Shallow Copy</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Deep Copy vs Shallow Copy vs Assignment
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Assignment (=)</th>
+                <th>Shallow Copy</th>
+                <th>Deep Copy</th>
+            </tr>
+
+            <tr>
+                <td>New outer object</td>
+                <td>No</td>
+                <td>Yes</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>New nested objects</td>
+                <td>No</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Shared references</td>
+                <td>Yes</td>
+                <td>Partial</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Safe for nested mutable objects</td>
+                <td>No</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Performance</td>
+                <td>Fastest</td>
+                <td>Fast</td>
+                <td>Slowest</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Shallow Copy Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Type</th>
+            </tr>
+
+            <tr>
+                <td><code>copy.copy(obj)</code></td>
+                <td>Shallow</td>
+            </tr>
+
+            <tr>
+                <td><code>obj.copy()</code></td>
+                <td>Shallow</td>
+            </tr>
+
+            <tr>
+                <td><code>list(obj)</code></td>
+                <td>Shallow</td>
+            </tr>
+
+            <tr>
+                <td><code>obj[:]</code></td>
+                <td>Shallow</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Deep Copy Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Type</th>
+            </tr>
+
+            <tr>
+                <td><code>copy.deepcopy(obj)</code></td>
+                <td>Deep</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Python vs JavaScript Copying
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td><code>copy.copy()</code></td>
+                <td><code>{...obj}</code> / <code>[...arr]</code></td>
+            </tr>
+
+            <tr>
+                <td><code>copy.deepcopy()</code></td>
+                <td><code>structuredClone()</code></td>
+            </tr>
+
+            <tr>
+                <td><code>=</code> shares reference</td>
+                <td>Same in JavaScript</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Assignment Example
+        </h3>
+
+        <pre>
+a = [1, 2, 3]
+
+b = a
+
+b.append(4)
+
+print(a)
+
+# [1, 2, 3, 4]
+</pre>
+
+        <p>
+            Both variables point to the same object.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Shallow Copy Example
+        </h3>
+
+        <pre>
+import copy
+
+a = [[1, 2], [3, 4]]
+
+b = copy.copy(a)
+
+b[0].append(99)
+
+print(a)
+
+# [[1, 2, 99], [3, 4]]
+</pre>
+
+        <p>
+            Nested objects are still shared.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Deep Copy Example
+        </h3>
+
+        <pre>
+import copy
+
+a = [[1, 2], [3, 4]]
+
+b = copy.deepcopy(a)
+
+b[0].append(99)
+
+print(a)
+
+# [[1, 2], [3, 4]]
+</pre>
+
+        <p>
+            Deep copy creates completely independent nested objects.
+        </p>
+
+
+        <h2 class="blue">
+            📌 <u>Pass by Reference vs Pass by Value (Python Object References)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Pass by Value
+        </h3>
+
+        <p>
+            A full copy of the data is sent to the function.
+        </p>
+
+        <p>
+            Changes inside the function do NOT affect the original value.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Pass by Reference
+        </h3>
+
+        <p>
+            A direct reference to the original memory location is passed.
+        </p>
+
+        <p>
+            Changes inside the function affect the original object.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Python's Actual Behavior
+        </h3>
+
+        <p>
+            Python uses:
+        </p>
+
+        <pre>
+Pass by Object Reference
+</pre>
+
+        <p>
+            The reference itself is passed by value.
+        </p>
+
+        <p>
+            Both variables point to the same object in memory.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Python vs JavaScript
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td>Uses object references</td>
+                <td>Uses references for objects</td>
+            </tr>
+
+            <tr>
+                <td>Immutable types create new object</td>
+                <td>Primitive values copied</td>
+            </tr>
+
+            <tr>
+                <td>Mutable objects can change original</td>
+                <td>Objects/arrays mutable</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Immutable Example
+        </h3>
+
+        <pre>
+def change(x):
+
+    x += 1
+
+    print(x)
+
+
+a = 10
+
+change(a)
+
+print(a)
+
+# 10
+</pre>
+
+        <p>
+            Integers are immutable.
+        </p>
+
+        <p>
+            Python creates a new object instead of modifying the original.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Mutable Example
+        </h3>
+
+        <pre>
+def modify(lst):
+
+    lst.append(4)
+
+
+nums = [1, 2, 3]
+
+modify(nums)
+
+print(nums)
+
+# [1, 2, 3, 4]
+</pre>
+
+        <p>
+            Lists are mutable, so the original object changes.
+        </p>
+
+
+
+        <h2 class="blue">
+            📌 <u>Decorators in Python</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is a Decorator?
+        </h3>
+
+        <p>
+            A decorator is a function that:
+        </p>
+
+        <ul>
+
+            <li>Takes another function as input</li>
+
+            <li>Adds extra behavior</li>
+
+            <li>Returns a new function</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Common Uses of Decorators
+        </h3>
+
+        <p>
+            Decorators are heavily used in:
+        </p>
+
+        <ul>
+
+            <li>Flask</li>
+
+            <li>Django</li>
+
+            <li>FastAPI</li>
+
+            <li>Logging</li>
+
+            <li>Authentication</li>
+
+            <li>Caching</li>
+
+            <li>Timing</li>
+
+            <li>Validation</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Basic Decorator Syntax
+        </h3>
+
+        <pre>
+@decorator_name
+def my_function():
+
+    pass
+</pre>
+
+        <p>
+            Equivalent to:
+        </p>
+
+        <pre>
+my_function = decorator_name(my_function)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Why Use Decorators?
+        </h3>
+
+        <p>
+            To avoid repeating common logic.
+        </p>
+
+        <p>
+            Examples:
+        </p>
+
+        <ul>
+
+            <li>Logging</li>
+
+            <li>Authorization</li>
+
+            <li>Timing</li>
+
+            <li>Retries</li>
+
+            <li>Exception handling</li>
+
+            <li>Caching</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Basic Decorator Example
+        </h3>
+
+        <pre>
+def logger(func):
+
+    def wrapper():
+
+        print("Before function call")
+
+        func()
+
+        print("After function call")
+
+    return wrapper
+
+
+@logger
+def greet():
+
+    print("Hello")
+
+
+greet()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Decorator with *args and **kwargs
+        </h3>
+
+        <pre>
+def logger(func):
+
+    def wrapper(*args, **kwargs):
+
+        print("Function started")
+
+        return func(*args, **kwargs)
+
+    return wrapper
+</pre>
+
+        <p>
+            Used to support any function signature.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            7. functools.wraps
+        </h3>
+
+        <p>
+            <code>wraps</code> preserves original function metadata.
+        </p>
+
+        <pre>
+from functools import wraps
+
+
+def logger(func):
+
+    @wraps(func)
+
+    def wrapper(*args, **kwargs):
+
+        return func(*args, **kwargs)
+
+    return wrapper
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Built-in Decorators
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Decorator</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>@staticmethod</code></td>
+                <td>Method without self</td>
+            </tr>
+
+            <tr>
+                <td><code>@classmethod</code></td>
+                <td>Method with cls</td>
+            </tr>
+
+            <tr>
+                <td><code>@property</code></td>
+                <td>Getter behaves like attribute</td>
+            </tr>
+
+            <tr>
+                <td><code>@abstractmethod</code></td>
+                <td>Abstract base class method</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Common Interview Questions
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+
+            <tr>
+                <td>Why use decorators?</td>
+                <td>Reuse common logic</td>
+            </tr>
+
+            <tr>
+                <td>What does decorator return?</td>
+                <td>A function</td>
+            </tr>
+
+            <tr>
+                <td>Why <code>*args</code>, <code>**kwargs</code>?</td>
+                <td>Generic wrapper</td>
+            </tr>
+
+            <tr>
+                <td>Why <code>wraps</code> used?</td>
+                <td>Preserve metadata</td>
+            </tr>
+
+            <tr>
+                <td>Execution order?</td>
+                <td>Bottom to top</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Python vs JavaScript Comparison
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td>Decorator</td>
+                <td>Higher-order function</td>
+            </tr>
+
+            <tr>
+                <td>Wrapper function</td>
+                <td>Middleware pattern</td>
+            </tr>
+
+            <tr>
+                <td><code>@decorator</code> syntax</td>
+                <td>Experimental decorators in JS/TS</td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Generators (yield) in Python</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is a Generator?
+        </h3>
+
+        <p>
+            A generator is a function that:
+        </p>
+
+        <ul>
+
+            <li>Returns values one at a time</li>
+
+            <li>Pauses execution after each value</li>
+
+            <li>Resumes from where it stopped</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Basic Generator Example
+        </h3>
+
+        <pre>
+def numbers():
+
+    yield 1
+
+    yield 2
+
+    yield 3
+
+
+print(numbers())
+
+# &lt;generator object numbers at 0x...&gt;
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Using next()
+        </h3>
+
+        <pre>
+gen = numbers()
+
+print(next(gen))
+
+print(next(gen))
+
+print(next(gen))
+</pre>
+
+        <p>
+            Output:
+        </p>
+
+        <pre>
+1
+2
+3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Looping Through Generator
+        </h3>
+
+        <pre>
+for n in numbers():
+
+    print(n)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. return vs yield
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>return</th>
+                <th>yield</th>
+            </tr>
+
+            <tr>
+                <td>Ends function</td>
+                <td>Yes</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Stores state</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Returns single value</td>
+                <td>Yes</td>
+                <td>One-by-one</td>
+            </tr>
+
+            <tr>
+                <td>Memory efficient</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Real Use Cases
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Use Case</th>
+                <th>Why Generators Useful</th>
+            </tr>
+
+            <tr>
+                <td>Reading large files</td>
+                <td>Avoid loading full file</td>
+            </tr>
+
+            <tr>
+                <td>Streaming data</td>
+                <td>Process incrementally</td>
+            </tr>
+
+            <tr>
+                <td>Infinite sequences</td>
+                <td>Lazy evaluation</td>
+            </tr>
+
+            <tr>
+                <td>Pipelines</td>
+                <td>Efficient chaining</td>
+            </tr>
+
+            <tr>
+                <td>APIs/data processing</td>
+                <td>Lower memory usage</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Reading Large File Example
+        </h3>
+
+        <pre>
+def read_file(path):
+
+    with open(path, "r") as f:
+
+        for line in f:
+
+            yield line
+</pre>
+
+        <p>
+            Reads one line at a time instead of loading full file into memory.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Infinite Generator Example
+        </h3>
+
+        <pre>
+def counter():
+
+    n = 1
+
+    while True:
+
+        yield n
+
+        n += 1
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Important Interview Questions
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+
+            <tr>
+                <td>What does <code>yield</code> do?</td>
+                <td>Pauses and resumes function</td>
+            </tr>
+
+            <tr>
+                <td>What does generator return?</td>
+                <td>Generator object</td>
+            </tr>
+
+            <tr>
+                <td>Why generators memory efficient?</td>
+                <td>Lazy evaluation</td>
+            </tr>
+
+            <tr>
+                <td>Difference between iterator and generator?</td>
+                <td>Generator automatically implements iterator protocol</td>
+            </tr>
+
+            <tr>
+                <td>Can generator run once?</td>
+                <td>Yes, then exhausted</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Iterator vs Generator
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Iterator</th>
+                <th>Generator</th>
+            </tr>
+
+            <tr>
+                <td>Need <code>__iter__</code> and <code>__next__</code></td>
+                <td>Yes</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Easier to write</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Uses <code>yield</code></td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Lazy evaluation</td>
+                <td>Yes</td>
+                <td>Yes</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            11. Generator Exhaustion
+        </h3>
+
+        <pre>
+gen = numbers()
+
+for x in gen:
+
+    print(x)
+
+for x in gen:
+
+    print(x)
+
+# No output second time
+</pre>
+
+        <p>
+            Once fully consumed, generator becomes exhausted.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            12. Python vs JavaScript Generators
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td><code>yield</code></td>
+                <td><code>yield</code></td>
+            </tr>
+
+            <tr>
+                <td>Generator function</td>
+                <td><code>function*</code></td>
+            </tr>
+
+            <tr>
+                <td><code>next()</code></td>
+                <td><code>next()</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            13. JavaScript Generator Example
+        </h3>
+
+        <pre>
+function* numbers() {
+
+    yield 1
+
+    yield 2
+
+    yield 3
+}
+
+const gen = numbers()
+
+console.log(gen.next().value)
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>Iterators in Python (__iter__, __next__)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is an Iterator?
+        </h3>
+
+        <p>
+            An iterator is an object that:
+        </p>
+
+        <ul>
+
+            <li>Remembers current position</li>
+
+            <li>Returns one item at a time</li>
+
+            <li>Works with loops like <code>for</code></li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Basic Iterator Example
+        </h3>
+
+        <pre>
+nums = [10, 20, 30]
+
+it = iter(nums)
+
+print(next(it))
+
+print(next(it))
+
+print(next(it))
+</pre>
+
+        <p>
+            Output:
+        </p>
+
+        <pre>
+10
+20
+30
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. StopIteration
+        </h3>
+
+        <pre>
+next(it)
+
+# StopIteration
+</pre>
+
+        <p>
+            Raised when iterator has no more items.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Iterator Protocol
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>__iter__()</code></td>
+                <td>Returns iterator object</td>
+            </tr>
+
+            <tr>
+                <td><code>__next__()</code></td>
+                <td>Returns next value</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Iterable vs Iterator
+        </h3>
+
+        <h4>Iterable</h4>
+
+        <p>
+            An object you can loop over.
+        </p>
+
+        <p>
+            Examples:
+        </p>
+
+        <ul>
+
+            <li>list</li>
+
+            <li>tuple</li>
+
+            <li>string</li>
+
+            <li>dict</li>
+
+            <li>set</li>
+
+        </ul>
+
+        <h4>Iterator</h4>
+
+        <p>
+            Object that returns next value one-by-one.
+        </p>
+
+        <p>
+            Iterator contains:
+        </p>
+
+        <pre>
+__iter__()
+__next__()
+</pre>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Iterable</th>
+                <th>Iterator</th>
+            </tr>
+
+            <tr>
+                <td>Can use <code>for</code> loop</td>
+                <td>Yes</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Stores iteration state</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Has <code>__next__()</code></td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Example</td>
+                <td>list</td>
+                <td>list_iterator</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. iter() and next()
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Function</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>iter(obj)</code></td>
+                <td>Creates iterator</td>
+            </tr>
+
+            <tr>
+                <td><code>next(obj)</code></td>
+                <td>Gets next item</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Custom Iterator Example
+        </h3>
+
+        <pre>
+class Counter:
+
+    def __init__(self, max):
+
+        self.max = max
+
+        self.current = 1
+
+
+    def __iter__(self):
+
+        return self
+
+
+    def __next__(self):
+
+        if self.current > self.max:
+
+            raise StopIteration
+
+        val = self.current
+
+        self.current += 1
+
+        return val
+
+
+c = Counter(3)
+
+for x in c:
+
+    print(x)
+</pre>
+
+        <p>
+            Output:
+        </p>
+
+        <pre>
+1
+2
+3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Real Use Cases
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Use Case</th>
+                <th>Benefit</th>
+            </tr>
+
+            <tr>
+                <td>Large datasets</td>
+                <td>Memory efficient</td>
+            </tr>
+
+            <tr>
+                <td>Streaming</td>
+                <td>Lazy processing</td>
+            </tr>
+
+            <tr>
+                <td>File reading</td>
+                <td>One line at a time</td>
+            </tr>
+
+            <tr>
+                <td>Infinite sequences</td>
+                <td>Controlled generation</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Important Interview Questions
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+
+            <tr>
+                <td>Difference between iterable and iterator?</td>
+                <td>Iterable creates iterator; iterator gives values</td>
+            </tr>
+
+            <tr>
+                <td>What raises <code>StopIteration</code>?</td>
+                <td><code>__next__()</code> when finished</td>
+            </tr>
+
+            <tr>
+                <td>Does list have <code>__next__()</code>?</td>
+                <td>No</td>
+            </tr>
+
+            <tr>
+                <td>Does generator implement iterator protocol?</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Why lazy evaluation useful?</td>
+                <td>Saves memory</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Python vs JavaScript
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td><code>__iter__()</code></td>
+                <td><code>[Symbol.iterator]()</code></td>
+            </tr>
+
+            <tr>
+                <td><code>__next__()</code></td>
+                <td><code>next()</code></td>
+            </tr>
+
+            <tr>
+                <td><code>StopIteration</code></td>
+                <td><code>{done: true}</code></td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            11. JavaScript Iterator Example
+        </h3>
+
+        <pre>
+const nums = [10, 20, 30]
+
+const it = nums[Symbol.iterator]()
+
+console.log(it.next())
+
+console.log(it.next())
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            12. Quick Interview Summary
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>Iterable</td>
+                <td>Can create iterator</td>
+            </tr>
+
+            <tr>
+                <td>Iterator</td>
+                <td>Produces next value</td>
+            </tr>
+
+            <tr>
+                <td><code>iter(obj)</code></td>
+                <td>Gets iterator</td>
+            </tr>
+
+            <tr>
+                <td><code>next(obj)</code></td>
+                <td>Gets next item</td>
+            </tr>
+
+            <tr>
+                <td><code>StopIteration</code></td>
+                <td>End of iteration</td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Context Managers in Python (with)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is a Context Manager?
+        </h3>
+
+        <p>
+            A context manager is an object that:
+        </p>
+
+        <ul>
+
+            <li>Manages resources automatically</li>
+
+            <li>Handles setup and cleanup</li>
+
+            <li>Is used with the <code>with</code> statement</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Why Use Context Managers?
+        </h3>
+
+        <p>
+            They automatically handle:
+        </p>
+
+        <ul>
+
+            <li>File closing</li>
+
+            <li>Database connection cleanup</li>
+
+            <li>Lock release</li>
+
+            <li>Resource management</li>
+
+            <li>Exception-safe cleanup</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Basic Syntax
+        </h3>
+
+        <pre>
+with expression as variable:
+
+    # code block
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Without with
+        </h3>
+
+        <pre>
+f = open("a.txt")
+
+try:
+
+    data = f.read()
+
+finally:
+
+    f.close()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. With with
+        </h3>
+
+        <pre>
+with open("a.txt") as f:
+
+    data = f.read()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Internal Methods Used
+        </h3>
+
+        <p>
+            Context managers internally use:
+        </p>
+
+        <pre>
+__enter__()
+__exit__()
+</pre>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>__enter__()</code></td>
+                <td>Setup resource</td>
+            </tr>
+
+            <tr>
+                <td><code>__exit__()</code></td>
+                <td>Cleanup resource</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Custom Context Manager Example
+        </h3>
+
+        <pre>
+class Demo:
+
+    def __enter__(self):
+
+        print("Start")
+
+        return self
+
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+
+        print("Cleanup")
+
+
+with Demo():
+
+    print("Inside block")
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Exception Handling
+        </h3>
+
+        <pre>
+class Demo:
+
+    def __enter__(self):
+
+        return self
+
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+
+        print("Exception handled")
+
+
+with Demo():
+
+    x = 10 / 0
+</pre>
+
+        <p>
+            <code>__exit__()</code> runs even when exception occurs.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Suppressing Exceptions
+        </h3>
+
+        <pre>
+def __exit__(self, exc_type, exc_val, exc_tb):
+
+    return True
+</pre>
+
+        <p>
+            Returning <code>True</code> suppresses the exception.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Important Interview Questions
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+
+            <tr>
+                <td>Which methods required?</td>
+                <td><code>__enter__</code>, <code>__exit__</code></td>
+            </tr>
+
+            <tr>
+                <td>Why use context managers?</td>
+                <td>Automatic cleanup</td>
+            </tr>
+
+            <tr>
+                <td>Does <code>__exit__</code> run on exceptions?</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>What suppresses exception?</td>
+                <td>Returning <code>True</code> from <code>__exit__</code></td>
+            </tr>
+
+            <tr>
+                <td>What does <code>with</code> improve?</td>
+                <td>Resource safety/readability</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            11. Quick Summary
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>Context manager</td>
+                <td>Manages resources</td>
+            </tr>
+
+            <tr>
+                <td><code>with</code></td>
+                <td>Automatic setup/cleanup</td>
+            </tr>
+
+            <tr>
+                <td><code>__enter__</code></td>
+                <td>Start block</td>
+            </tr>
+
+            <tr>
+                <td><code>__exit__</code></td>
+                <td>Cleanup block</td>
+            </tr>
+
+            <tr>
+                <td>Exception-safe</td>
+                <td>Yes</td>
+            </tr>
+
+        </table>
+
+
+
+        <h2 class="blue">
+            📌 <u>async / await in Python</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is async / await?
+        </h3>
+
+        <p>
+            <code>async</code> and <code>await</code> are used for:
+        </p>
+
+        <ul>
+
+            <li>Asynchronous programming</li>
+
+            <li>Non-blocking operations</li>
+
+            <li>Concurrency</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Common Use Cases
+        </h3>
+
+        <p>
+            Mainly used for:
+        </p>
+
+        <ul>
+
+            <li>APIs</li>
+
+            <li>Web servers</li>
+
+            <li>Database calls</li>
+
+            <li>Network requests</li>
+
+            <li>File/network I/O</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Problem with Normal Code
+        </h3>
+
+        <p>
+            Normal synchronous code blocks execution while waiting.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Basic async Example
+        </h3>
+
+        <pre>
+import asyncio
+
+
+async def hello():
+
+    print("Start")
+
+    await asyncio.sleep(1)
+
+    print("End")
+
+
+asyncio.run(hello())
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Sequential Execution
+        </h3>
+
+        <pre>
+await task1()
+
+await task2()
+</pre>
+
+        <p>
+            Tasks execute one after another.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Concurrent Execution
+        </h3>
+
+        <pre>
+await asyncio.gather(a(), b(), c())
+</pre>
+
+        <p>
+            Runs multiple coroutines concurrently.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Threading vs Asyncio
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Threading</th>
+                <th>Asyncio</th>
+            </tr>
+
+            <tr>
+                <td>Uses threads</td>
+                <td>Yes</td>
+                <td>Usually single thread</td>
+            </tr>
+
+            <tr>
+                <td>Context switching</td>
+                <td>OS controlled</td>
+                <td>Event loop controlled</td>
+            </tr>
+
+            <tr>
+                <td>Good for</td>
+                <td>CPU + I/O</td>
+                <td>Mostly I/O</td>
+            </tr>
+
+            <tr>
+                <td>Overhead</td>
+                <td>Higher</td>
+                <td>Lower</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            8. asyncio.create_task()
+        </h3>
+
+        <p>
+            <code>asyncio.create_task()</code> schedules coroutine execution in background.
+        </p>
+
+        <pre>
+t1 = asyncio.create_task(task1())
+
+t2 = asyncio.create_task(task2())
+
+await t1
+
+await t2
+</pre>
+
+        <p>
+            Both tasks start immediately and run concurrently.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            9. What is a Coroutine?
+        </h3>
+
+        <p>
+            A coroutine is:
+        </p>
+
+        <ul>
+
+            <li>A special async function</li>
+
+            <li>Can pause and resume execution</li>
+
+            <li>Does NOT execute immediately</li>
+
+        </ul>
+
+        <pre>
+async def test():
+
+    await asyncio.sleep(1)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Coroutine Lifecycle
+        </h3>
+
+        <p>
+            Steps:
+        </p>
+
+        <ol>
+
+            <li>Coroutine created</li>
+
+            <li>Event loop starts it</li>
+
+            <li>Pauses at <code>await</code></li>
+
+            <li>Resumes later</li>
+
+            <li>Completes execution</li>
+
+        </ol>
+
+        <hr />
+
+        <h3 class="blue">
+            11. Important Interview Questions
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+
+            <tr>
+                <td>What does <code>async def</code> return?</td>
+                <td>Coroutine</td>
+            </tr>
+
+            <tr>
+                <td>What does <code>await</code> do?</td>
+                <td>Pause coroutine cooperatively</td>
+            </tr>
+
+            <tr>
+                <td>Is asyncio parallel?</td>
+                <td>No, concurrent</td>
+            </tr>
+
+            <tr>
+                <td>Does asyncio use threads?</td>
+                <td>Usually no</td>
+            </tr>
+
+            <tr>
+                <td>Best use case?</td>
+                <td>I/O-bound tasks</td>
+            </tr>
+
+            <tr>
+                <td>What runs coroutines?</td>
+                <td>Event loop</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            12. Python vs JavaScript
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td><code>async def</code></td>
+                <td><code>async function</code></td>
+            </tr>
+
+            <tr>
+                <td><code>await</code></td>
+                <td><code>await</code></td>
+            </tr>
+
+            <tr>
+                <td>Event loop</td>
+                <td>Event loop</td>
+            </tr>
+
+            <tr>
+                <td>Coroutine</td>
+                <td>Promise-like behavior</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            13. Quick Summary
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td><code>async def</code></td>
+                <td>Coroutine function</td>
+            </tr>
+
+            <tr>
+                <td><code>await</code></td>
+                <td>Pause until complete</td>
+            </tr>
+
+            <tr>
+                <td>Coroutine</td>
+                <td>Async function object</td>
+            </tr>
+
+            <tr>
+                <td>Event loop</td>
+                <td>Scheduler</td>
+            </tr>
+
+            <tr>
+                <td><code>asyncio.gather()</code></td>
+                <td>Concurrent execution</td>
+            </tr>
+
+            <tr>
+                <td>Best for</td>
+                <td>I/O-bound concurrency</td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Asynchronous vs Non-Blocking</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Non-Blocking
+        </h3>
+
+        <p>
+            Python makes an asynchronous database call.
+        </p>
+
+        <p>
+            While waiting for the database response,
+            Python does not block and continues executing other tasks.
+        </p>
+
+        <p>
+            This is called:
+            <b>Non-Blocking</b>
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Asynchronous
+        </h3>
+
+        <p>
+            When the database operation completes (success or failure),
+            the event loop resumes the suspended coroutine
+            and returns the response asynchronously.
+        </p>
+
+        <p>
+            This is called:
+            <b>Asynchronous Execution</b>
+        </p>
+
+    </div>
+
+    <div class="content" id="examples">
+
+        <h2 class="blue">
+            📌 <u>Arrays, Strings, Sorting & Searching in Python</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Arrays in Python
+        </h3>
+
+        <p>
+            Python does not have a traditional fixed-size array like Java/C.
+        </p>
+
+        <p>
+            Usually we use list.
+        </p>
+
+        <pre>
+nums = [10, 20, 30]
+</pre>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Operation</th>
+                <th>Code</th>
+                <th>Time Complexity</th>
+            </tr>
+
+            <tr>
+                <td>Access</td>
+                <td><code>arr[i]</code></td>
+                <td>O(1)</td>
+            </tr>
+
+            <tr>
+                <td>Append</td>
+                <td><code>arr.append(x)</code></td>
+                <td>O(1)</td>
+            </tr>
+
+            <tr>
+                <td>Insert front</td>
+                <td><code>arr.insert(0, x)</code></td>
+                <td>O(n)</td>
+            </tr>
+
+            <tr>
+                <td>Delete end</td>
+                <td><code>arr.pop()</code></td>
+                <td>O(1)</td>
+            </tr>
+
+            <tr>
+                <td>Search</td>
+                <td><code>x in arr</code></td>
+                <td>O(n)</td>
+            </tr>
+
+            <tr>
+                <td>Sort</td>
+                <td><code>arr.sort()</code></td>
+                <td>O(n log n)</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. String Basics
+        </h3>
+
+        <p>
+            Strings are immutable.
+        </p>
+
+        <pre>
+s = "python"
+
+print(s[::-1])
+</pre>
+
+        <pre>
+s = "madam"
+
+print(s == s[::-1])
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Sorting List Numbers
+        </h3>
+
+        <h4>sorted()</h4>
+
+        <p>
+            Returns new sorted object.
+        </p>
+
+        <pre>
+nums = [3,1,2]
+
+result = sorted(nums)
+
+print(result)
+</pre>
+
+        <h4>.sort()</h4>
+
+        <p>
+            Sorts in-place.
+        </p>
+
+        <pre>
+nums.sort()
+</pre>
+
+        <h4>Reverse Sorting</h4>
+
+        <pre>
+nums.sort(reverse=True)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Sorting List Strings
+        </h3>
+
+        <pre>
+words = ["banana", "apple", "cat"]
+
+print(sorted(words))
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Sorting with Key
+        </h3>
+
+        <pre>
+words = ["a", "apple", "cat"]
+
+print(sorted(words, key=len))
+
+# ['a', 'cat', 'apple']
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Sort Dictionary List
+        </h3>
+
+        <pre>
+users = [
+
+    {"name": "Harish", "age": 30},
+
+    {"name": "Bob", "age": 20}
+]
+
+print(sorted(users, key=lambda x: x["age"]))
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. String Operations
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Operation</th>
+                <th>Example</th>
+            </tr>
+
+            <tr>
+                <td>Length</td>
+                <td><code>len(s)</code></td>
+            </tr>
+
+            <tr>
+                <td>Slice</td>
+                <td><code>s[1:4]</code></td>
+            </tr>
+
+            <tr>
+                <td>Reverse</td>
+                <td><code>s[::-1]</code></td>
+            </tr>
+
+            <tr>
+                <td>Uppercase</td>
+                <td><code>s.upper()</code></td>
+            </tr>
+
+            <tr>
+                <td>Split</td>
+                <td><code>s.split()</code></td>
+            </tr>
+
+            <tr>
+                <td>Join</td>
+                <td><code>" ".join(arr)</code></td>
+            </tr>
+
+            <tr>
+                <td>Replace</td>
+                <td><code>s.replace()</code></td>
+            </tr>
+
+        </table>
+
+
+
+        <h2 class="blue">
+            📌 <u>List vs Tuple in Python</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>List</th>
+                <th>Tuple</th>
+            </tr>
+
+            <tr>
+                <td>Mutable</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Syntax</td>
+                <td><code>[]</code></td>
+                <td><code>()</code></td>
+            </tr>
+
+            <tr>
+                <td>Performance</td>
+                <td>Slower</td>
+                <td>Faster</td>
+            </tr>
+
+            <tr>
+                <td>Memory usage</td>
+                <td>Higher</td>
+                <td>Lower</td>
+            </tr>
+
+            <tr>
+                <td>Hashable</td>
+                <td>❌ No</td>
+                <td>✅ Usually</td>
+            </tr>
+
+            <tr>
+                <td>Can be dict key</td>
+                <td>❌ No</td>
+                <td>✅ Yes (if immutable contents)</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Valid Tuple Dictionary Key
+        </h3>
+
+        <pre>
+d = {
+
+    (1,2): "value"
+}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Invalid List Dictionary Key
+        </h3>
+
+        <pre>
+d = {
+
+    [1,2]: "value"
+}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Tuple Modification Error
+        </h3>
+
+        <pre>
+nums = (1,2,3)
+
+nums[0] = 100
+
+# TypeError
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            11. List Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>append()</code></td>
+                <td>Add item</td>
+            </tr>
+
+            <tr>
+                <td><code>extend()</code></td>
+                <td>Add multiple</td>
+            </tr>
+
+            <tr>
+                <td><code>insert()</code></td>
+                <td>Insert item</td>
+            </tr>
+
+            <tr>
+                <td><code>remove()</code></td>
+                <td>Remove value</td>
+            </tr>
+
+            <tr>
+                <td><code>pop()</code></td>
+                <td>Remove by index</td>
+            </tr>
+
+            <tr>
+                <td><code>sort()</code></td>
+                <td>Sort</td>
+            </tr>
+
+            <tr>
+                <td><code>reverse()</code></td>
+                <td>Reverse</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            12. Tuple Methods
+        </h3>
+
+        <p>
+            Very limited because immutable.
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>count()</code></td>
+                <td>Count values</td>
+            </tr>
+
+            <tr>
+                <td><code>index()</code></td>
+                <td>Find index</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            13. Tuple Packing
+        </h3>
+
+        <pre>
+t = 1, 2, 3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            14. Tuple Unpacking
+        </h3>
+
+        <pre>
+a, b, c = (1, 2, 3)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            15. Single Element Tuple
+        </h3>
+
+        <p>
+            Very common interview question.
+        </p>
+
+        <p>
+            Wrong:
+        </p>
+
+        <pre>
+t = (1)
+</pre>
+
+        <p>
+            Correct:
+        </p>
+
+        <pre>
+t = (1,)
+</pre>
+
+        <p>
+            Comma is important.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            16. List vs Tuple Performance
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Operation</th>
+                <th>List</th>
+                <th>Tuple</th>
+            </tr>
+
+            <tr>
+                <td>Read access</td>
+                <td>Fast</td>
+                <td>Slightly faster</td>
+            </tr>
+
+            <tr>
+                <td>Modification</td>
+                <td>Fast</td>
+                <td>Not allowed</td>
+            </tr>
+
+            <tr>
+                <td>Iteration</td>
+                <td>Fast</td>
+                <td>Slightly faster</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            17. Use List When
+        </h3>
+
+        <ul>
+
+            <li>Data changes frequently</li>
+
+            <li>Add/remove items needed</li>
+
+        </ul>
+
+        <p>
+            Examples:
+        </p>
+
+        <ul>
+
+            <li>Shopping cart</li>
+
+            <li>Dynamic collections</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            18. Use Tuple When
+        </h3>
+
+        <ul>
+
+            <li>Fixed data</li>
+
+            <li>Read-only data</li>
+
+            <li>Dictionary keys needed</li>
+
+        </ul>
+
+        <p>
+            Examples:
+        </p>
+
+        <ul>
+
+            <li>Coordinates</li>
+
+            <li>Database records</li>
+
+            <li>RGB values</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            19. Convert Between Them
+        </h3>
+
+        <h4>List → Tuple</h4>
+
+        <pre>
+tuple([1,2,3])
+</pre>
+
+        <h4>Tuple → List</h4>
+
+        <pre>
+list((1,2,3))
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>List vs Set in Python</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>List</th>
+                <th>Set</th>
+            </tr>
+
+            <tr>
+                <td>Ordered</td>
+                <td>✅ Yes</td>
+                <td>❌ No guaranteed indexing order</td>
+            </tr>
+
+            <tr>
+                <td>Duplicates allowed</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Mutable</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>Indexing</td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>Hash-table based</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>Search speed</td>
+                <td>Slower</td>
+                <td>Faster</td>
+            </tr>
+
+            <tr>
+                <td>Syntax</td>
+                <td><code>[]</code></td>
+                <td><code>{}</code></td>
+            </tr>
+
+            <tr>
+                <td>Internal structure</td>
+                <td>Dynamic array</td>
+                <td>Hash table</td>
+            </tr>
+
+            <tr>
+                <td>Lookup speed</td>
+                <td>Slower</td>
+                <td>Faster</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Set Does NOT Support Indexing
+        </h3>
+
+        <pre>
+nums = {10,20,30}
+
+print(nums[0])
+
+# TypeError: 'set' object is not subscriptable
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. List Preserves Order
+        </h3>
+
+        <pre>
+nums = [10, 20, 30]
+
+print(nums[0])
+
+# 10
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Set Elements Must Be Hashable
+        </h3>
+
+        <pre>
+s = {1, "hello", (1,2)}
+
+# Valid
+</pre>
+
+        <pre>
+s = {[1,2]}
+
+# TypeError: unhashable type: 'list'
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. List Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>append()</code></td>
+                <td>Add item</td>
+            </tr>
+
+            <tr>
+                <td><code>insert()</code></td>
+                <td>Insert</td>
+            </tr>
+
+            <tr>
+                <td><code>remove()</code></td>
+                <td>Remove value</td>
+            </tr>
+
+            <tr>
+                <td><code>pop()</code></td>
+                <td>Remove by index</td>
+            </tr>
+
+            <tr>
+                <td><code>sort()</code></td>
+                <td>Sort</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Set Methods
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td><code>add()</code></td>
+                <td>Add item</td>
+            </tr>
+
+            <tr>
+                <td><code>update()</code></td>
+                <td>Add multiple items</td>
+            </tr>
+
+            <tr>
+                <td><code>remove()</code></td>
+                <td>Remove value</td>
+            </tr>
+
+            <tr>
+                <td><code>discard()</code></td>
+                <td>Remove safely</td>
+            </tr>
+
+            <tr>
+                <td><code>pop()</code></td>
+                <td>Remove random item</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Remove Duplicates Using Set
+        </h3>
+
+        <p>
+            Set removes duplicates but may lose order.
+        </p>
+
+        <pre>
+nums = [1,1,2,2,3]
+
+unique = list(set(nums))
+
+print(unique)
+</pre>
+
+    </div>
+
+    <div class="content" id="gil">
+
+        <h2 class="blue">
+            📌 <u>GIL (Global Interpreter Lock) in Python</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is GIL?
+        </h3>
+
+        <p>
+            GIL stands for:
+        </p>
+
+        <pre>
+Global Interpreter Lock
+</pre>
+
+        <p>
+            It is a lock in CPython that allows:
+        </p>
+
+        <p>
+            Only ONE thread to execute Python bytecode at a time per process.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Main Problem with GIL
+        </h3>
+
+        <p>
+            Python has:
+        </p>
+
+        <ul>
+
+            <li>✅ GIL (Global Interpreter Lock)</li>
+
+            <li>Only ONE thread executes Python bytecode at a time</li>
+
+            <li>Threads are not ideal for CPU-heavy tasks</li>
+
+        </ul>
+
+        <p>
+            Python rapidly switches between threads,
+            but they do not execute Python CPU instructions truly in parallel.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Important Interview Confusion
+        </h3>
+
+        <p>
+            GIL ≠ Single-threaded program
+        </p>
+
+        <p>
+            Python programs can still:
+        </p>
+
+        <ul>
+
+            <li>Create multiple threads</li>
+
+            <li>Switch between them</li>
+
+            <li>Run concurrently</li>
+
+        </ul>
+
+        <p>
+            But:
+        </p>
+
+        <p>
+            Only one thread executes Python bytecode at once.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Parallelism vs Concurrency
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>Concurrency</td>
+                <td>Multiple tasks make progress</td>
+            </tr>
+
+            <tr>
+                <td>Parallelism</td>
+                <td>Tasks run simultaneously</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. CPU-bound vs I/O-bound
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Task Type</th>
+                <th>Threading Good?</th>
+            </tr>
+
+            <tr>
+                <td>CPU-heavy tasks</td>
+                <td>❌ No</td>
+            </tr>
+
+            <tr>
+                <td>I/O-bound tasks</td>
+                <td>✅ Yes</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Language Comparison
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Language</th>
+                <th>Has GIL?</th>
+                <th>True Multithreading for CPU Tasks?</th>
+            </tr>
+
+            <tr>
+                <td>Python (CPython)</td>
+                <td>✅ Yes</td>
+                <td>❌ Limited</td>
+            </tr>
+
+            <tr>
+                <td>Java</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>C# / .NET</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+            </tr>
+
+            <tr>
+                <td>JavaScript (Node.js)</td>
+                <td>❌ No GIL</td>
+                <td>⚠️ Single-threaded event loop by default</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="content" id="types">
+
+        <h2 class="blue">
+            📌 <u>Python Tricky Interview Questions</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Empty List vs False
+        </h3>
+
+        <pre>
+print([] == False)
+
+# False
+</pre>
+
+        <p>
+            Python does not consider them equal.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. String Multiplication
+        </h3>
+
+        <pre>
+print("5" * 2)
+
+# 55
+</pre>
+
+        <pre>
+print(5 * "2")
+
+# 22222
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Power Operator Associativity
+        </h3>
+
+        <pre>
+print(2 ** 3 ** 2)
+
+# 512
+</pre>
+
+        <p>
+            <code>**</code> evaluates right to left.
+        </p>
+
+        <pre>
+2 ** (3 ** 2)
+
+2 ** 9
+
+512
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Set Intersection
+        </h3>
+
+        <pre>
+print({1,2,3} & {2,3,4})
+
+# {2, 3}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Set Union
+        </h3>
+
+        <pre>
+print({1,2} | {3,4})
+
+# {1, 2, 3, 4}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. List Comprehension
+        </h3>
+
+        <pre>
+print([i for i in range(3)])
+
+# [0, 1, 2]
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Local Variable Scope
+        </h3>
+
+        <pre>
+x = 10
+
+def test():
+
+    x = 5
+
+    print(x)
+
+test()
+
+# 5
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Lambda Type
+        </h3>
+
+        <pre>
+print(type(lambda x: x))
+
+# &lt;class 'function'&gt;
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Lambda Execution
+        </h3>
+
+        <pre>
+print((lambda x: x+1)(5))
+
+# 6
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Mutable Object Inside Tuple
+        </h3>
+
+        <pre>
+t = (1, 2, [3, 4])
+
+t[2].append(5)
+
+print(t)
+
+# (1, 2, [3, 4, 5])
+</pre>
+
+        <p>
+            Tuple is immutable,
+            but mutable objects inside tuple can still change.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            11. bool("") vs bool("False")
+        </h3>
+
+        <pre>
+bool("")
+
+# False
+</pre>
+
+        <pre>
+print(bool("False"))
+
+# True
+</pre>
+
+        <p>
+            Non-empty string is always True.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            12. None vs False
+        </h3>
+
+        <pre>
+print(None == False)
+
+# False
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            13. Division vs Floor Division
+        </h3>
+
+        <pre>
+print(10 / 3)
+
+print(10 // 3)
+
+# 3.3333333333333335
+# 3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            14. Final Interview Summary
+        </h3>
+
+        <ul>
+
+            <li><code>[] == False</code> → False (different types)</li>
+
+            <li><code>bool([])</code> → False (truthiness)</li>
+
+            <li><code>**</code> → right to left</li>
+
+            <li>Non-empty string → always True</li>
+
+            <li><code>None</code> is not equal to <code>False</code></li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            15. Falsy Values (VERY IMPORTANT)
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Value</th>
+                <th>Type</th>
+                <th>Why False</th>
+            </tr>
+
+            <tr>
+                <td><code>False</code></td>
+                <td>bool</td>
+                <td>Explicitly false</td>
+            </tr>
+
+            <tr>
+                <td><code>None</code></td>
+                <td>NoneType</td>
+                <td>No value</td>
+            </tr>
+
+            <tr>
+                <td><code>0</code></td>
+                <td>int</td>
+                <td>Zero</td>
+            </tr>
+
+            <tr>
+                <td><code>0.0</code></td>
+                <td>float</td>
+                <td>Zero</td>
+            </tr>
+
+            <tr>
+                <td><code>0j</code></td>
+                <td>complex</td>
+                <td>Zero</td>
+            </tr>
+
+            <tr>
+                <td><code>""</code></td>
+                <td>str</td>
+                <td>Empty</td>
+            </tr>
+
+            <tr>
+                <td><code>[]</code></td>
+                <td>list</td>
+                <td>Empty</td>
+            </tr>
+
+            <tr>
+                <td><code>()</code></td>
+                <td>tuple</td>
+                <td>Empty</td>
+            </tr>
+
+            <tr>
+                <td><code>{}</code></td>
+                <td>dict</td>
+                <td>Empty</td>
+            </tr>
+
+            <tr>
+                <td><code>set()</code></td>
+                <td>set</td>
+                <td>Empty</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            16. Truthy Values (VERY IMPORTANT)
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Value</th>
+                <th>Type</th>
+            </tr>
+
+            <tr>
+                <td><code>True</code></td>
+                <td>bool</td>
+            </tr>
+
+            <tr>
+                <td><code>"False"</code></td>
+                <td>str (non-empty)</td>
+            </tr>
+
+            <tr>
+                <td><code>" "</code></td>
+                <td>str (space is still content)</td>
+            </tr>
+
+            <tr>
+                <td><code>[0]</code></td>
+                <td>list</td>
+            </tr>
+
+            <tr>
+                <td><code>(0,)</code></td>
+                <td>tuple</td>
+            </tr>
+
+            <tr>
+                <td><code>{0}</code></td>
+                <td>set</td>
+            </tr>
+
+            <tr>
+                <td><code>-1</code></td>
+                <td>int</td>
+            </tr>
+
+            <tr>
+                <td><code>1</code></td>
+                <td>int</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            17. Tricky Comparisons
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Expression</th>
+                <th>Result</th>
+                <th>Reason</th>
+            </tr>
+
+            <tr>
+                <td><code>bool([])</code></td>
+                <td><code>False</code></td>
+                <td>Empty list</td>
+            </tr>
+
+            <tr>
+                <td><code>[] == False</code></td>
+                <td><code>False</code></td>
+                <td>Different types</td>
+            </tr>
+
+            <tr>
+                <td><code>bool("False")</code></td>
+                <td><code>True</code></td>
+                <td>Non-empty string</td>
+            </tr>
+
+            <tr>
+                <td><code>bool("0")</code></td>
+                <td><code>True</code></td>
+                <td>String, not number</td>
+            </tr>
+
+            <tr>
+                <td><code>bool(0)</code></td>
+                <td><code>False</code></td>
+                <td>Numeric zero</td>
+            </tr>
+
+            <tr>
+                <td><code>bool(None)</code></td>
+                <td><code>False</code></td>
+                <td>None is falsy</td>
+            </tr>
+
+            <tr>
+                <td><code>None == False</code></td>
+                <td><code>False</code></td>
+                <td>Not equal</td>
+            </tr>
+
+            <tr>
+                <td><code>bool([0])</code></td>
+                <td><code>True</code></td>
+                <td>List not empty</td>
+            </tr>
+
+            <tr>
+                <td><code>bool({})</code></td>
+                <td><code>False</code></td>
+                <td>Empty dict</td>
+            </tr>
+
+            <tr>
+                <td><code>bool(" ")</code></td>
+                <td><code>True</code></td>
+                <td>Space counts</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            18. Logical Operators Behavior
+        </h3>
+
+        <p>
+            Returns first falsy OR last value
+        </p>
+
+        <pre>
+0 and 10
+
+# 0
+</pre>
+
+        <pre>
+5 and 10
+
+# 10
+</pre>
+
+        <p>
+            Returns first truthy value
+        </p>
+
+        <pre>
+0 or 10
+
+# 10
+</pre>
+
+        <pre>
+5 or 10
+
+# 5
+</pre>
+
+        <pre>
+not 0
+
+# True
+</pre>
+
+        <pre>
+not "hi"
+
+# False
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            19. Golden Rules
+        </h3>
+
+        <ul>
+
+            <li>Empty → ❌ False</li>
+
+            <li>Non-empty → ✅ True</li>
+
+            <li>None → False</li>
+
+            <li>0 → False</li>
+
+            <li>Strings → only empty string is False</li>
+
+        </ul>
+
+    </div>
+
+    <div class="content" id="framework">
+
+        <h2 class="blue">
+            📌 <u>Flask vs FastAPI</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Flask</th>
+                <th>FastAPI</th>
+            </tr>
+
+            <tr>
+                <td>Type</td>
+                <td>Minimal web framework</td>
+                <td>Modern async API framework</td>
+            </tr>
+
+            <tr>
+                <td>Performance</td>
+                <td>Moderate</td>
+                <td>Very fast</td>
+            </tr>
+
+            <tr>
+                <td>Async support</td>
+                <td>Limited/manual</td>
+                <td>Native async support</td>
+            </tr>
+
+            <tr>
+                <td>Built-in validation</td>
+                <td>❌ No</td>
+                <td>✅ Yes (Pydantic)</td>
+            </tr>
+
+            <tr>
+                <td>Swagger/OpenAPI docs</td>
+                <td>Manual setup</td>
+                <td>Automatic</td>
+            </tr>
+
+            <tr>
+                <td>Learning curve</td>
+                <td>Easier</td>
+                <td>Slightly higher</td>
+            </tr>
+
+            <tr>
+                <td>Best for</td>
+                <td>Small apps/websites</td>
+                <td>APIs/microservices</td>
+            </tr>
+
+            <tr>
+                <td>Type hints usage</td>
+                <td>Optional</td>
+                <td>Core feature</td>
+            </tr>
+
+            <tr>
+                <td>WSGI/ASGI</td>
+                <td>WSGI</td>
+                <td>ASGI</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Flask Example
+        </h3>
+
+        <pre>
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def home():
+
+    return "Hello"
+
+
+app.run()
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Flask Characteristics
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td>Minimal</td>
+                <td>Add libraries as needed</td>
+            </tr>
+
+            <tr>
+                <td>Flexible</td>
+                <td>Choose your own architecture</td>
+            </tr>
+
+            <tr>
+                <td>Mature ecosystem</td>
+                <td>Huge community</td>
+            </tr>
+
+            <tr>
+                <td>Synchronous</td>
+                <td>Traditional request handling</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. FastAPI Example
+        </h3>
+
+        <pre>
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+async def home():
+
+    return {"message": "Hello"}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Major FastAPI Features
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Benefit</th>
+            </tr>
+
+            <tr>
+                <td>Async support</td>
+                <td>High concurrency</td>
+            </tr>
+
+            <tr>
+                <td>Automatic validation</td>
+                <td>Less boilerplate</td>
+            </tr>
+
+            <tr>
+                <td>Auto Swagger docs</td>
+                <td>Easy API testing</td>
+            </tr>
+
+            <tr>
+                <td>Type hints</td>
+                <td>Better development</td>
+            </tr>
+
+            <tr>
+                <td>High performance</td>
+                <td>Near Node.js/Go level</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Automatic API Documentation
+        </h3>
+
+        <p>
+            Huge FastAPI advantage.
+        </p>
+
+        <p>
+            Built-in:
+        </p>
+
+        <ul>
+
+            <li>Swagger UI</li>
+
+            <li>OpenAPI</li>
+
+            <li>ReDoc</li>
+
+        </ul>
+
+        <p>
+            Available automatically:
+        </p>
+
+        <pre>
+/docs
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. When to Use FastAPI
+        </h3>
+
+        <p>
+            Use FastAPI when:
+        </p>
+
+        <ul>
+
+            <li>Building REST APIs</li>
+
+            <li>High concurrency needed</li>
+
+            <li>Async DB/network calls</li>
+
+            <li>Microservices</li>
+
+            <li>Modern scalable backend</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Important Interview Questions
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+
+            <tr>
+                <td>Which is faster?</td>
+                <td>FastAPI</td>
+            </tr>
+
+            <tr>
+                <td>Which supports async natively?</td>
+                <td>FastAPI</td>
+            </tr>
+
+            <tr>
+                <td>Which auto-generates Swagger docs?</td>
+                <td>FastAPI</td>
+            </tr>
+
+            <tr>
+                <td>Which is simpler for beginners?</td>
+                <td>Flask</td>
+            </tr>
+
+            <tr>
+                <td>Which uses ASGI?</td>
+                <td>FastAPI</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="content" id="compare">
+
+        <h2 class="blue">
+            📌 <u>Python vs Node.js</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Python</th>
+                <th>Node.js</th>
+            </tr>
+
+            <tr>
+                <td>Language</td>
+                <td>Python</td>
+                <td>JavaScript</td>
+            </tr>
+
+            <tr>
+                <td>Runtime Model</td>
+                <td>Multi-paradigm</td>
+                <td>Event-driven</td>
+            </tr>
+
+            <tr>
+                <td>Performance</td>
+                <td>Moderate</td>
+                <td>Faster for I/O</td>
+            </tr>
+
+            <tr>
+                <td>Concurrency</td>
+                <td>Threads + asyncio</td>
+                <td>Event loop</td>
+            </tr>
+
+            <tr>
+                <td>CPU-heavy tasks</td>
+                <td>Better with multiprocessing</td>
+                <td>Not ideal</td>
+            </tr>
+
+            <tr>
+                <td>I/O-heavy tasks</td>
+                <td>Good</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>Learning curve</td>
+                <td>Easier</td>
+                <td>Moderate</td>
+            </tr>
+
+            <tr>
+                <td>Typing</td>
+                <td>Dynamic</td>
+                <td>Dynamic</td>
+            </tr>
+
+            <tr>
+                <td>Ecosystem</td>
+                <td>AI/Data/Automation</td>
+                <td>Web/backend ecosystem</td>
+            </tr>
+
+            <tr>
+                <td>Best for</td>
+                <td>AI, automation, APIs</td>
+                <td>Realtime APIs, microservices</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Detailed Comparison
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Area</th>
+                <th>Python</th>
+                <th>Node.js</th>
+            </tr>
+
+            <tr>
+                <td>Language</td>
+                <td>Python</td>
+                <td>JavaScript</td>
+            </tr>
+
+            <tr>
+                <td>Runtime</td>
+                <td>Interpreter</td>
+                <td>V8 Engine</td>
+            </tr>
+
+            <tr>
+                <td>Architecture</td>
+                <td>Multi-thread/process/async</td>
+                <td>Event-driven async</td>
+            </tr>
+
+            <tr>
+                <td>Concurrency</td>
+                <td>asyncio + threading + multiprocessing</td>
+                <td>Event loop + async</td>
+            </tr>
+
+            <tr>
+                <td>CPU-bound tasks</td>
+                <td>Better</td>
+                <td>Weak by default</td>
+            </tr>
+
+            <tr>
+                <td>I/O-bound tasks</td>
+                <td>Good</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>Performance</td>
+                <td>Moderate</td>
+                <td>Faster for APIs</td>
+            </tr>
+
+            <tr>
+                <td>Scalability</td>
+                <td>Good</td>
+                <td>Excellent for realtime</td>
+            </tr>
+
+            <tr>
+                <td>AI/ML</td>
+                <td>Dominates</td>
+                <td>Limited</td>
+            </tr>
+
+            <tr>
+                <td>Data Science</td>
+                <td>Excellent</td>
+                <td>Weak</td>
+            </tr>
+
+            <tr>
+                <td>Automation/Scripting</td>
+                <td>Excellent</td>
+                <td>Moderate</td>
+            </tr>
+
+            <tr>
+                <td>Realtime apps</td>
+                <td>Good</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>WebSockets</td>
+                <td>Supported</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>REST APIs</td>
+                <td>Excellent</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>Microservices</td>
+                <td>Excellent</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>Startup time</td>
+                <td>Slower</td>
+                <td>Faster</td>
+            </tr>
+
+            <tr>
+                <td>Memory usage</td>
+                <td>Higher</td>
+                <td>Lower</td>
+            </tr>
+
+            <tr>
+                <td>Package manager</td>
+                <td>pip</td>
+                <td>npm</td>
+            </tr>
+
+            <tr>
+                <td>Type safety</td>
+                <td>Optional (<code>typing</code>)</td>
+                <td>TypeScript ecosystem</td>
+            </tr>
+
+            <tr>
+                <td>Learning curve</td>
+                <td>Easier</td>
+                <td>Moderate</td>
+            </tr>
+
+            <tr>
+                <td>Best frameworks</td>
+                <td>FastAPI, Django</td>
+                <td>Express.js, NestJS</td>
+            </tr>
+
+            <tr>
+                <td>Async syntax</td>
+                <td><code>async/await</code></td>
+                <td><code>async/await</code></td>
+            </tr>
+
+            <tr>
+                <td>Multithreading</td>
+                <td>Limited by GIL</td>
+                <td>Worker Threads</td>
+            </tr>
+
+            <tr>
+                <td>Parallelism</td>
+                <td>Multiprocessing</td>
+                <td>Cluster/Workers</td>
+            </tr>
+
+            <tr>
+                <td>Best use case</td>
+                <td>AI, automation, backend</td>
+                <td>APIs, realtime systems</td>
+            </tr>
+
+            <tr>
+                <td>Enterprise usage</td>
+                <td>AI/data/backend</td>
+                <td>Full-stack/web APIs</td>
+            </tr>
+
+            <tr>
+                <td>Interview demand</td>
+                <td>Very high</td>
+                <td>Very high</td>
+            </tr>
+
+            <tr>
+                <td>DevOps scripting</td>
+                <td>Common</td>
+                <td>Less common</td>
+            </tr>
+
+            <tr>
+                <td>Community</td>
+                <td>Huge</td>
+                <td>Huge</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Scenario-based Choice
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Scenario</th>
+                <th>Better Choice</th>
+            </tr>
+
+            <tr>
+                <td>AI/ML/Data Science</td>
+                <td>Python</td>
+            </tr>
+
+            <tr>
+                <td>Automation/Scripting</td>
+                <td>Python</td>
+            </tr>
+
+            <tr>
+                <td>High concurrent APIs</td>
+                <td>Node.js</td>
+            </tr>
+
+            <tr>
+                <td>Realtime chat/socket apps</td>
+                <td>Node.js</td>
+            </tr>
+
+            <tr>
+                <td>Backend with Angular/React</td>
+                <td>Node.js</td>
+            </tr>
+
+            <tr>
+                <td>Scientific computing</td>
+                <td>Python</td>
+            </tr>
+
+            <tr>
+                <td>Enterprise full-stack</td>
+                <td>Node.js + TypeScript</td>
+            </tr>
+
+            <tr>
+                <td>Microservices</td>
+                <td>Both</td>
+            </tr>
+
+            <tr>
+                <td>Interview flexibility</td>
+                <td>Both together</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Final Summary
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Concept</th>
+                <th>Python</th>
+                <th>Node.js</th>
+            </tr>
+
+            <tr>
+                <td>Best strength</td>
+                <td>AI + flexibility</td>
+                <td>High-concurrency APIs</td>
+            </tr>
+
+            <tr>
+                <td>Runtime model</td>
+                <td>Multi-model</td>
+                <td>Event loop</td>
+            </tr>
+
+            <tr>
+                <td>CPU tasks</td>
+                <td>Better</td>
+                <td>Limited</td>
+            </tr>
+
+            <tr>
+                <td>I/O tasks</td>
+                <td>Good</td>
+                <td>Excellent</td>
+            </tr>
+
+            <tr>
+                <td>Async support</td>
+                <td>asyncio</td>
+                <td>Native architecture</td>
+            </tr>
+
+            <tr>
+                <td>Ecosystem</td>
+                <td>AI/automation</td>
+                <td>Web/full-stack</td>
+            </tr>
+
+        </table>
+
+
+        <h2 class="blue">
+            📌 <u>Features in JavaScript but NOT in Python</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>JavaScript</th>
+                <th>Python Equivalent</th>
+            </tr>
+
+            <tr>
+                <td>Prototype-based inheritance</td>
+                <td>✅ Native</td>
+                <td>❌ Uses class/object model</td>
+            </tr>
+
+            <tr>
+                <td>Event Loop Architecture</td>
+                <td>✅ Core runtime concept</td>
+                <td>❌ Not native like JS</td>
+            </tr>
+
+            <tr>
+                <td>DOM Manipulation</td>
+                <td>✅ Browser native</td>
+                <td>❌ Not available</td>
+            </tr>
+
+            <tr>
+                <td>Closures heavily used in frontend</td>
+                <td>✅ Very common</td>
+                <td>⚠️ Supported but less common</td>
+            </tr>
+
+            <tr>
+                <td><code>undefined</code> type</td>
+                <td>✅ Exists</td>
+                <td>❌ No equivalent</td>
+            </tr>
+
+            <tr>
+                <td>Hoisting</td>
+                <td>✅ <code>var</code>, function hoisting</td>
+                <td>❌ No hoisting</td>
+            </tr>
+
+            <tr>
+                <td>Async callbacks</td>
+                <td>✅ Core pattern</td>
+                <td>⚠️ Mainly async/await</td>
+            </tr>
+
+            <tr>
+                <td>Promise API</td>
+                <td>✅ Native (<code>Promise</code>)</td>
+                <td>⚠️ <code>asyncio.Future</code> similar</td>
+            </tr>
+
+            <tr>
+                <td>JSON-like object literals</td>
+                <td>✅ Extremely flexible</td>
+                <td>⚠️ Dicts are similar</td>
+            </tr>
+
+            <tr>
+                <td>First-class browser execution</td>
+                <td>✅ Runs in browser</td>
+                <td>❌ Cannot run directly</td>
+            </tr>
+
+            <tr>
+                <td>Single-threaded event-driven runtime</td>
+                <td>✅ Node.js model</td>
+                <td>❌ Different execution model</td>
+            </tr>
+
+            <tr>
+                <td><code>this</code> keyword dynamic binding</td>
+                <td>✅ Complex behavior</td>
+                <td>❌ <code>self</code> explicit</td>
+            </tr>
+
+            <tr>
+                <td>Weak typing/coercion</td>
+                <td>✅ Automatic coercion</td>
+                <td>❌ More strict</td>
+            </tr>
+
+            <tr>
+                <td>Symbols</td>
+                <td>✅ <code>Symbol()</code> primitive</td>
+                <td>❌ No direct equivalent</td>
+            </tr>
+
+            <tr>
+                <td>Proxy objects</td>
+                <td>✅ <code>Proxy</code> API</td>
+                <td>❌ No native equivalent</td>
+            </tr>
+
+            <tr>
+                <td>Optional chaining</td>
+                <td>✅ <code>obj?.a</code></td>
+                <td>✅ Added later (<code>getattr</code>, safe checks)</td>
+            </tr>
+
+            <tr>
+                <td>Destructuring syntax</td>
+                <td>✅ Very advanced</td>
+                <td>⚠️ Partial unpacking only</td>
+            </tr>
+
+        </table>
+
+
+
+        <h2 class="blue">
+            📌 <u>Features in Python but NOT in JavaScript</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Python</th>
+                <th>JavaScript Equivalent</th>
+            </tr>
+
+            <tr>
+                <td>Multiple inheritance</td>
+                <td>✅ Native</td>
+                <td>❌ Not supported directly</td>
+            </tr>
+
+            <tr>
+                <td>Decorators</td>
+                <td>✅ Very powerful</td>
+                <td>⚠️ Limited proposals/workarounds</td>
+            </tr>
+
+            <tr>
+                <td>Generators with <code>yield</code> advanced usage</td>
+                <td>✅ Strong</td>
+                <td>⚠️ Basic generators exist</td>
+            </tr>
+
+            <tr>
+                <td>List comprehensions</td>
+                <td>✅ Very elegant</td>
+                <td>⚠️ <code>.map()</code> similar</td>
+            </tr>
+
+            <tr>
+                <td>Tuple data type</td>
+                <td>✅ Immutable tuple</td>
+                <td>❌ No tuple type</td>
+            </tr>
+
+            <tr>
+                <td>Built-in slicing</td>
+                <td>✅ Powerful (<code>arr[1:5]</code>)</td>
+                <td>❌ Need methods</td>
+            </tr>
+
+            <tr>
+                <td>Indentation-based syntax</td>
+                <td>✅ Language feature</td>
+                <td>❌ Uses braces</td>
+            </tr>
+
+            <tr>
+                <td>Metaclasses</td>
+                <td>✅ Advanced OOP</td>
+                <td>❌ No equivalent</td>
+            </tr>
+
+            <tr>
+                <td>GIL-based threading model</td>
+                <td>✅ Exists</td>
+                <td>❌ Different runtime</td>
+            </tr>
+
+            <tr>
+                <td>Rich scientific ecosystem</td>
+                <td>✅ NumPy/Pandas</td>
+                <td>⚠️ Limited compared to Python</td>
+            </tr>
+
+            <tr>
+                <td>Easy multiprocessing</td>
+                <td>✅ Strong support</td>
+                <td>⚠️ Worker threads/processes</td>
+            </tr>
+
+            <tr>
+                <td>Operator overloading</td>
+                <td>✅ Powerful</td>
+                <td>⚠️ Limited</td>
+            </tr>
+
+            <tr>
+                <td>Named parameters</td>
+                <td>✅ Native</td>
+                <td>⚠️ Object destructuring workaround</td>
+            </tr>
+
+            <tr>
+                <td>Data classes</td>
+                <td>✅ <code>@dataclass</code></td>
+                <td>⚠️ Manual classes</td>
+            </tr>
+
+            <tr>
+                <td>Monkey patching flexibility</td>
+                <td>✅ Very flexible</td>
+                <td>⚠️ Possible but less common</td>
+            </tr>
+
+            <tr>
+                <td>Direct scripting simplicity</td>
+                <td>✅ Excellent</td>
+                <td>⚠️ Node setup needed</td>
+            </tr>
+
+            <tr>
+                <td><code>with</code> context managers</td>
+                <td>✅ Native</td>
+                <td>❌ No direct equivalent</td>
+            </tr>
+
+            <tr>
+                <td>Built-in REPL culture</td>
+                <td>✅ Strong</td>
+                <td>⚠️ Node REPL exists</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="content" id="present">
+
+        <h2 class="blue">
+            📌 <u>Present in Python but NOT in JavaScript</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>Python</th>
+                <th>JavaScript</th>
+            </tr>
+
+            <tr>
+                <td><code>elif</code> keyword</td>
+                <td>✅</td>
+                <td>❌ (<code>else if</code>)</td>
+            </tr>
+
+            <tr>
+                <td>List comprehensions</td>
+                <td>✅</td>
+                <td>⚠️ Partial equivalents</td>
+            </tr>
+
+            <tr>
+                <td>Multiple inheritance</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td>Decorators</td>
+                <td>✅</td>
+                <td>❌ Native support missing</td>
+            </tr>
+
+            <tr>
+                <td>Slicing syntax</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td>Tuple datatype</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td><code>with</code> statement</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+        </table>
+
+
+
+        <h2 class="blue">
+            📌 <u>Present in JavaScript but NOT in Python</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Feature</th>
+                <th>JavaScript</th>
+                <th>Python</th>
+            </tr>
+
+            <tr>
+                <td><code>do...while</code></td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td><code>switch</code> statement</td>
+                <td>✅</td>
+                <td>❌ (<code>match-case</code> added later)</td>
+            </tr>
+
+            <tr>
+                <td><code>++</code> / <code>--</code> operators</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td>Hoisting</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td><code>undefined</code></td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td>Prototype inheritance</td>
+                <td>✅</td>
+                <td>❌</td>
+            </tr>
+
+            <tr>
+                <td><code>NaN</code> special behavior</td>
+                <td>✅</td>
+                <td>⚠️ Different</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+
+
+    <script>
+
+        function openTab(tabId, element) {
+
+            let contents = document.getElementsByClassName('content');
+
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+
+            let tabs = document.getElementsByClassName('tab');
+
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+
+            document.getElementById(tabId).classList.add('active');
+
+            element.classList.add('active');
+        }
+
+    </script>
+
+</body>
+
+</html>
