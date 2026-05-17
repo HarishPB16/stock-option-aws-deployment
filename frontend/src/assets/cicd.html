@@ -1,0 +1,4269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MBD Project</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #f1f1f1;
+            padding: 10px;
+        }
+
+        .tab {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            color: blue;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            background: white;
+            color: red;
+            font-weight: bold;
+        }
+
+        .content {
+            display: none;
+            padding: 15px;
+            border-top: 1px solid #ccc;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .blue {
+            color: blue;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .highlight {
+            background: yellow;
+            padding: 5px;
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            .tab {
+                flex: 1 1 45%;
+                text-align: center;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="openTab('overview', this)">Overview</div>
+        <div class="tab" onclick="openTab('aws-setup', this)">AWS Setup</div>
+        <div class="tab" onclick="openTab('deep-backend', this)">Backend CI/CD</div>
+        <div class="tab" onclick="openTab('deep-frontend', this)">Frontend CI/CD</div>
+        <div class="tab" onclick="openTab('node-diagrams', this)">Flow NodeJs</div>
+        <div class="tab" onclick="openTab('angular-diagrams', this)">Flow Angular</div>
+        <div class="tab" onclick="openTab('common-issues', this)">Common Issues</div>
+        <div class="tab" onclick="openTab('local-run', this)">Local Run</div>
+        <div class="tab" onclick="openTab('imp', this)">IMP IQ</div>
+        <div class="tab" onclick="openTab('debug', this)">Debug</div>
+        <div class="tab" onclick="openTab('tag', this)">Tag</div>
+        <div class="tab" onclick="openTab('iq', this)">IQ</div>
+
+    </div>
+    <!-- AWS Account & IAM Setup -->
+    <!-- AWS Manual Deployment Guide -->
+    <div class="content active" id="overview">
+
+        <h2 class="blue">
+            📌 <u>Phase 1: AWS Manual Deployment Guide</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                Create an AWS account and login to AWS Console as
+                <b>Root User</b>.
+            </li>
+
+            <li>
+                Create an IAM Admin User with
+                <b>AdministratorAccess</b>
+                and use it for daily AWS activities.
+            </li>
+
+            <li>
+                Create
+                <b>github-actions-user</b>
+                for CI/CD and GitHub Actions deployment access.
+            </li>
+
+            <li>
+                Attach required IAM policies:
+                <ul>
+                    <li><b>AmazonEC2ContainerRegistryPowerUser</b></li>
+                    <li><b>AmazonS3FullAccess</b></li>
+                </ul>
+            </li>
+
+            <li>
+                Generate and securely save the
+                <b>AWS Access Key ID</b>
+                and
+                <b>AWS Secret Access Key</b>
+                for GitHub integration and automated deployments.
+            </li>
+            <li>
+                Configure GitHub repository secrets:
+                <ul>
+                    <li><b>AWS_ACCESS_KEY_ID</b></li>
+                    <li><b>AWS_SECRET_ACCESS_KEY</b></li>
+                    <li><b>AWS_REGION</b></li>
+                </ul>
+            </li>
+            <li>
+                Configure AWS Access and Secrets keys in Github
+                <ul>
+                    <li><b>GitHub -> Settings -> Secrets and variables -> Actions</b></li>
+                </ul>
+            </li>
+
+
+        </ol>
+
+        <!-- Phase 2: Backend Deployment -->
+
+
+        <h2 class="blue">
+            📌 <u>Phase 2: Backend Deployment (Docker &amp; App Runner)</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                Create an
+                <b>Elastic Container Registry (ECR)</b>
+                repository named
+                <b>stock-app-backend</b>
+                in your selected AWS region.
+            </li>
+
+            <li>
+                Copy and save the generated
+                <b>ECR Repository URI</b>
+                for Docker image deployment.
+            </li>
+
+            <li>
+                Create the GitHub Actions workflow file:
+                <b>.github/workflows/backend-deploy.yml</b>
+                for automated CI/CD deployment.
+            </li>
+
+            <li>
+                backend-deploy.yml Workflow:
+                <ul>
+                    <li>Trigger deployment when code is pushed to main branch</li>
+                    <li>Run only when backend files are changed</li>
+                    <li>Checkout latest source code from GitHub</li>
+                    <li>Configure AWS credentials using secrets</li>
+                    <li>Login to Amazon ECR</li>
+                    <li>Build Docker image</li>
+                    <li>Tag Docker image with ECR URI and latest tag</li>
+                    <li>Push Docker image to ECR</li>
+                    <li>Prepare backend image for AWS App Runner deployment</li>
+                </ul>
+            </li>
+
+
+            <li>
+                Create an
+                <b>AWS App Runner</b>
+                service using the Docker image from
+                <b>Amazon ECR</b>.
+            </li>
+
+            <li>
+                Add required environment variables such as:
+                <ul>
+                    <li><b>MONGO_URI</b></li>
+                    <li><b>OPENAI_API_KEY</b></li>
+                </ul>
+            </li>
+
+            <li>
+                Goto the
+                <b>MongoDB Atlas Network Access</b>
+                to allow:
+                <b>0.0.0.0/0</b>
+                for App Runner connectivity.
+            </li>
+
+            <li>
+                Commit and push the workflow file to GitHub and verify deployment
+                from the
+                <b>GitHub Actions</b>
+                tab.
+            </li>
+
+
+        </ol>
+
+        <!-- Phase 3 & 4: Frontend Deployment -->
+
+
+        <h2 class="blue">
+            📌 <u>Phase 3: Frontend Deployment (S3 &amp; CloudFront)</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                Update the Angular production environment file with the
+                <b>AWS App Runner Backend URL</b>
+                and run:
+                <b>npm run build</b>
+                to generate the production build.
+            </li>
+
+            <li>
+                Create an
+                <b>AWS S3 Bucket</b>,
+                enable
+                <b>Static Website Hosting</b>,
+                and configure:
+                <b>index.html</b>
+                as both Index and Error document.
+            </li>
+
+            <li>
+                Configure the
+                <b>S3 Bucket Policy</b>
+                to allow public read access for frontend hosting.
+            </li>
+
+            <li>
+                Create:
+                <b>.github/workflows/frontend-deploy.yml</b>
+                to automatically build and deploy the Angular application to S3.
+            </li>
+
+            <li>
+                frontend-deploy.yml Workflow
+                <ul>
+                    <li>Trigger deployment when code is pushed to main branch</li>
+                    <li>Run only when frontend files are changed</li>
+                    <li>Checkout latest source code from GitHub</li>
+                    <li>Setup Node.js environment</li>
+                    <li>Install frontend dependencies using npm ci</li>
+                    <li>Build Angular frontend application</li>
+                    <li>Configure AWS credentials using GitHub Secrets</li>
+                    <li>Upload frontend build files to AWS S3 bucket</li>
+                    <li>Remove old files from S3 using --delete option</li>
+                    <li>Optionally clear CloudFront cache after deployment</li>
+                </ul>
+            </li>
+
+            <li>
+                Create an
+                <b>AWS CloudFront Distribution</b>
+                for HTTPS support, caching, and faster global delivery.
+            </li>
+
+            <li>
+                Configure
+                <b>CloudFront Origin Access Control (OAC)</b>,
+                redirect HTTP to HTTPS,
+                and set:
+                <b>index.html</b>
+                as the default root object.
+            </li>
+
+            <li>
+                Configure custom
+                <b>403</b>
+                and
+                <b>404</b>
+                error responses in CloudFront to support Angular routing.
+            </li>
+
+            <li>
+                Update the backend
+                <b>FRONTEND_URL</b>
+                environment variable in
+                <b>AWS App Runner</b>
+                with the CloudFront domain URL and restart the service.
+            </li>
+
+        </ol>
+
+        <!-- Phase 4: Final Polish -->
+
+
+        <h2 class="blue">
+            📌 <u>Phase 4: Final Polish</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                CORS configuration : Update the backend
+                <b>FRONTEND_URL</b>
+                environment variable in
+                <b>AWS App Runner</b>
+                using your live
+                <b>CloudFront URL</b>.
+            </li>
+
+            <li>
+                Restart the
+                <b>AWS App Runner Service</b>
+                to apply the updated CORS configuration.
+            </li>
+
+            <li>
+                Verify frontend and backend connectivity using the live
+                <b>CloudFront</b>
+                and
+                <b>App Runner</b>
+                URLs.
+            </li>
+
+        </ol>
+
+        <p class="highlight">
+            👉 Your application is now fully separated and deployed on AWS!
+        </p>
+
+    </div>
+
+    <!-- AWS Manual Deployment Guide -->
+    <div id="aws-setup" class="content">
+
+        <h2 class="blue">
+            📌 <u>AWS Manual Deployment Guide</u>
+        </h2>
+
+        <p>
+            This guide provides a comprehensive, step-by-step walkthrough
+            for manually deploying the Stock Option App
+            (Angular frontend + Node.js backend) to AWS.
+        </p>
+
+        <!-- Prerequisites -->
+        <h3 class="blue">Prerequisites</h3>
+
+        <ul>
+            <li>An active GitHub account where your code is hosted</li>
+            <li>A basic understanding of navigating web interfaces</li>
+        </ul>
+
+        <hr />
+
+        <!-- Phase 1 -->
+        <h2 class="blue">
+            📌 <u>Phase 1: AWS Account & IAM Setup</u>
+        </h2>
+
+        <!-- Create AWS -->
+        <h3 class="blue">1. Create an AWS Account</h3>
+
+        <ol>
+
+            <li>
+                Go to:
+                <pre>
+https://aws.amazon.com
+            </pre>
+
+                and click:
+                <pre>
+Create an AWS Account
+            </pre>
+            </li>
+
+            <li>
+                Follow the prompts to enter:
+                <ul>
+                    <li>Email</li>
+                    <li>Password</li>
+                    <li>Billing Information</li>
+                </ul>
+
+                <p>
+                    AWS provides a generous Free Tier for the first 12 months.
+                </p>
+            </li>
+
+            <li>
+                Once created, sign in to:
+                <pre>
+AWS Management Console
+            </pre>
+
+                as:
+                <pre>
+Root User
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- IAM User -->
+        <h3 class="blue">2. Create an IAM Admin User</h3>
+
+        <p class="highlight">
+            👉 It is a security best practice to never use your Root User for day-to-day tasks.
+        </p>
+
+        <ol>
+
+            <li>
+                In the AWS Console search bar, search:
+                <pre>
+IAM
+            </pre>
+            </li>
+
+            <li>
+                In the left navigation pane:
+                <pre>
+Users → Add users
+            </pre>
+            </li>
+
+            <li>
+                User Details:
+                <ul>
+                    <li>Name the user:
+                        <pre>
+admin-user
+                    </pre>
+                    </li>
+
+                    <li>
+                        Check:
+                        <pre>
+Provide user access to the AWS Management Console
+                    </pre>
+                    </li>
+
+                    <li>
+                        Select:
+                        <pre>
+I want to create an IAM user
+                    </pre>
+                    </li>
+
+                    <li>
+                        Choose custom password
+                    </li>
+
+                    <li>
+                        Optional:
+                        <pre>
+Uncheck:
+User must create a new password at next sign-in
+                    </pre>
+                    </li>
+
+                    <li>
+                        Click:
+                        <pre>
+Next
+                    </pre>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                Permissions:
+                <pre>
+Attach policies directly
+            </pre>
+            </li>
+
+            <li>
+                Search and select:
+                <pre>
+AdministratorAccess
+            </pre>
+
+                Then click:
+                <pre>
+Next
+            </pre>
+            </li>
+
+            <li>
+                Review configuration and click:
+                <pre>
+Create user
+            </pre>
+            </li>
+
+            <li>
+                Important:
+                <ul>
+                    <li>Copy the Console sign-in URL</li>
+                    <li>Logout from Root account</li>
+                    <li>Login again using:
+                        <pre>
+admin-user
+                    </pre>
+                    </li>
+                </ul>
+            </li>
+
+        </ol>
+
+        <!-- IAM User for GitHub Actions -->
+
+        <h3 class="blue">
+            3. Create an IAM User for GitHub Actions (Programmatic Access)
+        </h3>
+
+        <p class="highlight">
+            👉 This user allows GitHub to automatically build and push Docker images to AWS.
+        </p>
+
+        <ol>
+
+            <li>
+                Still inside IAM:
+                <pre>
+Users → Add users
+            </pre>
+            </li>
+
+            <li>
+                Name the user:
+                <pre>
+github-actions-user
+            </pre>
+
+                Then click:
+                <pre>
+Next
+            </pre>
+            </li>
+
+            <li>
+                Permissions:
+                <pre>
+Attach policies directly
+            </pre>
+            </li>
+
+            <li>
+                Search and attach the following policies:
+
+                <ul>
+
+                    <li>
+                        <pre>
+AmazonEC2ContainerRegistryPowerUser
+                    </pre>
+
+                        <p>
+                            Allows pushing backend Docker images into ECR.
+                        </p>
+                    </li>
+
+                    <li>
+                        <pre>
+AmazonS3FullAccess
+                    </pre>
+
+                        <p>
+                            Allows syncing frontend Angular build into S3 bucket.
+                        </p>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Next → Create user
+            </pre>
+            </li>
+
+            <li>
+                Open the newly created:
+                <pre>
+github-actions-user
+            </pre>
+            </li>
+
+            <li>
+                Navigate to:
+                <pre>
+Security credentials
+            </pre>
+            </li>
+
+            <li>
+                Scroll to:
+                <pre>
+Access keys
+            </pre>
+
+                Then click:
+                <pre>
+Create access key
+            </pre>
+            </li>
+
+            <li>
+                Select:
+                <pre>
+Third-party service
+            </pre>
+
+                Acknowledge warning and click:
+                <pre>
+Next → Create access key
+            </pre>
+            </li>
+
+            <li>
+                <b>CRITICAL:</b>
+
+                <ul>
+
+                    <li>
+                        Copy:
+                        <pre>
+Access key ID
+                    </pre>
+                    </li>
+
+                    <li>
+                        Copy:
+                        <pre>
+Secret access key
+                    </pre>
+                    </li>
+
+                </ul>
+
+                <p class="highlight">
+                    👉 Secret access key is shown only once and will never appear again.
+                </p>
+            </li>
+
+        </ol>
+
+    </div>
+
+    <!-- Phase 2 Backend Deployment -->
+    <div id="deep-backend" class="content">
+
+        <h2 class="blue">
+            📌 <u>Phase 2: Backend Deployment (Docker & App Runner)</u>
+        </h2>
+
+        <!-- ECR -->
+        <h3 class="blue">1. Create an Elastic Container Registry (ECR)</h3>
+
+        <p class="highlight">
+            👉 This is where your built Docker images will be stored.
+        </p>
+
+        <ol>
+
+            <li>
+                Choose AWS region
+            </li>
+
+            <li>
+                In AWS Console search bar, search:
+                <pre>
+ECR
+            </pre>
+
+                Then open:
+                <pre>
+Elastic Container Registry
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create repository
+            </pre>
+            </li>
+
+            <li>
+                Visibility settings:
+                <pre>
+Private
+            </pre>
+            </li>
+
+            <li>
+                Repository name:
+                <pre>
+stock-app-backend
+            </pre>
+            </li>
+
+            <li>
+                Scroll bottom and click:
+                <pre>
+Create repository
+            </pre>
+            </li>
+
+            <li>
+                Copy repository URI:
+                <pre>
+930698106431.dkr.ecr.ap-southeast-2.amazonaws.com/stock-app-backend
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- GitHub Secrets -->
+        <h3 class="blue">2. Configure GitHub Secrets</h3>
+
+        <p class="highlight">
+            👉 GitHub needs AWS credentials to push Docker images into ECR.
+        </p>
+
+        <ol>
+
+            <li>
+                Open:
+                <pre>
+GitHub.com
+            </pre>
+            </li>
+
+            <li>
+                Open your repository:
+                <pre>
+https://github.com/&lt;your-username&gt;/&lt;your-repo&gt;
+            </pre>
+            </li>
+
+            <li>
+                Navigate:
+                <pre>
+Settings
+    ↓
+Secrets and variables
+    ↓
+Actions
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+New repository secret
+            </pre>
+            </li>
+
+            <li>
+                Go to:
+                <pre>
+IAM
+  ↓
+Users
+  ↓
+Your-IAM-git-user
+            </pre>
+            </li>
+
+            <li>
+                Add secrets exactly as below:
+
+                <ul>
+
+                    <li>
+                        <b>Name:</b>
+                        <pre>
+AWS_ACCESS_KEY_ID
+                    </pre>
+
+                        <b>Value:</b>
+                        <pre>
+Paste Access Key ID
+                    </pre>
+                    </li>
+
+                    <li>
+                        <b>Name:</b>
+                        <pre>
+AWS_SECRET_ACCESS_KEY
+                    </pre>
+
+                        <b>Value:</b>
+                        <pre>
+Paste Secret Access Key
+                    </pre>
+                    </li>
+
+                    <li>
+                        <b>Name:</b>
+                        <pre>
+AWS_REGION
+                    </pre>
+
+                        <b>Value:</b>
+                        <pre>
+ap-south-1
+or
+us-east-1
+                    </pre>
+                    </li>
+
+                </ul>
+            </li>
+
+        </ol>
+
+        <!-- GitHub Workflow -->
+        <h3 class="blue">3. Setup GitHub Actions Workflow</h3>
+
+        <ol>
+
+            <li>
+                Create folder structure in project root:
+            </li>
+
+        </ol>
+
+        <pre>
+.github/
+  └── workflows/
+    </pre>
+
+        <ol start="2">
+
+            <li>
+                Create file:
+            </li>
+
+        </ol>
+
+        <pre>
+backend-deploy.yml
+    </pre>
+
+        <ol start="3">
+
+            <li>
+                Paste GitHub Actions workflow code
+            </li>
+
+        </ol>
+
+        <!-- YAML -->
+        <h3 class="blue">Important YAML Concept</h3>
+
+        <p class="highlight">
+            👉 YAML indentation is absolutely mandatory.
+        </p>
+
+        <p>
+            YAML is whitespace-sensitive.
+        </p>
+
+        <pre>
+Wrong indentation
+    ↓
+Workflow parsing failure
+    </pre>
+
+        <p>
+            GitHub Actions workflows depend heavily on proper indentation.
+        </p>
+
+        <!-- Backend Deploy Workflow -->
+
+
+        <h3 class="blue">GitHub Actions Workflow</h3>
+
+        <pre>
+name: Deploy Backend to ECR
+
+on:
+
+  push:
+
+    branches: ["main"]
+
+    # Triggers on pushing to the main branch
+
+    paths:
+
+      - "backend/**"
+
+      # Only triggers if files in backend change
+
+jobs:
+
+  build-and-push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+
+        uses: aws-actions/configure-aws-credentials@v2
+
+        with:
+
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+
+        id: login-ecr
+
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+
+        env:
+
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+
+          ECR_REPOSITORY: stock-app-backend
+
+          IMAGE_TAG: latest
+
+        run: |
+
+          cd backend
+
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    </pre>
+
+        <ol start="3">
+
+            <li>
+                Commit and push this file to GitHub
+            </li>
+
+            <li>
+                Open:
+                <pre>
+GitHub → Actions Tab
+            </pre>
+            </li>
+
+            <li>
+                Watch GitHub Actions:
+                <ul>
+                    <li>Build Docker image</li>
+                    <li>Authenticate into AWS ECR</li>
+                    <li>Push Docker image into ECR</li>
+                </ul>
+            </li>
+
+        </ol>
+
+        <!-- Deploy to AWS App Runner -->
+
+
+        <h3 class="blue">4. Deploy to AWS App Runner</h3>
+
+        <p class="highlight">
+            👉 App Runner takes your Docker image and runs it on the internet with an HTTPS URL.
+        </p>
+
+        <ol>
+
+            <li>
+                Once GitHub Action succeeds, open AWS Console and search:
+                <pre>
+App Runner
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create an App Runner service
+            </pre>
+            </li>
+
+            <li>
+                Source:
+                <ul>
+
+                    <li>Select:
+                        <pre>
+Container registry
+                    </pre>
+                    </li>
+
+                    <li>Select:
+                        <pre>
+Amazon ECR
+                    </pre>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Browse
+            </pre>
+
+                Select image:
+                <pre>
+stock-app-backend
+            </pre>
+
+                Leave tag as:
+                <pre>
+latest
+            </pre>
+            </li>
+
+            <li>
+                Deployment settings:
+
+                <ul>
+
+                    <li>
+                        Choose:
+                        <pre>
+Automatic
+                    </pre>
+
+                        <p>
+                            Automatically redeploys when new Docker image is pushed.
+                        </p>
+                    </li>
+
+                    <li>
+                        ECR Access Role:
+                        <pre>
+Create new service role
+                    </pre>
+                    </li>
+
+                </ul>
+
+                Then click:
+                <pre>
+Next
+            </pre>
+            </li>
+
+            <li>
+                Service name:
+                <pre>
+stock-app-backend-service
+            </pre>
+            </li>
+
+            <li>
+                Port:
+                <pre>
+3000
+            </pre>
+
+                <p>
+                    Must match Express / Node.js application port.
+                </p>
+            </li>
+
+            <li>
+                Environment Variables:
+
+                <p class="highlight">
+                    👉 Most important step.
+                </p>
+
+                <p>
+                    Expand environment variables section and add:
+                </p>
+
+                <ul>
+
+                    <li>
+                        <pre>
+MONGO_URI
+                    </pre>
+
+                        MongoDB Atlas connection string
+                    </li>
+
+                    <li>
+                        <pre>
+OPENAI_API_KEY
+                    </pre>
+
+                        OpenAI API key
+                    </li>
+
+                    <li>
+                        <pre>
+ANTHROPIC_API_KEY
+                    </pre>
+
+                        Anthropic API key
+                    </li>
+
+                    <li>
+                        <pre>
+DEEPSEEK_API_KEY
+                    </pre>
+
+                        DeepSeek API key
+                    </li>
+
+                    <li>
+                        <pre>
+FRONTEND_URL
+                    </pre>
+
+                        Frontend URL for CORS configuration
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Scroll bottom and click:
+                <pre>
+Next
+            </pre>
+
+                Review settings and click:
+                <pre>
+Create & deploy
+            </pre>
+            </li>
+
+            <li>
+                Wait:
+                <pre>
+5-10 minutes
+            </pre>
+
+                Once status becomes:
+                <pre>
+Running
+            </pre>
+
+                copy:
+                <pre>
+Default domain URL
+            </pre>
+            </li>
+
+        </ol>
+
+        <h3 class="blue">Default Domain Example</h3>
+
+        <pre>
+https://b3pbays3fv.ap-south-1.awsapprunner.com
+    </pre>
+
+        <p>
+            This becomes your live backend API URL.
+        </p>
+
+        <!-- MongoDB -->
+        <h3 class="blue">5. Update MongoDB Network Access</h3>
+
+        <ol>
+
+            <li>
+                Open:
+                <pre>
+MongoDB Atlas
+            </pre>
+            </li>
+
+            <li>
+                Navigate:
+                <pre>
+Network Access
+            </pre>
+            </li>
+
+            <li>
+                Allow traffic from:
+                <pre>
+0.0.0.0/0
+            </pre>
+            </li>
+
+        </ol>
+
+        <p>
+            App Runner IP addresses are dynamic,
+            so public access is required unless using advanced VPC networking.
+        </p>
+
+        <p class="highlight">
+            👉 Ensure MongoDB uses strong username/password authentication.
+        </p>
+
+    </div>
+
+    <!-- Frontend Deployment -->
+    <div id="deep-frontend" class="content">
+
+        <h2 class="blue">
+            📌 <u>Phase 3: Frontend Deployment (S3 & CloudFront)</u>
+        </h2>
+
+        <!-- Update Frontend -->
+        <h3 class="blue">1. Update Frontend Code</h3>
+
+        <ol>
+
+            <li>
+                Open:
+                <pre>
+frontend/src/environments/environment.prod.ts
+            </pre>
+
+                Update:
+                <pre>
+apiUrl
+            </pre>
+
+                to App Runner backend URL.
+            </li>
+
+        </ol>
+
+        <pre>
+export const environment = {
+
+  production: true,
+
+  apiUrl: "https://YOUR_APP_RUNNER_URL.us-east-1.awsapprunner.com/api/v1",
+
+};
+    </pre>
+
+        <ol start="2">
+
+            <li>
+                Run production build locally:
+            </li>
+
+        </ol>
+
+        <pre>
+cd frontend
+
+npm run build
+    </pre>
+
+        <p>
+            Angular generates production build inside:
+        </p>
+
+        <pre>
+dist/frontend/browser
+    </pre>
+
+        <!-- S3 -->
+        <h3 class="blue">2. Create S3 Bucket</h3>
+
+        <ol>
+
+            <li>
+                Open AWS Console and search:
+                <pre>
+S3
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create bucket
+            </pre>
+            </li>
+
+            <li>
+                Bucket name:
+                <pre>
+my-stock-option-app-frontend-123
+            </pre>
+
+                <p>
+                    Bucket name must be globally unique.
+                </p>
+            </li>
+
+            <li>
+                Object Ownership:
+                <pre>
+ACLs disabled
+            </pre>
+            </li>
+
+            <li>
+                Block Public Access:
+
+                <ul>
+
+                    <li>
+                        Uncheck:
+                        <pre>
+Block all public access
+                    </pre>
+                    </li>
+
+                    <li>
+                        Acknowledge warning
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create bucket
+            </pre>
+            </li>
+
+            <li>
+                Open newly created bucket
+            </li>
+
+            <li>
+                Navigate:
+                <pre>
+Properties
+            </pre>
+            </li>
+
+            <li>
+                Scroll bottom to:
+                <pre>
+Static website hosting
+            </pre>
+
+                Click:
+                <pre>
+Edit
+            </pre>
+            </li>
+
+            <li>
+                Select:
+                <pre>
+Enable
+            </pre>
+            </li>
+
+            <li>
+                Set:
+                <pre>
+Index document = index.html
+
+Error document = index.html
+            </pre>
+
+                <p class="highlight">
+                    👉 Required for Angular routing.
+                </p>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Save
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- S3 Bucket Policy -->
+
+
+        <h3 class="blue">3. Set S3 Bucket Policy</h3>
+
+        <ol>
+
+            <li>
+                Open bucket:
+                <pre>
+Permissions
+            </pre>
+            </li>
+
+            <li>
+                Under:
+                <pre>
+Bucket policy
+            </pre>
+
+                click:
+                <pre>
+Edit
+            </pre>
+            </li>
+
+            <li>
+                Paste the following JSON.
+            </li>
+
+        </ol>
+
+        <pre>
+{
+  "Version": "2012-10-17",
+
+  "Statement": [
+
+    {
+
+      "Sid": "PublicReadGetObject",
+
+      "Effect": "Allow",
+
+      "Principal": "*",
+
+      "Action": "s3:GetObject",
+
+      "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+
+    }
+
+  ]
+}
+    </pre>
+
+        <p>
+            Replace:
+        </p>
+
+        <pre>
+YOUR_BUCKET_NAME
+    </pre>
+
+        <p>
+            with your actual S3 bucket name.
+        </p>
+
+        <ol start="4">
+
+            <li>
+                Click:
+                <pre>
+Save
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- Frontend GitHub Actions -->
+        <h3 class="blue">4. Configure GitHub Actions for Automated UI Deployment</h3>
+
+        <p class="highlight">
+            👉 Instead of manually uploading files,
+            GitHub automatically deploys frontend to S3 whenever code is pushed.
+        </p>
+
+        <ol>
+
+            <li>
+                Open:
+                <pre>
+GitHub.com
+            </pre>
+            </li>
+
+            <li>
+                Navigate:
+                <pre>
+Settings
+    ↓
+Secrets and variables
+    ↓
+Actions
+            </pre>
+            </li>
+
+            <li>
+                Existing secrets should already exist:
+                <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+New repository secret
+            </pre>
+            </li>
+
+            <li>
+                Add new secret:
+
+                <ul>
+
+                    <li>
+                        <b>Name:</b>
+                        <pre>
+AWS_S3_BUCKET
+                    </pre>
+                    </li>
+
+                    <li>
+                        <b>Value:</b>
+                        <pre>
+my-stock-option-app-frontend-123
+                    </pre>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                In local project:
+                <pre>
+.github/workflows/frontend-deploy.yml
+            </pre>
+
+                already contains frontend deployment instructions.
+            </li>
+
+            <li>
+                Commit and push code into:
+                <pre>
+main
+            </pre>
+
+                branch.
+            </li>
+
+            <li>
+                Open:
+                <pre>
+GitHub → Actions Tab
+            </pre>
+
+                Monitor:
+                <pre>
+Deploy Frontend to S3
+            </pre>
+            </li>
+
+            <li>
+                Once deployment succeeds:
+                <ul>
+
+                    <li>
+                        Open S3 Bucket
+                    </li>
+
+                    <li>
+                        Navigate:
+                        <pre>
+Properties
+                    </pre>
+                    </li>
+
+                    <li>
+                        Scroll bottom
+                    </li>
+
+                    <li>
+                        Click:
+                        <pre>
+Bucket website endpoint
+                    </pre>
+                    </li>
+
+                </ul>
+            </li>
+
+        </ol>
+
+        <p class="highlight">
+            👉 Your Angular frontend is now live on AWS S3 static website hosting.
+        </p>
+
+        <!-- CloudFront Setup -->
+
+
+        <h3 class="blue">5. Setup CloudFront (Optional but highly recommended for HTTPS)</h3>
+
+        <p class="highlight">
+            👉 S3 static websites provide only HTTP.
+            CloudFront adds HTTPS, caching, and CDN acceleration.
+        </p>
+
+        <ol>
+
+            <li>
+                In AWS Console search:
+                <pre>
+CloudFront
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create distribution
+            </pre>
+            </li>
+
+            <li>
+                Origin domain:
+
+                <ul>
+
+                    <li>
+                        Select S3 bucket from dropdown
+                    </li>
+
+                    <li>
+                        IMPORTANT:
+                        <pre>
+Select:
+YOUR_BUCKET.s3.amazonaws.com
+                    </pre>
+
+                        <p>
+                            Do NOT select:
+                        </p>
+
+                        <pre>
+YOUR_BUCKET.s3-website-...
+                    </pre>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Origin access:
+
+                <ul>
+
+                    <li>
+                        Select:
+                        <pre>
+Origin access control settings (recommended)
+                    </pre>
+                    </li>
+
+                    <li>
+                        Click:
+                        <pre>
+Create control setting
+                    </pre>
+                    </li>
+
+                    <li>
+                        Save configuration
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Default cache behavior:
+
+                <p>
+                    Under Viewer:
+                </p>
+
+                <pre>
+Viewer protocol policy
+    ↓
+Redirect HTTP to HTTPS
+            </pre>
+            </li>
+
+            <li>
+                Web Application Firewall (WAF):
+
+                <pre>
+Do not enable security protections
+            </pre>
+
+                <p>
+                    Optional paid security feature.
+                </p>
+            </li>
+
+            <li>
+                Default root object:
+                <pre>
+index.html
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create distribution
+            </pre>
+            </li>
+
+            <li>
+                AWS shows yellow banner requesting S3 bucket policy update.
+
+                <ul>
+
+                    <li>
+                        Click:
+                        <pre>
+Copy policy
+                    </pre>
+                    </li>
+
+                    <li>
+                        Open S3 bucket permissions
+                    </li>
+
+                    <li>
+                        Edit:
+                        <pre>
+Bucket policy
+                    </pre>
+                    </li>
+
+                    <li>
+                        Remove old public policy
+                    </li>
+
+                    <li>
+                        Paste CloudFront-generated policy
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Wait:
+                <pre>
+5-10 minutes
+            </pre>
+
+                until distribution status becomes:
+                <pre>
+Enabled
+            </pre>
+            </li>
+
+            <li>
+                Open application using:
+                <pre>
+Distribution domain name
+            </pre>
+
+                Example:
+                <pre>
+d123456abcdef.cloudfront.net
+            </pre>
+            </li>
+
+        </ol>
+
+        <!-- Angular Fix -->
+        <h3 class="blue">Angular Routing Fix in CloudFront</h3>
+
+        <p class="highlight">
+            👉 Required for Angular page refresh and direct URL access.
+        </p>
+
+        <ol>
+
+            <li>
+                Open CloudFront Distribution
+            </li>
+
+            <li>
+                Navigate:
+                <pre>
+Error pages
+            </pre>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create custom error response
+            </pre>
+            </li>
+
+            <li>
+                Configure:
+
+                <ul>
+
+                    <li>
+                        HTTP Error Code:
+                        <pre>
+404: Not Found
+                    </pre>
+                    </li>
+
+                    <li>
+                        Customize Error Response:
+                        <pre>
+Yes
+                    </pre>
+                    </li>
+
+                    <li>
+                        Response Page Path:
+                        <pre>
+/index.html
+                    </pre>
+                    </li>
+
+                    <li>
+                        HTTP Response Code:
+                        <pre>
+200: OK
+                    </pre>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                Click:
+                <pre>
+Create
+            </pre>
+            </li>
+
+            <li>
+                Repeat same steps for:
+                <pre>
+403
+            </pre>
+            </li>
+
+        </ol>
+
+        <p class="highlight">
+            👉 This ensures Angular routing works correctly after page refresh.
+        </p>
+
+        <h2>Phase 4: Final Polish</h2>
+
+        <ol>
+            <li>
+                <strong>Update Backend CORS:</strong>
+                Now that your frontend has a live CloudFront URL, go back to your App Runner service settings.
+                Under <strong>Configuration → Environment variables</strong>, update the
+                <code>FRONTEND_URL</code> to match your CloudFront URL
+                (for example:
+                <code>https://d123456abcdef.cloudfront.net</code>)
+                without a trailing slash.
+                Restart the App Runner service.
+            </li>
+        </ol>
+
+        <div class="note">
+            <em>Your application is now fully separated and deployed on AWS!</em>
+        </div>
+    </div>
+
+    <!-- Common Deployment Issues -->
+    <div id="common-issues" class="content">
+
+        <h2 class="blue">
+            📌 <u>Common CI/CD & AWS Deployment Issues</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                <b>YAML Indentation Errors</b>
+                <ul>
+                    <li><b>Mistake:</b> Wrong spacing or tabs inside GitHub workflow YAML files.</li>
+                    <li><b>Symptom:</b> Invalid workflow file or YAML syntax errors.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Wrong AWS Region</b>
+                <ul>
+                    <li><b>Mistake:</b> AWS services created in different regions than configured in GitHub Secrets.
+                    </li>
+                    <li><b>Symptom:</b> Repository not found or bucket does not exist.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Wrong AWS Credentials</b>
+                <ul>
+                    <li><b>Mistake:</b> Invalid or expired AWS Access Key and Secret Key.</li>
+                    <li><b>Symptom:</b> InvalidClientTokenId or SignatureDoesNotMatch errors.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Missing IAM Permissions</b>
+                <ul>
+                    <li><b>Mistake:</b> Required IAM policies are not attached.</li>
+                    <li><b>Symptom:</b> AccessDeniedException or ECR/S3 permission failures.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Dockerfile or Build Context Issues</b>
+                <ul>
+                    <li><b>Mistake:</b> Missing Dockerfile or incorrect build directory.</li>
+                    <li><b>Symptom:</b> Docker build fails with Dockerfile not found.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Wrong ECR Repository Name</b>
+                <ul>
+                    <li><b>Mistake:</b> Repository name mismatch between AWS and GitHub Actions.</li>
+                    <li><b>Symptom:</b> Repository does not exist or name unknown errors.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>App Runner Port Mismatch</b>
+                <ul>
+                    <li><b>Mistake:</b> App Runner port differs from Node.js application port.</li>
+                    <li><b>Symptom:</b> Health check failed or deployment rollback.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>MongoDB Network Access Issues</b>
+                <ul>
+                    <li><b>Mistake:</b> MongoDB Atlas whitelist not configured for App Runner.</li>
+                    <li><b>Symptom:</b> MongoNetworkError or IP not whitelisted.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Environment Variable Issues</b>
+                <ul>
+                    <li><b>Mistake:</b> Missing or incorrect environment variables.</li>
+                    <li><b>Symptom:</b> Backend crashes, missing API keys, or API failures.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>S3 Bucket Policy or Public Access Issues</b>
+                <ul>
+                    <li><b>Mistake:</b> Public access blocked or bucket policy missing.</li>
+                    <li><b>Symptom:</b> 403 Forbidden error on website.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Angular Routing Configuration Missing</b>
+                <ul>
+                    <li><b>Mistake:</b> index.html not configured for error handling.</li>
+                    <li><b>Symptom:</b> 404 Access Denied on page refresh.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>CloudFront Cache Issues</b>
+                <ul>
+                    <li><b>Mistake:</b> Cached old frontend files after deployment.</li>
+                    <li><b>Symptom:</b> Old UI or outdated API URLs still visible.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Wrong CORS FRONTEND_URL</b>
+                <ul>
+                    <li><b>Mistake:</b> Backend still points to localhost instead of CloudFront.</li>
+                    <li><b>Symptom:</b> Browser blocks API requests due to CORS policy.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Wrong Angular Build Folder Uploaded</b>
+                <ul>
+                    <li><b>Mistake:</b> Incorrect dist folder uploaded to S3.</li>
+                    <li><b>Symptom:</b> Blank page, missing assets, or broken UI.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>GitHub Workflow Path Issues</b>
+                <ul>
+                    <li><b>Mistake:</b> Incorrect paths syntax in GitHub Actions.</li>
+                    <li><b>Symptom:</b> Workflow never triggers after push.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>GitHub Secret Name Mismatch</b>
+                <ul>
+                    <li><b>Mistake:</b> Secret name differs from YAML reference.</li>
+                    <li><b>Symptom:</b> Deployment variables become empty or null.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Missing Frontend Build Artifacts</b>
+                <ul>
+                    <li><b>Mistake:</b> Frontend build not generated before deployment.</li>
+                    <li><b>Symptom:</b> Empty website or missing uploaded files.</li>
+                </ul>
+            </li>
+
+        </ol>
+
+    </div>
+
+    <!-- Fast Debugging Guide -->
+    <div class="content" id="debug">
+
+        <h2 class="blue">
+            📌 <u>How to Debug Fast</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                <b>Check GitHub Actions Logs</b>
+                <ul>
+                    <li>Go to GitHub Repository → Actions → Failed Workflow → Logs</li>
+                    <li>Identify YAML errors, Docker failures, AWS authentication issues, or missing secrets.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Check AWS App Runner Logs</b>
+                <ul>
+                    <li>Open AWS Console → App Runner → Logs</li>
+                    <li>Identify port mismatch, MongoDB errors, missing variables, or backend crashes.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Verify GitHub Secrets</b>
+                <ul>
+                    <li>Validate AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, and AWS_S3_BUCKET.</li>
+                    <li>Ensure secret names exactly match GitHub workflow references.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Validate Environment Variables</b>
+                <ul>
+                    <li>Check MONGO_URI, FRONTEND_URL, OPENAI_API_KEY, and other required variables.</li>
+                    <li>Verify frontend and backend URLs are correct.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Check Browser Developer Console</b>
+                <ul>
+                    <li>Press F12 → Console &amp; Network tab.</li>
+                    <li>Identify CORS issues, API failures, missing assets, or runtime errors.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Test Backend APIs Directly</b>
+                <ul>
+                    <li>Test App Runner APIs using Browser or Postman.</li>
+                    <li>Verify backend availability, routing, and database connectivity.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Verify AWS Region Configuration</b>
+                <ul>
+                    <li>Ensure ECR, S3, App Runner, and GitHub Actions use the same AWS region.</li>
+                    <li>Prevent repository lookup and authentication issues.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Check Docker Build Locally</b>
+                <ul>
+                    <li>Run docker build locally before pushing changes.</li>
+                    <li>Identify Dockerfile, dependency, or build context problems.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Validate S3 Static Hosting Settings</b>
+                <ul>
+                    <li>Ensure index.html is configured correctly.</li>
+                    <li>Verify bucket policy and public access settings.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Check CloudFront Distribution</b>
+                <ul>
+                    <li>Ensure distribution status is Enabled.</li>
+                    <li>Verify cache invalidation after frontend deployment.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Verify Angular Production Build</b>
+                <ul>
+                    <li>Run npm run build locally.</li>
+                    <li>Ensure dist/frontend/browser exists without build errors.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Validate GitHub Workflow Paths</b>
+                <ul>
+                    <li>Verify frontend/** and backend/** paths configuration.</li>
+                    <li>Ensure workflows trigger correctly after push.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Verify ECR Repository Configuration</b>
+                <ul>
+                    <li>Check repository name, region, and visibility.</li>
+                    <li>Prevent Docker push and repository lookup failures.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Verify App Runner Port Configuration</b>
+                <ul>
+                    <li>Ensure App Runner port matches app.listen(3000).</li>
+                    <li>Prevent health check and deployment failures.</li>
+                </ul>
+            </li>
+
+            <li>
+                <b>Test S3 Website Endpoint Directly</b>
+                <ul>
+                    <li>Open the S3 website endpoint URL directly.</li>
+                    <li>Verify frontend hosting and bucket configuration.</li>
+                </ul>
+            </li>
+
+        </ol>
+
+    </div>
+
+    <!-- AWS Deployment Interview Questions -->
+    <div class="content" id="iq">
+
+        <h2 class="blue">
+            📌 <u>AWS Deployment Interview Questions &amp; Answers</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                <b>Explain your end-to-end deployment architecture.</b>
+                <p>
+                    Angular frontend hosted on AWS S3 + CloudFront, Node.js backend deployed using Docker on AWS App
+                    Runner, Docker images stored in AWS ECR, MongoDB Atlas used as database, and GitHub Actions used for
+                    CI/CD automation.
+                </p>
+            </li>
+
+            <li>
+                <b>Why did you use Docker for backend deployment?</b>
+                <p>
+                    Docker provides environment consistency, portability, dependency management, simplified deployment,
+                    faster scaling, and eliminates environment mismatch issues.
+                </p>
+            </li>
+
+            <li>
+                <b>Why did you choose AWS App Runner instead of EC2?</b>
+                <p>
+                    App Runner is fully managed, supports automatic scaling, HTTPS, Docker deployment, and reduces
+                    server management overhead compared to EC2.
+                </p>
+            </li>
+
+            <li>
+                <b>Explain your GitHub Actions CI/CD pipeline flow.</b>
+                <p>
+                    Backend pipeline builds Docker image and pushes to ECR, while frontend pipeline builds Angular app
+                    and deploys files to S3 automatically on every push to the main branch.
+                </p>
+            </li>
+
+            <li>
+                <b>How does GitHub authenticate with AWS?</b>
+                <p>
+                    GitHub authenticates using IAM Access Key and Secret Key stored securely inside GitHub Secrets using
+                    aws-actions/configure-aws-credentials.
+                </p>
+            </li>
+
+            <li>
+                <b>What are GitHub Secrets?</b>
+                <p>
+                    GitHub Secrets securely store sensitive values such as AWS credentials, API keys, and deployment
+                    configuration variables used in CI/CD workflows.
+                </p>
+            </li>
+
+            <li>
+                <b>What is AWS ECR?</b>
+                <p>
+                    AWS ECR is a private Docker image registry used to store, manage, and version Docker container
+                    images for deployment.
+                </p>
+            </li>
+
+            <li>
+                <b>Why did you use S3 + CloudFront for Angular hosting?</b>
+                <p>
+                    S3 hosts static frontend files while CloudFront provides HTTPS, CDN caching, faster delivery,
+                    scalability, and improved performance.
+                </p>
+            </li>
+
+            <li>
+                <b>Why is CloudFront needed if S3 already hosts the frontend?</b>
+                <p>
+                    CloudFront adds HTTPS support, global CDN acceleration, caching, better security, and faster
+                    frontend loading compared to S3 static hosting alone.
+                </p>
+            </li>
+
+            <li>
+                <b>How did you solve Angular page refresh issues?</b>
+                <p>
+                    Configured index.html as Error Document in S3 and added custom 403 and 404 CloudFront error
+                    responses redirecting to index.html.
+                </p>
+            </li>
+
+            <li>
+                <b>What is CORS and how did you configure it?</b>
+                <p>
+                    CORS controls cross-origin browser requests. Configured FRONTEND_URL in backend environment
+                    variables to allow trusted frontend domains.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you debug deployment failures quickly?</b>
+                <p>
+                    I check GitHub Actions logs, App Runner logs, environment variables, browser console, backend APIs,
+                    and AWS service configurations to isolate issues quickly.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you manage environment variables securely?</b>
+                <p>
+                    Frontend uses Angular environment files, backend uses App Runner environment variables, and CI/CD
+                    secrets are stored securely in GitHub Secrets.
+                </p>
+            </li>
+
+            <li>
+                <b>How does App Runner know a new Docker image is available?</b>
+                <p>
+                    App Runner continuously monitors ECR repositories and automatically redeploys when GitHub Actions
+                    pushes a new Docker image.
+                </p>
+            </li>
+
+            <li>
+                <b>What production issues did you face during deployment?</b>
+                <p>
+                    Common issues included YAML errors, wrong AWS region, IAM permission issues, MongoDB whitelist
+                    problems, CORS errors, CloudFront caching, wrong ports, and missing environment variables.
+                </p>
+            </li>
+
+        </ol>
+
+        <!-- Advanced DevOps & AWS Interview Questions -->
+
+
+        <h2 class="blue">
+            📌 <u>Advanced CI/CD, AWS &amp; DevOps Interview Questions</u>
+        </h2>
+
+        <ol>
+
+            <li>
+                <b>What is Infrastructure as Code (IaC)?</b>
+                <p>
+                    Infrastructure as Code allows infrastructure provisioning using tools like Terraform or AWS CDK
+                    instead of manual AWS console configuration. It improves consistency, automation, version control,
+                    and environment replication.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you secure CI/CD pipelines?</b>
+                <p>
+                    Secrets should never be hardcoded. GitHub Secrets or OIDC authentication should be used to securely
+                    authenticate GitHub Actions with AWS without exposing credentials.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you optimize GitHub Actions build time?</b>
+                <p>
+                    Docker Layer Caching and GitHub Actions cache are used to reduce rebuild time by caching
+                    dependencies and Docker layers.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you manage multiple environments like staging and production?</b>
+                <p>
+                    GitHub Environments and separate AWS credentials are used for staging and production deployments
+                    with conditional workflow execution.
+                </p>
+            </li>
+
+            <li>
+                <b>Why use App Runner instead of EC2?</b>
+                <p>
+                    App Runner is serverless and fully managed, while EC2 requires manual server maintenance, scaling,
+                    patching, and load balancer management.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you debug App Runner health check failures?</b>
+                <p>
+                    Verify application port configuration, environment variables, database connectivity, and startup
+                    timing issues.
+                </p>
+            </li>
+
+            <li>
+                <b>What is stateless architecture in containers?</b>
+                <p>
+                    Containers should not store persistent data locally because multiple instances can be created
+                    dynamically. External services like S3, Redis, or MongoDB should store data.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you improve container security?</b>
+                <p>
+                    Enable Amazon ECR Enhanced Scanning or Amazon Inspector to scan Docker images for security
+                    vulnerabilities before deployment.
+                </p>
+            </li>
+
+            <li>
+                <b>Why does Angular routing fail on refresh?</b>
+                <p>
+                    S3 cannot understand Angular client-side routes. CloudFront custom error responses redirect 403 and
+                    404 errors back to index.html for Angular routing.
+                </p>
+            </li>
+
+            <li>
+                <b>What is CloudFront cache invalidation?</b>
+                <p>
+                    Cache invalidation removes old cached frontend files from CloudFront edge locations to ensure users
+                    receive the latest deployment.
+                </p>
+            </li>
+
+            <li>
+                <b>What is OAC (Origin Access Control)?</b>
+                <p>
+                    OAC allows CloudFront to securely access private S3 buckets without exposing the bucket publicly to
+                    users.
+                </p>
+            </li>
+
+            <li>
+                <b>How does CloudFront reduce latency?</b>
+                <p>
+                    CloudFront caches frontend files in global edge locations so users download content from nearby
+                    servers instead of the origin server.
+                </p>
+            </li>
+
+            <li>
+                <b>How does CORS work?</b>
+                <p>
+                    Browsers send a preflight OPTIONS request to validate allowed origins. The backend must return
+                    proper Access-Control-Allow-Origin headers.
+                </p>
+            </li>
+
+            <li>
+                <b>How would you improve database security?</b>
+                <p>
+                    Use App Runner VPC Connector, private subnets, VPC peering, or AWS DocumentDB to avoid exposing
+                    database traffic publicly.
+                </p>
+            </li>
+
+            <li>
+                <b>How do you optimize AWS infrastructure cost?</b>
+                <p>
+                    Monitor CloudFront, App Runner, and data transfer costs using AWS Cost Explorer and configure
+                    CloudWatch billing alarms for budget tracking.
+                </p>
+            </li>
+
+        </ol>
+
+    </div>
+
+    <div class="content" id="node-diagrams" style="text-align: center;">
+        <!-- GitHub + AWS Configuration Flow -->
+        <div>
+            <h2 class="blue">
+                📌 <u>GitHub + AWS Configuration Flow</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">Create AWS Account</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Create IAM User</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Generate Access Key + Secret Key</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Create ECR Repository (Docker Image Storage)</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Create AWS App Runner Service</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Open GitHub Repository</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">GitHub → Settings → Secrets → Actions</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Add: AWS_ACCESS_KEY_ID,
+                    AWS_SECRET_ACCESS_KEY,
+                    AWS_REGION
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">GitHub can now securely connect to AWS</p>
+
+            </div>
+        </div>
+        <div>
+            <h2 class="blue">
+                📌 <u>GitHub → AWS Backend Deployment Flow</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">Developer Push Code to GitHub</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">GitHub Actions Triggered</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">GitHub Runner Starts</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">backend-deploy.yml Starts</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Creates Temporary Ubuntu/Linux VM Runner
+                    <br>
+                    <small>(Temporary server created by GitHub to execute deployment steps)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Checkout Latest Source Code from Repository
+                    <br>
+                    <small>(Downloads latest backend code from GitHub repository)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Configure AWS Credentials using IAM Access Key + Secret Key
+                    <br>
+                    <small>(GitHub connects securely to AWS using GitHub Secrets)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Login to AWS ECR
+                    <br>
+                    <small>(Authenticates Docker with AWS Elastic Container Registry)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Runner Executes Docker Build Command
+                    <br>
+                    <small>(Runs docker build command using Dockerfile)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Docker Engine Creates Docker Image
+                    <br>
+                    <small>(Creates packaged backend application image with code + dependencies)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Runner Pushes Docker Image to AWS ECR
+                    <br>
+                    <small>(Uploads Docker image to AWS ECR repository)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    AWS App Runner Detects New Docker Image in ECR
+                    <br>
+                    <small>(App Runner continuously monitors ECR for latest image changes)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    App Runner Pulls Latest Docker Image from ECR
+                    <br>
+                    <small>(AWS App Runner downloads latest image from ECR automatically)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    App Runner Creates New Container
+                    <br>
+                    <small>(When a Docker image runs, it becomes a container)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Node.js Backend Starts
+                    <br>
+                    <small>(Runs npm start or node server.js inside container)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Backend Deployment Completed</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Same App Runner URL Serves Latest Version
+                    <br>
+                    <small>(Existing backend URL now serves newly deployed backend code)</small>
+                </p>
+            </div>
+
+            <div>
+                <h2 class="blue">
+                    📌 <u>backend-deploy.yml Flow (What We Are Doing Here)</u>
+                </h2>
+
+                <div class="flow">
+
+                    <p style="margin: 0px !important;">Push Code to main Branch</p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Check if backend folder changed
+                        <br>
+                        <small>(Workflow triggers only when backend files are modified)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Start GitHub Workflow
+                        <br>
+                        <small>(GitHub Actions pipeline execution starts)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Checkout Repository Code
+                        <br>
+                        <small>(Downloads latest source code from GitHub repository)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Configure AWS Credentials
+                        <br>
+                        <small>(Uses GitHub Secrets to securely connect with AWS)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Login to Amazon ECR
+                        <br>
+                        <small>(Authenticates Docker with AWS Elastic Container Registry)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Run Docker Build Command
+                        <br>
+                        <small>(Executes docker build using Dockerfile)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Create Docker Image
+                        <br>
+                        <small>(Packages backend application and dependencies into image)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Tag Docker Image
+                        <br>
+                        <small>(Assigns ECR repository name and image tag)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Push Docker Image to ECR
+                        <br>
+                        <small>(Uploads Docker image into AWS ECR repository)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Deployment Completed
+                        <br>
+                        <small>(GitHub Actions deployment process completed successfully)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS Flow Started
+                        <br>
+                        <small>(AWS App Runner starts detecting and deploying latest Docker image)</small>
+                    </p>
+
+                </div>
+            </div>
+
+            <div>
+                <h2 class="blue">
+                    📌 <u>Complete AWS Runtime Deployment Flow</u>
+                </h2>
+
+                <div class="flow">
+
+                    <p style="margin: 0px !important;">
+                        GitHub Actions Pushes Docker Image to AWS ECR
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Detects New Docker Image
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        App Runner Pulls Latest Docker Image from ECR
+                        <br>
+                        <small>(Downloads packaged backend application image)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Docker Image Loaded
+                        <br>
+                        <small>(Contains Linux OS + Node.js + backend code + npm packages)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Creates New Container
+                        <br>
+                        <small>(Running instance created from Docker image)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Allocates CPU, Memory, Storage, and Network
+                        <br>
+                        <small>(AWS automatically manages infrastructure resources)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Injects Environment Variables into Container
+                        <br>
+                        <small>(MONGO_URI, API Keys, FRONTEND_URL, PORT, etc.)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Docker EXPOSE Port Configuration Applied
+                        <br>
+                        <small>(Container internally exposes application port like 3000)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Maps External Traffic to Container Port
+                        <br>
+                        <small>(Internet requests routed to backend container)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Starts Container Runtime
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Container Executes CMD / Startup Command
+                        <br>
+                        <small>(Runs npm start or node server.js inside container)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Node.js Backend Server Starts
+                        <br>
+                        <small>(Express backend application becomes active)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS App Runner Executes Health Check Validation
+                        <br>
+                        <small>(Checks whether backend API is responding properly)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Container Marked Healthy
+                        <br>
+                        <small>(Deployment considered successful)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Traffic Routed to New Container
+                        <br>
+                        <small>(Users now access latest deployed backend version)</small>
+                    </p>
+
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Backend API Becomes Live
+                        <br>
+                        <small>(Public App Runner URL serves backend APIs)</small>
+                    </p>
+
+                </div>
+            </div>
+
+            <div>
+                <h2 class="blue">
+                    📌 <u>Dockerfile Flow (What We Are Doing Here)</u>
+                </h2>
+
+                <div class="flow">
+
+                    <p style="margin: 0px !important;">
+                        Start from Node.js Base Image
+                        <br>
+                        <small>(Uses official Node.js image as the Docker environment)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Create Application Folder
+                        <br>
+                        <small>(Creates working directory inside Docker container)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Copy package.json
+                        <br>
+                        <small>(Copies dependency configuration files into Docker image)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Install npm Packages
+                        <br>
+                        <small>(Runs npm install to install all backend dependencies)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Copy Remaining Backend Code
+                        <br>
+                        <small>(Copies complete backend source code into Docker image)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Expose Backend Port
+                        <br>
+                        <small>(Makes backend application port accessible outside container)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Define Startup Command for Node.js Server
+                        <br>
+                        <small>(Starts backend server using npm start or node server.js)</small>
+                    </p>
+
+                </div>
+            </div>
+            <div>
+                <h2 class="blue">
+                    📌 <u>Full End-to-End Backend Deployment Flow</u>
+                </h2>
+
+                <div class="flow">
+
+                    <p style="margin: 0px !important;">
+                        Developer Writes Backend Code
+                        <br>
+                        <small>(Backend features, APIs, and logic are developed locally)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Push Code to GitHub
+                        <br>
+                        <small>(Latest backend code pushed to GitHub repository)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        GitHub Actions Triggered
+                        <br>
+                        <small>(CI/CD pipeline starts automatically after push)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        backend-deploy.yml Runs
+                        <br>
+                        <small>(GitHub workflow executes backend deployment steps)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        AWS Login using IAM Secrets
+                        <br>
+                        <small>(GitHub securely authenticates with AWS using secrets)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Docker Image Build
+                        <br>
+                        <small>(Docker packages backend code and dependencies into image)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Push Image to ECR
+                        <br>
+                        <small>(Docker image uploaded to AWS Elastic Container Registry)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        App Runner Detects New Image
+                        <br>
+                        <small>(AWS App Runner monitors ECR for latest Docker image)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        App Runner Pulls Latest Image
+                        <br>
+                        <small>(Downloads updated Docker image from ECR automatically)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Container Starts
+                        <br>
+                        <small>(Docker image runs as a live backend container)</small>
+                    </p>
+                    <p style="margin: 0px !important;">↓</p>
+
+                    <p style="margin: 0px !important;">
+                        Node.js Backend Running Live
+                        <br>
+                        <small>(Backend APIs become accessible through App Runner URL)</small>
+                    </p>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
+    </div>
+
+    <div class="content" id="angular-diagrams" style="text-align: center;">
+        <div>
+            <h2 class="blue">
+                📌 <u>GitHub → AWS Frontend Deployment Flow (Angular → S3)</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    Developer Pushes Frontend Code to GitHub
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Actions Triggered
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Runner Starts
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    frontend-deploy.yml Starts
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Creates Temporary Ubuntu/Linux VM Runner
+                    <br>
+                    <small>(Temporary Linux server created by GitHub to execute deployment steps)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Checkout Latest Source Code from Repository
+                    <br>
+                    <small>(Downloads latest frontend Angular code from GitHub repository)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Setup Node.js Runtime
+                    <br>
+                    <small>(Installs Node.js v20 inside GitHub Runner)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Install Frontend Dependencies
+                    <br>
+                    <small>(Runs npm ci inside frontend folder)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Production Build Starts
+                    <br>
+                    <small>(Runs npm run build)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Compiler Builds Optimized Production Files
+                    <br>
+                    <small>(AOT compilation + minification + optimization)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    dist/frontend/browser Folder Created
+                    <br>
+                    <small>(Contains static HTML, CSS, JS, and assets)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Configure AWS Credentials using IAM Secrets
+                    <br>
+                    <small>(GitHub securely connects to AWS using GitHub Secrets)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Runner Connects to AWS S3
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Run AWS S3 Sync Command
+                    <br>
+                    <small>(aws s3 sync dist/frontend/browser s3://bucket-name --delete)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Frontend Build Files Uploaded to S3 Bucket
+                    <br>
+                    <small>(Static Angular files stored inside AWS S3)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Old Files Removed from S3
+                    <br>
+                    <small>(--delete removes unused old build files)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Frontend Deployment Completed
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    S3 Static Website Hosting Serves Angular Application
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Users Access Frontend Using S3 Website URL
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    (Optional) CloudFront CDN Serves Frontend with HTTPS + Caching
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Latest Frontend Version Live
+                </p>
+
+            </div>
+        </div>
+
+        <br><br>
+
+        <div>
+            <h2 class="blue">
+                📌 <u>frontend-deploy.yml Flow (What We Are Doing Here)</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">Push Code to main Branch</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Check if frontend folder changed
+                    <br>
+                    <small>(Workflow triggers only when frontend files are modified)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Start GitHub Workflow</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Create Temporary Ubuntu Runner</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Checkout Repository Code</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Install Node.js Runtime</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Install npm Packages using npm ci</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Run Angular Production Build</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Generate Optimized dist Folder</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Configure AWS Credentials</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Connect to AWS S3</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Sync Build Files to S3 Bucket</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Delete Old Files from Bucket</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">Deployment Completed Successfully</p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    (Optional) CloudFront Cache Invalidated
+                    <br>
+                    <small>(Forces CDN to serve latest frontend files)</small>
+                </p>
+
+            </div>
+        </div>
+        <div>
+            <h2 class="blue">
+                📌 <u>Complete AWS Frontend Runtime Flow</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    GitHub Actions Uploads Angular Build Files to S3
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    AWS S3 Stores Static Website Files
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    S3 Static Website Hosting Enabled
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    AWS S3 Serves index.html
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Browser Downloads HTML File
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Browser Downloads Angular JS Bundles
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Application Bootstraps in Browser
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Router Starts
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Makes API Calls to Backend App Runner URL
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Backend APIs Return JSON Data
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Updates UI Dynamically
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Frontend Application Fully Running Live
+                </p>
+
+            </div>
+        </div>
+
+        <br><br>
+
+        <div>
+            <h2 class="blue">
+                📌 <u>Dockerfile Flow (Frontend Container using NGINX)</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    Start from Node.js Alpine Builder Image
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Create /app Working Directory
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Copy package.json Files
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Install Frontend Dependencies using npm ci
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Copy Angular Source Code
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Run Angular Production Build
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    dist/frontend/browser Generated
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Start Lightweight NGINX Alpine Image
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Copy Custom nginx.conf
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Copy Angular Production Files into NGINX HTML Folder
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Expose Port 80
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Start NGINX Server
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    NGINX Serves Angular Static Files
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Frontend Application Accessible from Browser
+                </p>
+
+            </div>
+        </div>
+        <div>
+            <h2 class="blue">
+                📌 <u>Full End-to-End Frontend Deployment Flow</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    Developer Writes Angular Frontend Code
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Push Code to GitHub
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Actions Triggered
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    frontend-deploy.yml Executes
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    GitHub Runner Created
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Application Build Starts
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Optimized Production Files Generated
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    AWS Authentication using IAM Secrets
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Upload Build Files to AWS S3
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    S3 Stores Latest Frontend Files
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    CloudFront Detects Updated Files (Optional)
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Users Open Frontend URL
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Application Loads in Browser
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Frontend Calls Backend APIs
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Complete Full Stack Application Running Live
+                </p>
+
+            </div>
+        </div>
+
+        <br><br>
+
+        <div>
+            <h2 class="blue">
+                📌 <u>AWS S3 + CloudFront Runtime Architecture</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    Users Open Frontend URL
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    CloudFront CDN Receives Request
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    CloudFront Checks Cache
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    If Cached → Return Cached Files
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    If Not Cached → Fetch from S3 Bucket
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    S3 Returns Angular Static Files
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    CloudFront Delivers Files to Browser
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Browser Executes Angular Application
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Angular Calls Backend APIs on AWS App Runner
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Backend Returns API Response
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Frontend Updates UI
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="content" id="local-run" style="text-align: center;">
+        <div>
+            <h2 class="blue">
+                📌 <u>Run Node.js Backend Docker Container Locally</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    Go to Backend Folder
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Build Backend Docker Image
+                    <br>
+                    <small>(docker build -t node-backend .)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Run Backend Container
+                    <br>
+                    <small>(docker run -d -p 3000:3000 --name backend-app node-backend)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Test Backend API
+                    <br>
+                    <small>(http://localhost:3000)</small>
+                </p>
+
+            </div>
+        </div>
+        <div>
+            <h2 class="blue">
+                📌 <u>Run Angular Docker Container Locally</u>
+            </h2>
+
+            <div class="flow">
+
+                <p style="margin: 0px !important;">
+                    Go to Angular Project Folder
+                    <br>
+                    <small>(cd frontend)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Build Angular Docker Image
+                    <br>
+                    <small>(docker build -t angular-frontend .)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Run Angular Container
+                    <br>
+                    <small>(docker run -d -p 8080:80 --name angular-app angular-frontend)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Open Browser
+                    <br>
+                    <small>(http://localhost:8080)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Check Angular Container Logs
+                    <br>
+                    <small>(docker logs angular-app)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Stop Angular Container
+                    <br>
+                    <small>(docker stop angular-app)</small>
+                </p>
+                <p style="margin: 0px !important;">↓</p>
+
+                <p style="margin: 0px !important;">
+                    Remove Angular Container
+                    <br>
+                    <small>(docker rm angular-app)</small>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="content" id="tag">
+
+
+        <h2 class="blue">
+            📌 <u>Using package.json Version as Docker Image Tag</u>
+        </h2>
+
+        <p>
+            This setup automatically reads the application version
+            from <code>package.json</code> and uses it as the Docker image tag
+            during GitHub Actions deployment.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Define Version inside package.json
+        </h3>
+
+        <pre>
+{
+  "name": "backend",
+  "version": "1.2.0"
+}
+</pre>
+
+        <h3 class="blue">
+            2. Read Version from package.json
+        </h3>
+
+        <p>
+            Run the following command inside Linux or Mac terminal:
+        </p>
+
+        <pre>
+node -p "require('./package.json').version"
+</pre>
+
+        <p>
+            Output:
+        </p>
+
+        <pre>
+1.2.0
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Store Version into Variable
+        </h3>
+
+        <pre>
+VERSION=$(node -p "require('./package.json').version")
+</pre>
+
+        <h3 class="blue">
+            4. Build Docker Image using Version Tag
+        </h3>
+
+        <pre>
+docker build -t node-backend:$VERSION .
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            Use Version Tag inside GitHub Actions Workflow
+        </h3>
+
+        <pre>
+run: |
+  cd backend
+
+  VERSION=$(node -p "require('./package.json').version")
+
+  docker build \
+    -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION \
+
+  docker push $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION
+</pre>
+
+        <h3 class="blue">
+            Result
+        </h3>
+
+        <ul>
+
+            <li>
+                Docker image tagged with:
+                <pre>
+1.2.0
+            </pre>
+            </li>
+
+
+        </ul>
+
+    </div>
+
+    <div class="content" id="imp">
+
+        <h2 class="blue">
+            📌 <u>Docker, Containers, EC2, ECR & GitHub Runner Concepts</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is Docker?
+        </h3>
+
+        <p>
+            Docker is a platform used to package:
+        </p>
+
+        <ul>
+            <li>Application code</li>
+            <li>Dependencies</li>
+            <li>Libraries</li>
+            <li>Runtime</li>
+            <li>Operating system components</li>
+        </ul>
+
+        <p>
+            together so the application runs the same everywhere.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. What is Docker Image?
+        </h3>
+
+        <p>
+            Docker Image is a packaged snapshot of the application.
+        </p>
+
+        <p>
+            Created using:
+        </p>
+
+        <pre>
+docker build
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. What is Container?
+        </h3>
+
+        <p>
+            Container is a running instance of Docker image.
+        </p>
+
+        <p>
+            Simple Flow:
+        </p>
+
+        <pre>
+Dockerfile
+    ↓
+Docker Image
+    ↓
+Container
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Difference between Docker Image and Container
+        </h3>
+
+        <ul>
+
+            <li>
+                <b>Docker Image</b> →
+                Static packaged file
+            </li>
+
+            <li>
+                <b>Container</b> →
+                Running live application
+            </li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Is Container Running Under EC2?
+        </h3>
+
+        <p>
+            Technically yes internally.
+        </p>
+
+        <p>
+            But AWS manages the infrastructure automatically.
+        </p>
+
+        <p>
+            In App Runner, AWS internally uses compute infrastructure like:
+        </p>
+
+        <ul>
+            <li>EC2</li>
+            <li>Fargate</li>
+            <li>Container runtime</li>
+        </ul>
+
+        <p>
+            But for developers:
+        </p>
+
+        <p class="highlight">
+            👉 App Runner abstracts infrastructure management.
+        </p>
+
+        <p>
+            Meaning:
+        </p>
+
+        <ul>
+            <li>No server management</li>
+            <li>No OS patching</li>
+            <li>No manual scaling</li>
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            6. What is EC2?
+        </h3>
+
+        <p>
+            EC2 stands for:
+        </p>
+
+        <pre>
+Elastic Compute Cloud
+</pre>
+
+        <p>
+            EC2 is a virtual machine/server running in AWS cloud.
+        </p>
+
+        <p>
+            It behaves like a remote Linux computer.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            7. What is ECR?
+        </h3>
+
+        <p>
+            ECR stands for:
+        </p>
+
+        <pre>
+Amazon Elastic Container Registry
+</pre>
+
+        <p>
+            ECR is a Docker image storage repository.
+        </p>
+
+        <p>
+            It stores:
+        </p>
+
+        <pre>
+Docker Images
+</pre>
+
+        <p>
+            NOT running containers.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. What is GitHub Runner?
+        </h3>
+
+        <p>
+            GitHub Runner is a temporary Linux VM created by GitHub Actions.
+        </p>
+
+        <p>
+            Used to:
+        </p>
+
+        <ul>
+
+            <li>Run workflows</li>
+            <li>Build Docker images</li>
+            <li>Run tests</li>
+            <li>Deploy code</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            9. How Many Docker Images are Stored by GitHub and AWS?
+        </h3>
+
+        <p>
+            <b>GitHub:</b>
+        </p>
+
+        <ul>
+
+            <li>
+                Normally GitHub does not store Docker images
+            </li>
+
+            <li>
+                Unless using:
+                <pre>
+GitHub Container Registry (GHCR)
+            </pre>
+            </li>
+
+        </ul>
+
+        <p>
+            <b>AWS ECR:</b>
+        </p>
+
+        <ul>
+
+            <li>
+                Stores multiple Docker image versions/tags
+            </li>
+
+            <li>
+                Example:
+                <pre>
+backend:v1
+backend:v2
+backend:latest
+backend:prod
+</pre>
+            </li>
+
+            <li>
+                Many Docker images can be stored depending on AWS storage limits.
+            </li>
+
+        </ul>
+
+
+        <h2 class="blue">
+            📌 <u>Docker Image Tags, App Runner Runtime & Deployment Concepts</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Assigning ECR Repository Name and Docker Image Tag
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+docker build -t stock-app-backend:latest .
+</pre>
+
+        <p>
+            Breakdown:
+        </p>
+
+        <ul>
+
+            <li>
+                <b>Repository Name:</b>
+                <pre>
+stock-app-backend
+            </pre>
+
+                means:
+                Docker image repository name in AWS ECR.
+            </li>
+
+            <li>
+                <b>Tag:</b>
+                <pre>
+latest
+            </pre>
+
+                means:
+                Version or identifier of Docker image.
+            </li>
+
+        </ul>
+
+        <p>
+            Full Example:
+        </p>
+
+        <pre>
+123456789.dkr.ecr.ap-south-1.amazonaws.com/stock-app-backend:latest
+</pre>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Part</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>123456789.dkr.ecr...</td>
+                <td>AWS ECR Registry</td>
+            </tr>
+
+            <tr>
+                <td>stock-app-backend</td>
+                <td>Repository Name</td>
+            </tr>
+
+            <tr>
+                <td>latest</td>
+                <td>Image Tag</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. How to Change Docker Image Tag Name?
+        </h3>
+
+        <p>
+            Instead of always using:
+        </p>
+
+        <pre>
+latest
+</pre>
+
+        <p>
+            You can use:
+        </p>
+
+        <ul>
+
+            <li>Version number</li>
+            <li>Environment name</li>
+            <li>Git commit hash</li>
+            <li>Build number</li>
+
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+docker build -t stock-app-backend:v1.0.0 .
+docker build -t stock-app-backend:prod .
+docker build -t stock-app-backend:staging .
+</pre>
+
+        <p>
+            Using package.json version:
+        </p>
+
+        <pre>
+VERSION=$(node -p "require('./package.json').version")
+</pre>
+
+        <pre>
+docker build -t stock-app-backend:$VERSION .
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. SonarQube
+        </h3>
+
+        <p>
+            SonarQube is a code quality and security analysis tool.
+        </p>
+
+        <p>
+            Used to:
+        </p>
+
+        <ul>
+
+            <li>Detect bugs</li>
+            <li>Find security vulnerabilities</li>
+            <li>Check code quality</li>
+            <li>Measure code coverage</li>
+            <li>Enforce coding standards</li>
+
+        </ul>
+
+        <p>
+            Usually integrated into:
+        </p>
+
+        <pre>
+GitHub Actions CI/CD Pipeline
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Who Allocates CPU, Memory, and Network?
+        </h3>
+
+        <p>
+            AWS App Runner automatically allocates:
+        </p>
+
+        <ul>
+
+            <li>CPU</li>
+            <li>Memory</li>
+            <li>Storage</li>
+            <li>Network</li>
+
+        </ul>
+
+        <p>
+            AWS internally manages infrastructure like:
+        </p>
+
+        <ul>
+
+            <li>EC2</li>
+            <li>Container runtime</li>
+            <li>Scaling</li>
+            <li>Operating system</li>
+
+        </ul>
+
+        <p class="highlight">
+            👉 Developers do NOT directly manage infrastructure in App Runner.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Where are Environment Variables Injected?
+        </h3>
+
+        <p>
+            Environment variables are injected:
+        </p>
+
+        <pre>
+INSIDE the running Docker container
+</pre>
+
+        <p>
+            by:
+        </p>
+
+        <pre>
+AWS App Runner
+</pre>
+
+        <p>
+            Examples:
+        </p>
+
+        <pre>
+MONGO_URI
+API_KEYS
+FRONTEND_URL
+PORT
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Where is Backend Port Exposed?
+        </h3>
+
+        <p>
+            Port exposure happens:
+        </p>
+
+        <pre>
+INSIDE the Docker container
+</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+EXPOSE 3000
+</pre>
+
+        <p>
+            App Runner maps external internet traffic to this internal container port.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Who Executes the Startup Command?
+        </h3>
+
+        <p>
+            Startup command executes:
+        </p>
+
+        <pre>
+INSIDE the container
+</pre>
+
+        <p>
+            But triggered by:
+        </p>
+
+        <pre>
+AWS App Runner
+</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+CMD ["npm", "start"]
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Who Performs Health Check Validation?
+        </h3>
+
+        <p>
+            Usually:
+        </p>
+
+        <pre>
+AWS App Runner
+</pre>
+
+        <p>
+            After container starts:
+        </p>
+
+        <ul>
+
+            <li>App Runner sends health check requests</li>
+            <li>Verifies backend API response</li>
+            <li>Marks container healthy or unhealthy</li>
+
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+GET /health
+</pre>
+
+    </div>
+
+    <script>
+
+        function openTab(tabId, element) {
+
+            let contents = document.getElementsByClassName('content');
+
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+
+            let tabs = document.getElementsByClassName('tab');
+
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+
+            document.getElementById(tabId).classList.add('active');
+
+            element.classList.add('active');
+        }
+
+    </script>
+
+</body>
+
+</html>
