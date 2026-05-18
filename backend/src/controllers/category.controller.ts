@@ -12,7 +12,6 @@ const defaultCategoryObj = {
   stockMarket: "Stock Market"
 };
 
-
 const defaultSubCategoryObj = {
   english: ["communication", "interviewPrep"],
   technical: ["angular", "react", "project", "linuxCommands", "gitCommands"],
