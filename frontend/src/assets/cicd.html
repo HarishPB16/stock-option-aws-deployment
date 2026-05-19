@@ -77,7 +77,11 @@
         <div class="tab" onclick="openTab('node-diagrams', this)">Flow NodeJs</div>
         <div class="tab" onclick="openTab('angular-diagrams', this)">Flow Angular</div>
         <div class="tab" onclick="openTab('common-issues', this)">Common Issues</div>
+        <div class="tab" onclick="openTab('rollback', this)">Roll Back</div>
         <div class="tab" onclick="openTab('local-run', this)">Local Run</div>
+        <div class="tab" onclick="openTab('security', this)">Security</div>
+        <div class="tab" onclick="openTab('sonarqube', this)">SonarQube</div>
+        <div class="tab" onclick="openTab('yml-iq', this)">YML IQ</div>
         <div class="tab" onclick="openTab('imp', this)">IMP IQ</div>
         <div class="tab" onclick="openTab('debug', this)">Debug</div>
         <div class="tab" onclick="openTab('tag', this)">Tag</div>
@@ -4237,6 +4241,3756 @@ AWS App Runner
 
         <pre>
 GET /health
+</pre>
+
+    </div>
+
+    <div class="content" id="security">
+
+        <h2 class="blue">
+            📌 <u>Top 15 AWS + GitHub Pipeline Security Interview Questions and Answers</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Why should we avoid using AWS Root Account for deployments?
+        </h3>
+
+        <p>
+            The AWS Root Account has unrestricted access to all AWS services and billing.
+        </p>
+
+        <p>
+            Security risks:
+        </p>
+
+        <ul>
+
+            <li>Full account compromise if leaked</li>
+
+            <li>No granular permissions</li>
+
+            <li>Difficult auditing</li>
+
+        </ul>
+
+        <p>
+            Best practice:
+        </p>
+
+        <ul>
+
+            <li>Create IAM users/roles</li>
+
+            <li>Enable MFA on root account</li>
+
+            <li>Use root only for critical account-level tasks</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Why do we create a separate IAM user for GitHub Actions?
+        </h3>
+
+        <p>
+            GitHub Actions requires programmatic access to AWS.
+        </p>
+
+        <p>
+            Instead of using admin credentials:
+        </p>
+
+        <ul>
+
+            <li>Create dedicated IAM user or IAM role</li>
+
+            <li>Assign only required permissions</li>
+
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <ul>
+
+            <li>ECR push access</li>
+
+            <li>S3 deployment access</li>
+
+        </ul>
+
+        <p>
+            This follows:
+        </p>
+
+        <pre>
+Principle of Least Privilege (PoLP)
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Why is storing AWS keys directly in GitHub workflow dangerous?
+        </h3>
+
+        <p>
+            Hardcoding keys in YAML files is a major security issue because:
+        </p>
+
+        <ul>
+
+            <li>Keys become visible in repository history</li>
+
+            <li>Anyone with repo access can steal them</li>
+
+            <li>Keys may leak publicly accidentally</li>
+
+        </ul>
+
+        <p>
+            Correct approach:
+        </p>
+
+        <pre>
+Store secrets in GitHub Secrets
+</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+${{ secrets.AWS_ACCESS_KEY_ID }}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            4. What are GitHub Secrets?
+        </h3>
+
+        <p>
+            GitHub Secrets are encrypted environment variables used securely inside GitHub Actions.
+        </p>
+
+        <p>
+            Used for:
+        </p>
+
+        <ul>
+
+            <li>AWS keys</li>
+
+            <li>DB passwords</li>
+
+            <li>API tokens</li>
+
+        </ul>
+
+        <p>
+            Advantages:
+        </p>
+
+        <ul>
+
+            <li>Encrypted at rest</li>
+
+            <li>Hidden from logs</li>
+
+            <li>Repository-level protection</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Why is IAM Role better than Access Keys for GitHub pipelines?
+        </h3>
+
+        <p>
+            Access keys are static credentials.
+        </p>
+
+        <p>
+            Problems:
+        </p>
+
+        <ul>
+
+            <li>Can leak</li>
+
+            <li>Require manual rotation</li>
+
+            <li>Long-term security risk</li>
+
+        </ul>
+
+        <p>
+            IAM Role with OIDC:
+        </p>
+
+        <ul>
+
+            <li>Temporary credentials</li>
+
+            <li>No secret storage</li>
+
+            <li>Automatic token expiration</li>
+
+            <li>Better compliance</li>
+
+        </ul>
+
+        <p>
+            Modern AWS pipelines prefer:
+        </p>
+
+        <pre>
+GitHub OIDC + IAM Role
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. What is OIDC in GitHub Actions?
+        </h3>
+
+        <p>
+            OIDC (OpenID Connect) allows GitHub to authenticate directly with AWS without storing AWS secrets.
+        </p>
+
+        <p>
+            Flow:
+        </p>
+
+        <ol>
+
+            <li>GitHub generates temporary token</li>
+
+            <li>AWS validates GitHub identity</li>
+
+            <li>AWS provides temporary credentials</li>
+
+        </ol>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>No static secrets</li>
+
+            <li>Improved security</li>
+
+            <li>Temporary access</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Why should S3 buckets not be public?
+        </h3>
+
+        <p>
+            Public S3 buckets expose data to the internet.
+        </p>
+
+        <p>
+            Risks:
+        </p>
+
+        <ul>
+
+            <li>Data leakage</li>
+
+            <li>Sensitive file exposure</li>
+
+            <li>Malware hosting</li>
+
+            <li>Compliance violations</li>
+
+        </ul>
+
+        <p>
+            Best practice:
+        </p>
+
+        <ul>
+
+            <li>Keep buckets private</li>
+
+            <li>Use CloudFront + Origin Access Control (OAC)</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Why is CloudFront more secure than direct S3 access?
+        </h3>
+
+        <p>
+            CloudFront improves security by:
+        </p>
+
+        <ul>
+
+            <li>Providing HTTPS</li>
+
+            <li>Hiding S3 bucket</li>
+
+            <li>Preventing direct access</li>
+
+            <li>Adding caching</li>
+
+            <li>Supporting WAF</li>
+
+        </ul>
+
+        <p>
+            Best practice:
+        </p>
+
+        <pre>
+Allow only CloudFront to access S3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Why is 0.0.0.0/0 dangerous in MongoDB Atlas?
+        </h3>
+
+        <p>
+            <code>0.0.0.0/0</code> allows access from anywhere on the internet.
+        </p>
+
+        <p>
+            Risks:
+        </p>
+
+        <ul>
+
+            <li>Brute force attacks</li>
+
+            <li>Unauthorized access</li>
+
+            <li>Increased attack surface</li>
+
+        </ul>
+
+        <p>
+            Better solutions:
+        </p>
+
+        <ul>
+
+            <li>AWS VPC peering</li>
+
+            <li>Specific IP whitelisting</li>
+
+            <li>Private networking</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Why should secrets not be stored inside .env files in GitHub?
+        </h3>
+
+        <p>
+            If <code>.env</code> files are committed:
+        </p>
+
+        <ul>
+
+            <li>Secrets leak permanently</li>
+
+            <li>Git history retains them</li>
+
+            <li>Attackers can access infrastructure</li>
+
+        </ul>
+
+        <p>
+            Best practice:
+        </p>
+
+        <ul>
+
+            <li>Use GitHub Secrets</li>
+
+            <li>Use AWS Secrets Manager</li>
+
+            <li>Use Parameter Store</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            11. What is the Principle of Least Privilege?
+        </h3>
+
+        <p>
+            Users/services should receive only minimum permissions required.
+        </p>
+
+        <p>
+            Bad example:
+        </p>
+
+        <pre>
+AdministratorAccess
+</pre>
+
+        <p>
+            Good example:
+        </p>
+
+        <ul>
+
+            <li>ECR push only</li>
+
+            <li>S3 sync only</li>
+
+        </ul>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>Reduces blast radius</li>
+
+            <li>Prevents accidental damage</li>
+
+            <li>Improves compliance</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            12. Why enable MFA on AWS accounts?
+        </h3>
+
+        <p>
+            MFA adds second-layer authentication.
+        </p>
+
+        <p>
+            Even if password leaks:
+        </p>
+
+        <p>
+            Attacker still needs OTP/device.
+        </p>
+
+        <p>
+            Critical for:
+        </p>
+
+        <ul>
+
+            <li>Root account</li>
+
+            <li>IAM admin users</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            13. What security mistake commonly happens in CI/CD pipelines?
+        </h3>
+
+        <p>
+            Common mistakes:
+        </p>
+
+        <ul>
+
+            <li>Hardcoded secrets</li>
+
+            <li>Excessive IAM permissions</li>
+
+            <li>Public S3 buckets</li>
+
+            <li>No HTTPS</li>
+
+            <li>Exposed logs</li>
+
+            <li>No secret rotation</li>
+
+        </ul>
+
+        <p>
+            Realistic examples:
+        </p>
+
+        <ul>
+
+            <li>MongoDB opened to all IPs</li>
+
+            <li>Missing environment variables</li>
+
+            <li>Backend failed due to DB connection issue</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            14. How does AWS know GitHub code changed and deployment is needed?
+        </h3>
+
+        <p>
+            GitHub Actions listens for Git events.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+on:
+  push:
+    branches:
+      - main
+</pre>
+
+        <p>
+            Flow:
+        </p>
+
+        <ol>
+
+            <li>Developer pushes code</li>
+
+            <li>GitHub triggers workflow</li>
+
+            <li>Workflow builds app</li>
+
+            <li>Docker image pushed to ECR</li>
+
+            <li>App Runner auto-deploys new image</li>
+
+        </ol>
+
+        <hr />
+
+        <h3 class="blue">
+            15. Why is bucket versioning important?
+        </h3>
+
+        <p>
+            S3 Versioning keeps multiple versions of files.
+        </p>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>Rollback capability</li>
+
+            <li>Protection from accidental deletion</li>
+
+            <li>Recovery from bad deployments</li>
+
+            <li>Ransomware protection</li>
+
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+Bad Angular build deployed
+
+Restore previous index.html
+</pre>
+
+        <p>
+            Very important for production CI/CD.
+        </p>
+
+
+        <h2 class="blue">
+            📌 <u>Advanced Security Topics You Should Learn Next</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. AWS Secrets Manager
+        </h3>
+
+        <h4>What is it?</h4>
+
+        <p>
+            AWS service for securely storing:
+        </p>
+
+        <ul>
+
+            <li>DB passwords</li>
+
+            <li>API keys</li>
+
+            <li>JWT secrets</li>
+
+            <li>OAuth credentials</li>
+
+        </ul>
+
+        <p>
+            Instead of:
+        </p>
+
+        <pre>
+MONGO_PASSWORD=123456
+</pre>
+
+        <p>
+            You store secrets securely in AWS.
+        </p>
+
+        <h4>Why use it?</h4>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>Encryption using KMS</li>
+
+            <li>Automatic rotation</li>
+
+            <li>IAM-controlled access</li>
+
+            <li>Audit logging via CloudTrail</li>
+
+        </ul>
+
+        <h4>Pipeline Example</h4>
+
+        <pre>
+GitHub Action → IAM Role → Secrets Manager → Fetch DB password dynamically
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            AWS Secrets Manager securely stores sensitive credentials and avoids hardcoding secrets in repositories or
+            environment files.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. GitHub OIDC Authentication
+        </h3>
+
+        <h4>What is it?</h4>
+
+        <p>
+            OIDC allows GitHub Actions to authenticate with AWS without storing AWS keys.
+        </p>
+
+        <p>
+            Instead of:
+        </p>
+
+        <pre>
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+</pre>
+
+        <p>
+            GitHub gets temporary credentials from AWS.
+        </p>
+
+        <h4>Why important?</h4>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>No static secrets</li>
+
+            <li>Temporary tokens</li>
+
+            <li>Reduced credential leakage risk</li>
+
+            <li>Enterprise-grade CI/CD security</li>
+
+        </ul>
+
+        <h4>Flow</h4>
+
+        <pre>
+GitHub Workflow
+    ↓
+OIDC Token
+    ↓
+AWS IAM Role
+    ↓
+Temporary Credentials
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            OIDC removes the need for long-term AWS access keys in GitHub pipelines by using short-lived federated
+            authentication.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            3. IAM Roles
+        </h3>
+
+        <h4>What are IAM Roles?</h4>
+
+        <p>
+            Temporary permission containers.
+        </p>
+
+        <p>
+            Used by:
+        </p>
+
+        <ul>
+
+            <li>EC2</li>
+
+            <li>Lambda</li>
+
+            <li>App Runner</li>
+
+            <li>GitHub OIDC</li>
+
+            <li>ECS</li>
+
+            <li>EKS</li>
+
+        </ul>
+
+        <h4>Difference Between User and Role</h4>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>IAM User</th>
+                <th>IAM Role</th>
+            </tr>
+
+            <tr>
+                <td>Permanent credentials</td>
+                <td>Temporary credentials</td>
+            </tr>
+
+            <tr>
+                <td>Human/service identity</td>
+                <td>Assumed identity</td>
+            </tr>
+
+            <tr>
+                <td>Access keys</td>
+                <td>STS tokens</td>
+            </tr>
+
+        </table>
+
+        <h4>Example</h4>
+
+        <p>
+            App Runner role:
+        </p>
+
+        <pre>
+{
+  "Action": ["secretsmanager:GetSecretValue"],
+  "Effect": "Allow"
+}
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            IAM Roles provide temporary, secure access to AWS resources without embedding credentials.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. KMS Encryption
+        </h3>
+
+        <h4>What is KMS?</h4>
+
+        <p>
+            AWS Key Management Service.
+        </p>
+
+        <p>
+            Used to:
+        </p>
+
+        <ul>
+
+            <li>Encrypt S3 buckets</li>
+
+            <li>Encrypt EBS volumes</li>
+
+            <li>Encrypt Secrets Manager</li>
+
+            <li>Encrypt databases</li>
+
+        </ul>
+
+        <h4>Types of Keys</h4>
+
+        <ul>
+
+            <li>AWS-managed keys</li>
+
+            <li>Customer-managed keys (CMK)</li>
+
+        </ul>
+
+        <h4>Why important?</h4>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>Centralized encryption</li>
+
+            <li>Key rotation</li>
+
+            <li>Access control</li>
+
+            <li>Compliance support</li>
+
+        </ul>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            KMS centrally manages encryption keys and enables secure encryption across AWS services.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            5. AWS WAF
+        </h3>
+
+        <h4>What is WAF?</h4>
+
+        <p>
+            Web Application Firewall.
+        </p>
+
+        <p>
+            Protects applications from:
+        </p>
+
+        <ul>
+
+            <li>SQL injection</li>
+
+            <li>XSS attacks</li>
+
+            <li>Bot attacks</li>
+
+            <li>Rate abuse</li>
+
+        </ul>
+
+        <p>
+            Usually attached to:
+        </p>
+
+        <ul>
+
+            <li>CloudFront</li>
+
+            <li>ALB</li>
+
+            <li>API Gateway</li>
+
+        </ul>
+
+        <h4>Example Rule</h4>
+
+        <pre>
+Block requests > 1000/minute
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            AWS WAF protects web applications from Layer 7 attacks using customizable filtering rules.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Security Groups
+        </h3>
+
+        <h4>What are Security Groups?</h4>
+
+        <p>
+            Virtual firewalls for AWS resources.
+        </p>
+
+        <p>
+            Controls:
+        </p>
+
+        <ul>
+
+            <li>Inbound traffic</li>
+
+            <li>Outbound traffic</li>
+
+        </ul>
+
+        <h4>Example</h4>
+
+        <p>
+            Allow only:
+        </p>
+
+        <ul>
+
+            <li>Port 443 HTTPS</li>
+
+            <li>Port 22 from office IP</li>
+
+        </ul>
+
+        <h4>Best Practice</h4>
+
+        <pre>
+Never expose:
+
+0.0.0.0/0 on SSH
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            Security Groups act as stateful firewalls controlling traffic to AWS resources.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            7. VPC Private Networking
+        </h3>
+
+        <h4>What is VPC?</h4>
+
+        <p>
+            Virtual Private Cloud.
+        </p>
+
+        <p>
+            Private isolated AWS network.
+        </p>
+
+        <h4>Why important?</h4>
+
+        <p>
+            Keeps:
+        </p>
+
+        <ul>
+
+            <li>Databases private</li>
+
+            <li>Internal APIs hidden</li>
+
+            <li>Services isolated</li>
+
+        </ul>
+
+        <h4>Example Architecture</h4>
+
+        <pre>
+Public Subnet:
+  Load Balancer
+
+Private Subnet:
+  App Server
+  Database
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            VPC networking isolates infrastructure and prevents direct public internet exposure of internal services.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. ECR Image Scanning
+        </h3>
+
+        <h4>What is it?</h4>
+
+        <p>
+            Scans Docker images for vulnerabilities.
+        </p>
+
+        <p>
+            Example findings:
+        </p>
+
+        <ul>
+
+            <li>Critical OpenSSL vulnerability</li>
+
+            <li>Outdated packages</li>
+
+            <li>CVEs</li>
+
+        </ul>
+
+        <h4>Why important?</h4>
+
+        <p>
+            Prevents deploying vulnerable containers.
+        </p>
+
+        <h4>AWS ECR Feature</h4>
+
+        <p>
+            Enable:
+        </p>
+
+        <pre>
+Scan on push
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            ECR image scanning identifies known vulnerabilities in container images before deployment.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            9. GitHub Dependabot
+        </h3>
+
+        <h4>What is Dependabot?</h4>
+
+        <p>
+            GitHub security dependency updater.
+        </p>
+
+        <p>
+            Automatically:
+        </p>
+
+        <ul>
+
+            <li>Detects vulnerable packages</li>
+
+            <li>Creates pull requests</li>
+
+            <li>Suggests upgrades</li>
+
+        </ul>
+
+        <h4>Example</h4>
+
+        <pre>
+lodash vulnerable
+→ Dependabot opens PR
+</pre>
+
+        <h4>Why important?</h4>
+
+        <p>
+            Prevents supply chain attacks.
+        </p>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            Dependabot automates dependency vulnerability detection and version updates in repositories.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Trivy Docker Scanning
+        </h3>
+
+        <h4>What is Trivy?</h4>
+
+        <p>
+            Open-source container vulnerability scanner.
+        </p>
+
+        <p>
+            Scans:
+        </p>
+
+        <ul>
+
+            <li>Docker images</li>
+
+            <li>Filesystems</li>
+
+            <li>Kubernetes configs</li>
+
+        </ul>
+
+        <h4>Example</h4>
+
+        <pre>
+trivy image my-app:latest
+</pre>
+
+        <h4>CI/CD Usage</h4>
+
+        <p>
+            Pipeline fails if:
+        </p>
+
+        <pre>
+Critical vulnerability detected
+</pre>
+
+        <p>
+            GitHub Pipeline Example:
+        </p>
+
+        <pre>
+- name: Scan Docker Image
+  run: trivy image my-app:latest
+</pre>
+
+        <h4>Interview Answer</h4>
+
+        <p>
+            Trivy performs automated container vulnerability scanning during CI/CD to prevent insecure deployments.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            11. Important Real-World Security Architecture
+        </h3>
+
+        <p>
+            Modern secure pipeline:
+        </p>
+
+        <pre>
+GitHub Actions
+   ↓
+OIDC Authentication
+   ↓
+IAM Role
+   ↓
+Build Docker Image
+   ↓
+Trivy Scan
+   ↓
+Push to ECR
+   ↓
+ECR Vulnerability Scan
+   ↓
+Deploy to App Runner/ECS
+   ↓
+Secrets from Secrets Manager
+</pre>
+
+    </div>
+
+    <div class="content" id="rollback">
+
+        <h3 class="blue">
+            Rollback Method (Manual Image Tag) for backend
+        </h3>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 1 — Open ECR
+        </h3>
+
+        <p>
+            Search:
+        </p>
+
+        <pre>
+Elastic Container Registry
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 2 — Open Repository
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+stock-app-backend
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 3 — Check Image Tags
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+v1
+v2
+v3
+latest
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 4 — Copy Stable Image URI
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+123456789.dkr.ecr.ap-south-1.amazonaws.com/stock-app-backend:v2
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 5 — Open App Runner
+        </h3>
+
+        <p>
+            Go to:
+        </p>
+
+        <pre>
+Configuration
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 6 — Edit Source & Deployment
+        </h3>
+
+        <p>
+            Update image tag:
+        </p>
+
+        <pre>
+v3 → v2
+</pre>
+
+        <p>
+            Save changes then deployment will start automatically.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            IMPORTANT BEST PRACTICE
+        </h3>
+
+        <p>
+            Never deploy only:
+        </p>
+
+        <pre>
+latest
+</pre>
+
+        <p>
+            Use:
+        </p>
+
+        <pre>
+v1.0.0
+v1.0.1
+v1.0.2
+</pre>
+
+        <p>
+            because rollback becomes easy.
+        </p>
+
+
+
+        <h2 class="blue">
+            📌 <u>S3 Bucket Versioning Rollback (Frontend Angular Rollback)</u>
+        </h2>
+
+        <hr />
+
+        <p>
+            Suppose:
+        </p>
+
+        <ul>
+
+            <li>New Angular deployment broken</li>
+
+            <li><code>main.js</code> corrupted</li>
+
+            <li><code>index.html</code> issue</li>
+
+            <li>White screen in UI</li>
+
+        </ul>
+
+        <p>
+            Need rollback.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 1 — Open S3
+        </h3>
+
+        <p>
+            Search:
+        </p>
+
+        <pre>
+S3
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 2 — Open Frontend Bucket
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+my-angular-frontend
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 3 — Enable Versioning (If Not Enabled)
+        </h3>
+
+        <p>
+            Go:
+        </p>
+
+        <pre>
+Properties
+  → Bucket Versioning
+</pre>
+
+        <p>
+            Click:
+        </p>
+
+        <pre>
+Enable
+</pre>
+
+        <h4>What Happens After Enabling?</h4>
+
+        <p>
+            Every upload creates:
+        </p>
+
+        <ul>
+
+            <li>Old version</li>
+
+            <li>New version</li>
+
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>File</th>
+                <th>Version</th>
+            </tr>
+
+            <tr>
+                <td>index.html</td>
+                <td>v1</td>
+            </tr>
+
+            <tr>
+                <td>index.html</td>
+                <td>v2</td>
+            </tr>
+
+            <tr>
+                <td>main.js</td>
+                <td>v1</td>
+            </tr>
+
+            <tr>
+                <td>main.js</td>
+                <td>v2</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 4 — Go to Objects
+        </h3>
+
+        <p>
+            Inside bucket:
+        </p>
+
+        <pre>
+Objects
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 5 — Show Versions
+        </h3>
+
+        <p>
+            Enable:
+        </p>
+
+        <pre>
+Show versions
+</pre>
+
+        <p>
+            Now you will see:
+        </p>
+
+        <ul>
+
+            <li>Current version</li>
+
+            <li>Previous versions</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 6 — Select Old Working Version
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+index.html → previous version
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 7 — Restore Previous Version
+        </h3>
+
+        <p>
+            Options:
+        </p>
+
+        <ul>
+
+            <li>Delete current version</li>
+
+            <li>OR</li>
+
+            <li>Copy previous version</li>
+
+        </ul>
+
+        <p>
+            The old version becomes active again.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 8 — CloudFront Cache Invalidation
+        </h3>
+
+        <p>
+            Very important.
+        </p>
+
+        <p>
+            Otherwise old broken JS may still load.
+        </p>
+
+        <p>
+            Go to:
+        </p>
+
+        <pre>
+AWS CloudFront
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 9 — Open Distribution
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+d123abc.cloudfront.net
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            STEP 10 — Create Invalidation
+        </h3>
+
+        <p>
+            Create:
+        </p>
+
+        <pre>
+/*
+</pre>
+
+        <p>
+            This clears CDN cache.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            Rollback Flow Summary
+        </h3>
+
+        <pre>
+Broken Angular Build
+        ↓
+Restore old S3 object versions
+        ↓
+Invalidate CloudFront cache
+        ↓
+Users receive stable frontend
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            Real Production Best Practice
+        </h3>
+
+        <p>
+            Frontend:
+        </p>
+
+        <pre>
+main.abc123.js
+main.xyz789.js
+</pre>
+
+        <p>
+            Use:
+        </p>
+
+        <ul>
+
+            <li>Hashed builds</li>
+
+            <li>Immutable caching</li>
+
+            <li>Versioned deployments</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            Strong Interview Answer
+        </h3>
+
+        <p>
+            “For backend rollback in App Runner, I redeploy a previously stable Docker image tag from ECR. For frontend
+            rollback, I use S3 bucket versioning and invalidate CloudFront cache to restore the previous stable Angular
+            build.”
+        </p>
+
+
+        <h2 class="blue">
+            📌 <u>Git Rollback</u>
+        </h2>
+
+        <hr />
+
+        <p>
+            If bad code pushed:
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            Option 1 — Revert Commit
+        </h3>
+
+        <pre>
+git revert &lt;commit-id&gt;
+
+git push
+</pre>
+
+        <p>
+            This creates new commit that undoes changes.
+        </p>
+
+        <p>
+            Pipeline automatically redeploys.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            Option 2 — Reset
+        </h3>
+
+        <pre>
+git reset --hard HEAD~1
+
+git push --force
+</pre>
+
+        <p>
+            Dangerous in team environments.
+        </p>
+
+
+
+        <h2 class="blue">
+            📌 <u>Database Rollback</u>
+        </h2>
+
+        <hr />
+
+        <p>
+            Hardest rollback type.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            Best Practice
+        </h3>
+
+        <p>
+            Before deployment:
+        </p>
+
+        <ul>
+
+            <li>Take DB backup</li>
+
+            <li>Snapshot database</li>
+
+            <li>Run migration carefully</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            Example
+        </h3>
+
+        <p>
+            Bad migration:
+        </p>
+
+        <pre>
+DROP COLUMN username
+</pre>
+
+        <p>
+            Rollback:
+        </p>
+
+        <ul>
+
+            <li>Restore snapshot</li>
+
+            <li>Run reverse migration</li>
+
+        </ul>
+
+    </div>
+
+    <div class="content" id="sonarqube">
+
+        <h2 class="blue">
+            📌 <u>SonarQube / SonarCloud Flow</u>
+        </h2>
+
+        <hr />
+
+        <pre>
+Developer Push Code
+        ↓
+GitHub Actions Triggered
+        ↓
+Checkout Source Code
+        ↓
+Install Dependencies
+        ↓
+npm install
+        ↓
+Install Sonar Scanner
+        ↓
+npm install --save-dev sonar-scanner
+        ↓
+Run Unit Tests + Coverage
+        ↓
+Sonar Scanner Reads Source Code
+        ↓
+Scanner Sends Analysis to SonarQube/SonarCloud Server
+        ↓
+SonarQube Processes:
+   - Bugs
+   - Code Smells
+   - Coverage
+   - Security Hotspots
+   - Duplicates
+        ↓
+Quality Gate Check
+        ↓
+PASS → Continue Deployment
+FAIL → Stop Pipeline
+        ↓
+View Results In:
+   - SonarCloud Dashboard
+   - Self-hosted SonarQube Dashboard
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>Veracode Flow</u>
+        </h2>
+
+        <hr />
+
+        <pre>
+Developer Push Code
+        ↓
+GitHub Actions Triggered
+        ↓
+Checkout Source Code
+        ↓
+Install Dependencies
+        ↓
+npm install
+        ↓
+Build Application
+        ↓
+npm run build
+        ↓
+Install Veracode Pipeline Scanner
+        ↓
+wget https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+        ↓
+unzip pipeline-scan-LATEST.zip
+        ↓
+Create ZIP Artifact
+        ↓
+zip -r app.zip .
+        ↓
+Run Veracode Pipeline Scan
+        ↓
+java -jar pipeline-scan.jar \
+--veracode_api_id $VERACODE_API_ID \
+--veracode_api_key $VERACODE_API_KEY \
+--file app.zip
+        ↓
+Artifact Uploaded to Veracode Cloud
+        ↓
+Veracode Performs:
+   - SAST
+   - Dependency Scan
+   - OWASP Checks
+   - Security Vulnerabilities
+        ↓
+Policy Check
+        ↓
+PASS → Continue Deployment
+FAIL → Stop Pipeline
+        ↓
+View Results In:
+   - Veracode Dashboard
+</pre>
+
+
+
+
+        <h2 class="blue">
+            📌 <u>Step-by-Step Implementation of SonarQube and Veracode</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What Each Tool Does?
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Tool</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>SonarQube</td>
+                <td>Code Quality + Bugs + Code Smells + Coverage</td>
+            </tr>
+
+            <tr>
+                <td>Veracode</td>
+                <td>Security Vulnerability Scanning (SAST/SCA)</td>
+            </tr>
+
+            <tr>
+                <td>SonarQube</td>
+                <td>Developer Quality Gate</td>
+            </tr>
+
+            <tr>
+                <td>Veracode</td>
+                <td>Enterprise Security Gate</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Recommended Architecture
+        </h3>
+
+        <pre>
+Developer Push
+      ↓
+GitHub Actions Pipeline
+      ↓
+Install Dependencies
+      ↓
+Run Unit Tests
+      ↓
+SonarQube Scan
+      ↓
+Veracode Scan
+      ↓
+Build Docker Image
+      ↓
+Push to ECR
+      ↓
+Deploy to App Runner
+</pre>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>SonarQube Setup (Step-by-Step)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            3. SonarQube Setup Options
+        </h3>
+
+        <h4>OPTION 1 (Recommended for Learning)</h4>
+
+        <p>
+            Use:
+        </p>
+
+        <pre>
+SonarCloud
+</pre>
+
+        <p>
+            Easier than self-hosting SonarQube server.
+        </p>
+
+        <h4>OPTION 2</h4>
+
+        <p>
+            Self-host SonarQube on:
+        </p>
+
+        <ul>
+
+            <li>EC2</li>
+
+            <li>Docker</li>
+
+            <li>Kubernetes</li>
+
+        </ul>
+
+        <p>
+            For now use SonarCloud.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Create SonarCloud Account
+        </h3>
+
+        <p>
+            Go to:
+        </p>
+
+        <pre>
+SonarCloud Official Website
+</pre>
+
+        <p>
+            Steps:
+        </p>
+
+        <ol>
+
+            <li>Login using GitHub</li>
+
+            <li>Import GitHub Repository</li>
+
+            <li>Select organization</li>
+
+            <li>Create project</li>
+
+            <li>Choose GitHub Actions</li>
+
+        </ol>
+
+        <p>
+            SonarCloud gives:
+        </p>
+
+        <ul>
+
+            <li>Project Key</li>
+
+            <li>Organization Key</li>
+
+            <li>SONAR_TOKEN</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Add GitHub Secret
+        </h3>
+
+        <p>
+            GitHub Repo:
+        </p>
+
+        <pre>
+Settings → Secrets → Actions
+</pre>
+
+        <p>
+            Add:
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Secret</th>
+                <th>Value</th>
+            </tr>
+
+            <tr>
+                <td>SONAR_TOKEN</td>
+                <td>Generated token</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Install Sonar Scanner
+        </h3>
+
+        <p>
+            For Node.js project:
+        </p>
+
+        <pre>
+npm install --save-dev sonar-scanner
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Create sonar-project.properties
+        </h3>
+
+        <p>
+            Root folder:
+        </p>
+
+        <pre>
+sonar.projectKey=stock-app
+sonar.organization=your-org
+
+sonar.sources=backend,frontend/src
+sonar.exclusions=node_modules/**
+
+sonar.javascript.lcov.reportPaths=coverage/lcov.info
+
+sonar.sourceEncoding=UTF-8
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Add Jest Coverage
+        </h3>
+
+        <p>
+            Update package.json:
+        </p>
+
+        <pre>
+"scripts": {
+  "test": "jest --coverage"
+}
+</pre>
+
+        <p>
+            Coverage is important because Sonar shows:
+        </p>
+
+        <ul>
+
+            <li>Code coverage</li>
+
+            <li>Duplicates</li>
+
+            <li>Maintainability</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            9. GitHub Actions SonarQube Pipeline
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+name: SonarQube Scan
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Unit Tests
+        run: npm run test
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Quality Gate (VERY IMPORTANT)
+        </h3>
+
+        <p>
+            Enable:
+        </p>
+
+        <ul>
+
+            <li>Fail pipeline if Coverage &lt; 80%</li>
+
+            <li>Critical bugs found</li>
+
+            <li>Security hotspot found</li>
+
+        </ul>
+
+        <p>
+            This prevents bad code deployment.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+- name: SonarQube Quality Gate
+  uses: sonarsource/sonarqube-quality-gate-action@master
+  timeout-minutes: 5
+  env:
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+</pre>
+
+
+
+        <h2 class="blue">
+            📌 <u>Veracode Setup (Step-by-Step)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            11. What is Veracode?
+        </h3>
+
+        <p>
+            Veracode performs:
+        </p>
+
+        <ul>
+
+            <li>SAST (Static Application Security Testing)</li>
+
+            <li>SCA (Software Composition Analysis)</li>
+
+            <li>Dependency vulnerability scanning</li>
+
+            <li>Security policy enforcement</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            12. Create Veracode Account
+        </h3>
+
+        <p>
+            Go to:
+        </p>
+
+        <pre>
+Veracode Official Website
+</pre>
+
+        <p>
+            Create:
+        </p>
+
+        <ul>
+
+            <li>Application profile</li>
+
+            <li>API credentials</li>
+
+        </ul>
+
+        <p>
+            You will receive:
+        </p>
+
+        <pre>
+VERACODE_API_ID
+VERACODE_API_KEY
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            13. Add GitHub Secrets
+        </h3>
+
+        <p>
+            GitHub Repo:
+        </p>
+
+        <pre>
+Settings → Secrets → Actions
+</pre>
+
+        <p>
+            Add:
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Secret</th>
+                <th>Value</th>
+            </tr>
+
+            <tr>
+                <td>VERACODE_API_ID</td>
+                <td>Generated API ID</td>
+            </tr>
+
+            <tr>
+                <td>VERACODE_API_KEY</td>
+                <td>Generated API KEY</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            14. Install Dependencies
+        </h3>
+
+        <p>
+            Ensure build artifact generation:
+        </p>
+
+        <pre>
+npm install
+npm run build
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            15. GitHub Actions Veracode Pipeline
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+- name: Build Application
+  run: npm run build
+
+- name: Upload and Scan with Veracode
+  uses: veracode/veracode-uploadandscan-action@0.2.6
+  with:
+    appname: "stock-app"
+    createprofile: true
+    filepath: "./dist"
+    version: "${{ github.run_id }}"
+    vid: "${{ secrets.VERACODE_API_ID }}"
+    vkey: "${{ secrets.VERACODE_API_KEY }}"
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            16. Veracode Security Policies
+        </h3>
+
+        <p>
+            Configure policy rules:
+        </p>
+
+        <ul>
+
+            <li>Fail build on Critical vulnerabilities</li>
+
+            <li>Fail build on High vulnerabilities</li>
+
+            <li>Block vulnerable dependencies</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            17. Common Vulnerabilities Found
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Vulnerability</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td>SQL Injection</td>
+                <td>Unsafe DB query handling</td>
+            </tr>
+
+            <tr>
+                <td>XSS</td>
+                <td>Cross-site scripting</td>
+            </tr>
+
+            <tr>
+                <td>Hardcoded secrets</td>
+                <td>Passwords/API keys in code</td>
+            </tr>
+
+            <tr>
+                <td>Outdated libraries</td>
+                <td>Known CVEs</td>
+            </tr>
+
+            <tr>
+                <td>Command Injection</td>
+                <td>Unsafe shell execution</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            18. Complete Secure Pipeline Flow
+        </h3>
+
+        <pre>
+Developer Push
+      ↓
+GitHub Actions Trigger
+      ↓
+Install Dependencies
+      ↓
+Run Unit Tests
+      ↓
+Generate Coverage Report
+      ↓
+SonarQube Quality Scan
+      ↓
+Quality Gate Validation
+      ↓
+Veracode Security Scan
+      ↓
+Docker Build
+      ↓
+Push to ECR
+      ↓
+Deploy to App Runner
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            19. Production Best Practices
+        </h3>
+
+        <ul>
+
+            <li>Never hardcode secrets</li>
+
+            <li>Use GitHub Secrets</li>
+
+            <li>Use IAM Roles + OIDC</li>
+
+            <li>Enable branch protection</li>
+
+            <li>Require PR approval before merge</li>
+
+            <li>Fail pipeline on critical vulnerabilities</li>
+
+            <li>Enable dependency scanning</li>
+
+            <li>Enable secret scanning</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            20. Strong Interview Answer
+        </h3>
+
+        <p>
+            “I integrate SonarQube in the CI pipeline for code quality, code coverage, maintainability, and bug
+            detection. I integrate Veracode for enterprise-grade security scanning such as SAST and dependency
+            vulnerability analysis. The pipeline blocks deployment if quality gates or security policies fail.”
+        </p>
+
+
+        <h2 class="blue">
+            📌 <u>Veracode Setup (Step-by-Step)</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Create Veracode Account
+        </h3>
+
+        <p>
+            Go to:
+        </p>
+
+        <pre>
+Veracode Official Website
+</pre>
+
+        <p>
+            Create account.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Generate Veracode API Credentials
+        </h3>
+
+        <p>
+            In Veracode:
+        </p>
+
+        <pre>
+Profile → API Credentials
+</pre>
+
+        <p>
+            You get:
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Secret</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td>VERACODE_API_ID</td>
+                <td>API ID</td>
+            </tr>
+
+            <tr>
+                <td>VERACODE_API_KEY</td>
+                <td>API Secret</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            3. Add GitHub Secrets
+        </h3>
+
+        <p>
+            Add:
+        </p>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Secret</th>
+            </tr>
+
+            <tr>
+                <td>VERACODE_API_ID</td>
+            </tr>
+
+            <tr>
+                <td>VERACODE_API_KEY</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Install Veracode Pipeline Scan
+        </h3>
+
+        <p>
+            Add GitHub workflow:
+        </p>
+
+        <pre>
+- name: Download Veracode Pipeline Scanner
+  run: |
+    wget https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+    unzip pipeline-scan-LATEST.zip
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            5. Build Artifact Before Scan
+        </h3>
+
+        <p>
+            For Node.js backend:
+        </p>
+
+        <pre>
+zip -r app.zip .
+</pre>
+
+        <p>
+            OR:
+        </p>
+
+        <pre>
+npm run build
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Run Veracode Scan
+        </h3>
+
+        <pre>
+- name: Run Veracode Scan
+  run: |
+    java -jar pipeline-scan.jar \
+      --veracode_api_id ${{ secrets.VERACODE_API_ID }} \
+      --veracode_api_key ${{ secrets.VERACODE_API_KEY }} \
+      --file app.zip
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Full Production Pipeline
+        </h3>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+name: Secure CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  security-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - run: npm install
+
+      - run: npm run test
+
+      - name: Sonar Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Sonar Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Create ZIP
+        run: zip -r app.zip .
+
+      - name: Download Veracode
+        run: |
+          wget https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+          unzip pipeline-scan-LATEST.zip
+
+      - name: Veracode Scan
+        run: |
+          java -jar pipeline-scan.jar \
+          --veracode_api_id ${{ secrets.VERACODE_API_ID }} \
+          --veracode_api_key ${{ secrets.VERACODE_API_KEY }} \
+          --file app.zip
+
+      - name: Docker Build
+        run: docker build -t app .
+
+      - name: Push to ECR
+        run: echo "push"
+
+      - name: Deploy App Runner
+        run: echo "deploy"
+</pre>
+
+
+        <h2 class="blue">
+            📌 <u>What SonarQube Detects</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Category</th>
+            </tr>
+
+            <tr>
+                <td>Bugs</td>
+            </tr>
+
+            <tr>
+                <td>Duplicate code</td>
+            </tr>
+
+            <tr>
+                <td>Memory leaks</td>
+            </tr>
+
+            <tr>
+                <td>Unused variables</td>
+            </tr>
+
+            <tr>
+                <td>Code smells</td>
+            </tr>
+
+            <tr>
+                <td>Maintainability issues</td>
+            </tr>
+
+            <tr>
+                <td>Security hotspots</td>
+            </tr>
+
+            <tr>
+                <td>Coverage</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>What Veracode Detects</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Category</th>
+            </tr>
+
+            <tr>
+                <td>SQL Injection</td>
+            </tr>
+
+            <tr>
+                <td>XSS</td>
+            </tr>
+
+            <tr>
+                <td>SSRF</td>
+            </tr>
+
+            <tr>
+                <td>Command Injection</td>
+            </tr>
+
+            <tr>
+                <td>Dependency vulnerabilities</td>
+            </tr>
+
+            <tr>
+                <td>OWASP Top 10</td>
+            </tr>
+
+            <tr>
+                <td>Hardcoded secrets</td>
+            </tr>
+
+            <tr>
+                <td>Authentication flaws</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Recommended Enterprise Security Additions</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Tool</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>Dependabot</td>
+                <td>Dependency updates</td>
+            </tr>
+
+            <tr>
+                <td>Trivy</td>
+                <td>Docker image scan</td>
+            </tr>
+
+            <tr>
+                <td>Snyk</td>
+                <td>Vulnerability scanning</td>
+            </tr>
+
+            <tr>
+                <td>OWASP ZAP</td>
+                <td>DAST scanning</td>
+            </tr>
+
+            <tr>
+                <td>Checkov</td>
+                <td>Terraform scan</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Production-Level Best Practices</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            NEVER
+        </h3>
+
+        <ul>
+
+            <li>Store secrets in code</li>
+
+            <li>Push <code>.env</code></li>
+
+            <li>Ignore quality gates</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            ALWAYS
+        </h3>
+
+        <ul>
+
+            <li>Use GitHub Secrets</li>
+
+            <li>Enable branch protection</li>
+
+            <li>Require PR approval</li>
+
+            <li>Block merge on failed scan</li>
+
+        </ul>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Interview Questions</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            SonarQube
+        </h3>
+
+        <h4>What is Quality Gate?</h4>
+
+        <p>
+            Rules that determine whether deployment should continue.
+        </p>
+
+        <h4>Difference between bug and code smell?</h4>
+
+        <p>
+            Bug → functional issue
+        </p>
+
+        <p>
+            Code smell → maintainability issue
+        </p>
+
+        <h4>Why coverage important?</h4>
+
+        <p>
+            Prevents untested production code.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            Veracode
+        </h3>
+
+        <h4>What is SAST?</h4>
+
+        <p>
+            Static Application Security Testing.
+        </p>
+
+        <h4>Difference between SonarQube and Veracode?</h4>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>SonarQube</th>
+                <th>Veracode</th>
+            </tr>
+
+            <tr>
+                <td>Code Quality</td>
+                <td>Security</td>
+            </tr>
+
+            <tr>
+                <td>Developer focused</td>
+                <td>Security team focused</td>
+            </tr>
+
+            <tr>
+                <td>Faster</td>
+                <td>Deeper analysis</td>
+            </tr>
+
+        </table>
+
+        <h4>What is OWASP Top 10?</h4>
+
+        <p>
+            Top web security vulnerabilities list.
+        </p>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Recommended Order For You</u>
+        </h2>
+
+        <hr />
+
+        <p>
+            Based on your current AWS + Node.js + Angular + Docker work:
+        </p>
+
+        <ol>
+
+            <li>GitHub Actions</li>
+
+            <li>SonarCloud</li>
+
+            <li>Jest Coverage</li>
+
+            <li>Veracode</li>
+
+            <li>Trivy Docker Scan</li>
+
+            <li>OWASP ZAP</li>
+
+            <li>Branch Protection Rules</li>
+
+            <li>OIDC Authentication</li>
+
+            <li>Kubernetes Security</li>
+
+            <li>DevSecOps</li>
+
+        </ol>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Common Mistakes</u>
+        </h2>
+
+        <hr />
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>Mistake</th>
+                <th>Problem</th>
+            </tr>
+
+            <tr>
+                <td>No coverage</td>
+                <td>Poor quality visibility</td>
+            </tr>
+
+            <tr>
+                <td>Scan after deploy</td>
+                <td>Too late</td>
+            </tr>
+
+            <tr>
+                <td>Ignore critical vulnerabilities</td>
+                <td>Security risk</td>
+            </tr>
+
+            <tr>
+                <td>Hardcoded secrets</td>
+                <td>Credential leak</td>
+            </tr>
+
+            <tr>
+                <td>Not failing pipeline</td>
+                <td>Vulnerable deployment</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Enterprise Flow</u>
+        </h2>
+
+        <hr />
+
+        <pre>
+GitHub Push
+    ↓
+Lint
+    ↓
+Unit Test
+    ↓
+SonarQube
+    ↓
+Veracode
+    ↓
+Docker Scan
+    ↓
+Build
+    ↓
+ECR
+    ↓
+App Runner
+</pre>
+
+        <p>
+            Your uploaded AWS deployment workflow is already suitable for integrating these stages into GitHub Actions.
+        </p>
+
+    </div>
+
+    <div class="content" id="yml-iq">
+
+        <h2 class="blue">
+            📌 <u>Angular YML File Interview Questions</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. Why is actions/setup-node@v3 required?
+        </h3>
+
+        <p>
+            Installs Node.js in GitHub runner environment before executing npm commands.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            2. Why is node-version: '20' specified?
+        </h3>
+
+        <p>
+            Ensures consistent Node.js runtime version across:
+        </p>
+
+        <ul>
+
+            <li>local</li>
+
+            <li>CI/CD</li>
+
+            <li>production environments</li>
+
+        </ul>
+
+        <p>
+            Prevents compatibility issues.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            3. What is the difference between npm install and npm ci?
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>npm install</th>
+                <th>npm ci</th>
+            </tr>
+
+            <tr>
+                <td>Slower</td>
+                <td>Faster</td>
+            </tr>
+
+            <tr>
+                <td>Updates package-lock</td>
+                <td>Strictly uses package-lock</td>
+            </tr>
+
+            <tr>
+                <td>Used in development</td>
+                <td>Preferred for CI/CD</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Why is working-directory: ./frontend used?
+        </h3>
+
+        <p>
+            Executes commands specifically inside frontend folder instead of repository root.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            5. What happens during npm run build?
+        </h3>
+
+        <p>
+            Angular production build process:
+        </p>
+
+        <ul>
+
+            <li>transpiles TypeScript</li>
+
+            <li>optimizes bundles</li>
+
+            <li>minifies JS/CSS</li>
+
+            <li>creates dist/ folder</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            6. Why deploy only dist/frontend/browser to S3?
+        </h3>
+
+        <p>
+            Because:
+        </p>
+
+        <ul>
+
+            <li>only compiled static frontend files are needed</li>
+
+            <li>source code should not be deployed</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            7. What does aws s3 sync do?
+        </h3>
+
+        <p>
+            Synchronizes local build files with S3 bucket.
+        </p>
+
+        <p>
+            Uploads:
+        </p>
+
+        <ul>
+
+            <li>new files</li>
+
+            <li>modified files</li>
+
+        </ul>
+
+        <p>
+            Deletes removed files if <code>--delete</code> used.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Why is --delete important in S3 sync?
+        </h3>
+
+        <p>
+            Removes old unused frontend files from S3 bucket.
+        </p>
+
+        <p>
+            Prevents:
+        </p>
+
+        <ul>
+
+            <li>stale JS bundles</li>
+
+            <li>cache conflicts</li>
+
+            <li>old UI loading issues</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            9. Why use S3 for frontend hosting?
+        </h3>
+
+        <p>
+            Amazon S3 supports:
+        </p>
+
+        <ul>
+
+            <li>static website hosting</li>
+
+            <li>scalability</li>
+
+            <li>low cost</li>
+
+            <li>high availability</li>
+
+        </ul>
+
+        <p>
+            Ideal for Angular/React frontend hosting.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Why invalidate CloudFront cache after deployment?
+        </h3>
+
+        <p>
+            Without cache invalidation:
+        </p>
+
+        <p>
+            users may receive old frontend files from CDN cache.
+        </p>
+
+        <p>
+            Cache invalidation forces:
+        </p>
+
+        <p>
+            Amazon CloudFront to serve latest deployment files.
+        </p>
+
+
+        <h2 class="blue">
+            📌 <u>Node JS -Interview Questions from This GitHub Actions YAML</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            1. What is this GitHub Actions workflow doing?
+        </h3>
+
+        <p>
+            This workflow:
+        </p>
+
+        <ul>
+
+            <li>Triggers on push to main</li>
+
+            <li>Only when backend files change</li>
+
+            <li>Builds Docker image</li>
+
+            <li>Pushes image to AWS ECR</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            2. What is the purpose of on: in GitHub Actions?
+        </h3>
+
+        <p>
+            Defines the trigger event.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+on:
+  push:
+</pre>
+
+        <p>
+            Means workflow runs when code is pushed.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            3. What does this mean?
+        </h3>
+
+        <pre>
+branches: ["main"]
+</pre>
+
+        <p>
+            Workflow only triggers for pushes to:
+        </p>
+
+        <pre>
+main branch
+</pre>
+
+        <p>
+            Not for:
+        </p>
+
+        <ul>
+
+            <li>feature branches</li>
+
+            <li>develop branch</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            4. Why is paths: used?
+        </h3>
+
+        <pre>
+paths:
+  - "backend/**"
+</pre>
+
+        <p>
+            Optimization feature.
+        </p>
+
+        <p>
+            Workflow only runs if:
+        </p>
+
+        <pre>
+backend files changed
+</pre>
+
+        <p>
+            Frontend changes will NOT trigger deployment.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            5. What is runs-on: ubuntu-latest?
+        </h3>
+
+        <p>
+            GitHub creates temporary Linux VM runner.
+        </p>
+
+        <p>
+            Pipeline executes inside:
+        </p>
+
+        <pre>
+Ubuntu container/VM
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            6. What does actions/checkout@v3 do?
+        </h3>
+
+        <pre>
+uses: actions/checkout@v3
+</pre>
+
+        <p>
+            Downloads repository code into GitHub runner.
+        </p>
+
+        <p>
+            Without checkout:
+        </p>
+
+        <pre>
+pipeline cannot access source code
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            7. Explain this step.
+        </h3>
+
+        <pre>
+VERSION=$(node -p "require('./backend/package.json').version")
+</pre>
+
+        <p>
+            Reads application version dynamically from:
+        </p>
+
+        <pre>
+package.json
+</pre>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+"version": "1.2.0"
+</pre>
+
+        <p>
+            Used for Docker image tagging.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            8. Why store version in GITHUB_ENV?
+        </h3>
+
+        <pre>
+echo "VERSION=$VERSION" >> $GITHUB_ENV
+</pre>
+
+        <p>
+            Makes variable available across all pipeline steps.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            9. What is the advantage of version-based Docker tagging?
+        </h3>
+
+        <p>
+            Instead of:
+        </p>
+
+        <pre>
+latest
+</pre>
+
+        <p>
+            Using:
+        </p>
+
+        <pre>
+1.0.0
+1.0.1
+1.0.2
+</pre>
+
+        <p>
+            Benefits:
+        </p>
+
+        <ul>
+
+            <li>Rollback support</li>
+
+            <li>Traceability</li>
+
+            <li>Deployment history</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            10. Why are AWS credentials configured?
+        </h3>
+
+        <pre>
+uses: aws-actions/configure-aws-credentials@v2
+</pre>
+
+        <p>
+            Allows GitHub runner to authenticate with AWS.
+        </p>
+
+        <p>
+            Required for:
+        </p>
+
+        <ul>
+
+            <li>ECR push</li>
+
+            <li>AWS API access</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            11. Why use GitHub Secrets?
+        </h3>
+
+        <pre>
+${{ secrets.AWS_ACCESS_KEY_ID }}
+</pre>
+
+        <p>
+            Prevents exposing credentials in code repository.
+        </p>
+
+        <p>
+            Secrets are encrypted by GitHub.
+        </p>
+
+        <hr />
+
+        <h3 class="blue">
+            12. What is Amazon ECR?
+        </h3>
+
+        <p>
+            Amazon Elastic Container Registry
+        </p>
+
+        <p>
+            AWS managed Docker registry.
+        </p>
+
+        <p>
+            Stores:
+        </p>
+
+        <ul>
+
+            <li>Docker images</li>
+
+            <li>Versioned containers</li>
+
+        </ul>
+
+        <p>
+            Similar to:
+        </p>
+
+        <pre>
+Docker Hub
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            13. What does amazon-ecr-login@v1 do?
+        </h3>
+
+        <p>
+            Authenticates Docker client with AWS ECR.
+        </p>
+
+        <p>
+            Without login:
+        </p>
+
+        <pre>
+Docker push fails
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            14. Explain this Docker build command.
+        </h3>
+
+        <pre>
+docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+</pre>
+
+        <p>
+            Creates Docker image with:
+        </p>
+
+        <ul>
+
+            <li>Registry</li>
+
+            <li>Repository</li>
+
+            <li>Version tag</li>
+
+        </ul>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+123456.dkr.ecr.ap-south-1.amazonaws.com/stock-app-backend:1.0.0
+</pre>
+
+        <hr />
+
+        <h3 class="blue">
+            15. What happens after docker push?
+        </h3>
+
+        <pre>
+docker push
+</pre>
+
+        <p>
+            Image uploaded to:
+        </p>
+
+        <pre>
+Amazon Elastic Container Registry
+</pre>
+
+        <p>
+            Then deployment systems like:
+        </p>
+
+        <ul>
+
+            <li>AWS App Runner</li>
+
+            <li>ECS</li>
+
+            <li>EKS</li>
+
+        </ul>
+
+        <p>
+            can pull and deploy image.
+        </p>
+
+        <hr />
+
+        <h2 class="blue">
+            📌 <u>Bonus Advanced Questions</u>
+        </h2>
+
+        <hr />
+
+        <h3 class="blue">
+            Why not use latest tag only?
+        </h3>
+
+        <p>
+            Problems:
+        </p>
+
+        <ul>
+
+            <li>Rollback difficult</li>
+
+            <li>Deployment ambiguity</li>
+
+            <li>Caching issues</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            What happens if AWS secrets are wrong?
+        </h3>
+
+        <p>
+            Pipeline fails during:
+        </p>
+
+        <ul>
+
+            <li>AWS authentication</li>
+
+            <li>ECR login</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            How can this pipeline be improved?
+        </h3>
+
+        <p>
+            Add:
+        </p>
+
+        <ul>
+
+            <li>SonarQube</li>
+
+            <li>Veracode</li>
+
+            <li>Trivy scanning</li>
+
+            <li>Unit tests</li>
+
+            <li>Multi-stage Docker build</li>
+
+            <li>OIDC authentication</li>
+
+        </ul>
+
+        <hr />
+
+        <h3 class="blue">
+            Difference between uses: and run:?
+        </h3>
+
+        <table border="1" cellpadding="8" cellspacing="0">
+
+            <tr>
+                <th>uses</th>
+                <th>run</th>
+            </tr>
+
+            <tr>
+                <td>Reusable GitHub Action</td>
+                <td>Shell command execution</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+        <h3 class="blue">
+            What is rollback strategy here?
+        </h3>
+
+        <p>
+            Deploy older ECR image tag.
+        </p>
+
+        <p>
+            Example:
+        </p>
+
+        <pre>
+v1.0.0
+</pre>
+
+        <p>
+            instead of:
+        </p>
+
+        <pre>
+v1.0.3
 </pre>
 
     </div>
